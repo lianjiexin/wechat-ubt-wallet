@@ -113,7 +113,7 @@ Page({
 
   UBT.retrieveUBT(uid).then(function (res){
   
-        console.info ('retrieveUBT complete');
+        console.info ('retrieveUBT complete for ' + uid);
         console.info (res);
 
         that.setData({

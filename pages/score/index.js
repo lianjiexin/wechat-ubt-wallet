@@ -1,6 +1,7 @@
 const app = getApp()
 const WXAPI = require('apifm-wxapi')
 const AUTH = require('../../utils/auth')
+const UBT = require('../../utils/ubt.js')
 
 Page({
 
@@ -57,14 +58,16 @@ Page({
   },
   doneShow: function () {
     const _this = this
-    const token = wx.getStorageSync('token')
-    WXAPI.userAmount(token).then(function (res) {
-      if (res.code == 0) {
+    const uid = wx.getStorageSync('uid')
+    UBT.retrieveUBT(uid).then(function (res) {
+      console.info ('Show Score')
+      console.info(res)
+      if (res.status == 0) {
         _this.setData({
-          balance: res.data.balance.toFixed(2),
-          freeze: res.data.freeze.toFixed(2),
-          totleConsumed: res.data.totleConsumed.toFixed(2),
-          score: res.data.score
+          balance: res.data.point.toFixed(2),
+          freeze: res.data.frozen.toFixed(2),
+          totleConsumed: res.data.used.toFixed(2),
+          score: res.data.cost.toFixed(2)
         });
       } else {
         wx.showToast({
@@ -74,6 +77,8 @@ Page({
       }
     })
     // 读取积分明细
+    
+    /* 积分明细暂时不显示
     WXAPI.scoreLogs({
       token: token,
       page:1,
@@ -85,6 +90,7 @@ Page({
         })
       }
     })
+    */
   },
 
   recharge: function (e) {
