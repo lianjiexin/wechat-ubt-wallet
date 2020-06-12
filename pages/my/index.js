@@ -4,6 +4,8 @@ const WXAPI = require('apifm-wxapi')
 const AUTH = require('../../utils/auth')
 const TOOLS = require('../../utils/tools.js')
 
+const UBT = require('../../utils/ubt.js')
+
 Page({
 	data: {
     wxlogin: true,
@@ -105,17 +107,23 @@ Page({
     })
   },
   getUserAmount: function () {
-    var that = this;
-    WXAPI.userAmount(wx.getStorageSync('token')).then(function (res) {
-      if (res.code == 0) {
+  var that = this;
+  var uid = wx.getStorageSync('uid');
+  console.info ('retreiving data for UID ' + uid);
+
+  UBT.retrieveUBT(uid).then(function (res){
+  
+        console.info ('retrieveUBT complete');
+        console.info (res);
+
         that.setData({
-          balance: res.data.balance.toFixed(2),
-          freeze: res.data.freeze.toFixed(2),
-          score: res.data.score,
-          growth: res.data.growth
+          balance: res.data.point.toFixed(2),
+          freeze: res.data.frozen.toFixed(2),
+          score: res.data.cost.toFixed(2),
+          growth: res.data.point.toFixed(2)
         });
-      }
-    })
+      })
+
   },
   handleOrderCount: function (count) {
     return count > 99 ? '99+' : count;

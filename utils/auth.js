@@ -1,4 +1,6 @@
 const WXAPI = require('apifm-wxapi')
+const UBT = require('ubt.js')
+
 
 async function checkSession(){
   return new Promise((resolve, reject) => {
@@ -82,6 +84,7 @@ async function login(page){
           })
           return;
         }
+        UBT.checkAndCreateUser(res.data.uid); 
         wx.setStorageSync('token', res.data.token)
         wx.setStorageSync('uid', res.data.uid)
         if ( page ) {
@@ -114,6 +117,7 @@ async function register(page) {
             referrer: referrer
           }).then(function (res) {
             _this.login(page);
+
           })
         }
       })
@@ -181,4 +185,5 @@ module.exports = {
   register: register,
   loginOut: loginOut,
   checkAndAuthorize: checkAndAuthorize
+
 }
