@@ -1,6 +1,7 @@
 const app = getApp()
 const WXAPI = require('apifm-wxapi')
 const AUTH = require('../../utils/auth')
+const UBT = require('../../utils/ubt.js')
 
 Page({
 
@@ -41,11 +42,19 @@ Page({
     })
   },
   async initData(){
-    const token = wx.getStorageSync('token')
-    const res1 = await WXAPI.userAmount(token)
-    if (res1.code == 0) {
-      this.data.score = res1.data.score
+    const uid = wx.getStorageSync('uid')
+    var _this = this;
+    UBT.retrieveUBT(uid,'score').then(function (res){
+    if (res.status == 0) {
+      _this.data.score = res.data.point
     }
+    else {
+      wx.showToast({
+        title: '成长值',
+        icon: 'none'
+      })
+    }
+  })
     const res2 = await WXAPI.scoreDeductionRules(1);
     if (res2.code == 0) {
       this.data.deductionRules = res2.data
@@ -64,19 +73,21 @@ Page({
       })
       return
     }
-    const res = await WXAPI.exchangeScoreToGrowth(wx.getStorageSync('token'), score)
-    if (res.code == 0) {
+    const uid = wx.getStorageSync('uid')
+    UBT.exchangeScoreToGrowth(uid,score).then(function (res) {
+      console.info(res);
+    if (res.status == 0) {
       wx.showModal({
         title: '成功',
-        content: '恭喜您，成功兑换'+ res.data +'成长值',
+        content: '恭喜您，成功兑换'+ res.growth +'成长值',
         showCancel: false
       })
     } else {
       wx.showToast({
-        title: res.msg,
+        title: "兑换失败",
         icon: 'none'
       })
-    }
+    }})
   },
   cancelLogin() {
     this.setData({

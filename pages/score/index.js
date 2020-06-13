@@ -59,15 +59,14 @@ Page({
   doneShow: function () {
     const _this = this
     const uid = wx.getStorageSync('uid')
-    UBT.retrieveUBT(uid).then(function (res) {
-      console.info ('Show Score')
-      console.info(res)
+    UBT.retrieveUBT(uid,'score').then(function (res) {
+ 
       if (res.status == 0) {
         _this.setData({
-          balance: res.data.point.toFixed(2),
+          balance: 0,
           freeze: res.data.frozen.toFixed(2),
           totleConsumed: res.data.used.toFixed(2),
-          score: res.data.cost.toFixed(2)
+          score: res.data.point.toFixed(2)
         });
       } else {
         wx.showToast({

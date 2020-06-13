@@ -109,20 +109,20 @@ Page({
   getUserAmount: function () {
   var that = this;
   var uid = wx.getStorageSync('uid');
-  console.info ('retreiving data for UID ' + uid);
+  console.info ('retreiving data for UID: ' + uid);
 
-  UBT.retrieveUBT(uid).then(function (res){
-  
-        console.info ('retrieveUBT complete for ' + uid);
-        console.info (res);
-
-        that.setData({
-          balance: res.data.point.toFixed(2),
-          freeze: res.data.frozen.toFixed(2),
-          score: res.data.cost.toFixed(2),
-          growth: res.data.point.toFixed(2)
-        });
-      })
+  UBT.retrieveUBT(uid,'score').then(function (res){
+    that.setData({
+      balance: 0, // no cash balance for now
+      freeze: res.data.frozen.toFixed(2),
+      score: res.data.point.toFixed(2)
+    });
+  })
+  UBT.retrieveUBT(uid,'growth').then(function (res){
+    that.setData({
+      growth: res.data.point.toFixed(2)
+    });
+  })
 
   },
   handleOrderCount: function (count) {

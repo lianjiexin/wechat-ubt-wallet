@@ -1,6 +1,7 @@
 const app = getApp()
 const WXAPI = require('apifm-wxapi')
 const AUTH = require('../../utils/auth')
+const UBT = require('../../utils/ubt.js')
 
 Page({
 
@@ -54,20 +55,21 @@ Page({
   },
   doneShow: function () {
     const _this = this
-    const token = wx.getStorageSync('token')
-    WXAPI.userAmount(token).then(function (res) {
-      if (res.code == 0) {
+    const uid = wx.getStorageSync('uid')
+    UBT.retrieveUBT(uid,'growth').then(function (res) {
+      if (res.status == 0) {
         _this.setData({
-          growth: res.data.growth
+          growth: res.data.point.toFixed(2)
         });
       } else {
         wx.showToast({
-          title: res.msg,
+          title: '获取成长值出错',
           icon: 'none'
         })
       }
     })
     // 读取积分明细
+    /*
     WXAPI.growthLogs({
       token: token,
       page: 1,
@@ -79,6 +81,7 @@ Page({
         })
       }
     })
+    */
   },
   recharge: function (e) {
     wx.navigateTo({
