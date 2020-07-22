@@ -25,7 +25,7 @@
     <navigator url="/pages/score/growth">
       <view class='item right'>
         <view>{{growth}}</view>
-        <view>成长值</view>
+        <view>UBT</view>
       </view>
     </navigator>
   </view>
@@ -183,7 +183,7 @@
   <view class="line"></view>
   <navigator url="/pages/score-excharge/growth">
     <view class="menu-item">
-      <view class="l">积分兑换成长值</view>
+      <view class="l">积分兑换UBT</view>
       <image class="next" src="/images/icon/next.png"></image>
     </view>
   </navigator>

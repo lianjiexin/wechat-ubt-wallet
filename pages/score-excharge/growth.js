@@ -79,7 +79,7 @@ Page({
     if (res.status == 0) {
       wx.showModal({
         title: '成功',
-        content: '恭喜您，成功兑换'+ res.growth +'成长值',
+        content: '恭喜您，成功兑换'+ res.growth +'UBT',
         showCancel: false
       })
     } else {
