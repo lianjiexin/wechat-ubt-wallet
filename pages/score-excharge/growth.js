@@ -46,11 +46,12 @@ Page({
     var _this = this;
     UBT.retrieveUBT(uid,'score').then(function (res){
     if (res.status == 0) {
-      _this.data.score = res.data.point
+      _this.data.score = res.data.point;
+      
     }
     else {
       wx.showToast({
-        title: '成长值',
+        title: 'UBT',
         icon: 'none'
       })
     }
@@ -74,7 +75,9 @@ Page({
       return
     }
     const uid = wx.getStorageSync('uid')
-    UBT.exchangeScoreToGrowth(uid,score).then(function (res) {
+    const ubtAddress = wx.getStorageSync('ubtAddress')
+    console.info ("exchange score for ubt: uid :" + uid , ": ubtAddress: " + ubtAddress);
+    UBT.exchangeScoreToGrowth(uid,ubtAddress,score).then(function (res) {
       console.info(res);
     if (res.status == 0) {
       wx.showModal({

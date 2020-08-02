@@ -56,14 +56,14 @@ Page({
   doneShow: function () {
     const _this = this
     const uid = wx.getStorageSync('uid')
-    UBT.retrieveUBT(uid,'growth').then(function (res) {
+    UBT.retrieveUBT(uid,'ubt').then(function (res) {
       if (res.status == 0) {
         _this.setData({
           growth: res.data.point.toFixed(2)
         });
       } else {
         wx.showToast({
-          title: '获取成长值出错',
+          title: '获取UBT出错',
           icon: 'none'
         })
       }

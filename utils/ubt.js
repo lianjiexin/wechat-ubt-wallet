@@ -9,11 +9,12 @@ async function checkAndCreateUser(uid)
   retrieveUBT(uid,'score').then(function (res){
   if(res.status == 0 && res.data == null){
     console.info('Create User for ' + uid );
-    increaseUBT (uid,10,'score')
-    increaseUBT (uid,0,'growth')  //TODO: wrap into a transaction
-    resolve(res);     
+    var ret = createAccount(uid,10,'score');
+ 
+    resolve(ret);     // to-be tested
            }
   else{
+
         console.info("response not null, the user" + uid + "should have been created");
         reject ( new Error(res));
     }
@@ -21,17 +22,17 @@ async function checkAndCreateUser(uid)
   })
    
 }
-async function exchangeScoreToGrowth(uid,score)
+async function exchangeScoreToGrowth(uid,ubtAddress, score)
 {
-  var growth = 2 * score; // Assuming the exchange ratio is growth/score = 2
+  var ubt = 2 * score; // Assuming the exchange ratio is growth/score = 2
   return new Promise((resolve, reject) => {
   decreaseUBT(uid,score,'score').
-  then(increaseUBT(uid,growth,'growth')).
+  then(increaseUBT(uid,ubtAddress,ubt,'ubt')).
   then(function (res){
-    console.info ('User ' + uid + ' : exchange score ' + score + ' for growth ' + growth)
+    console.info ('User ' + uid + ' : exchange score ' + score + ' for ubt: ' + ubt)
     var ret = { 'uid' :uid,
               'score':score,
-              'growth':growth,
+              'growth':ubt,
               'status':0
               }
     resolve(ret);
@@ -41,7 +42,7 @@ async function exchangeScoreToGrowth(uid,score)
   
 }
 
-async function retrieveUBT (uid, ubtType)
+async function retrieveUBT (uid,ubtType)
 {
   var domain = CONFIG.ubtDomain
   return new Promise((resolve, reject) => {
@@ -80,7 +81,6 @@ async function decreaseUBT (uid,point,ubtType)
     url: 'http://' + domain +'/ubt/point/decrease', //减少积分；
     data: {
       "extra": {},
-      "name": "Tom",
       "note": "this is a note",
       "orderNo": "string",
       "orderType": 0,
@@ -88,7 +88,6 @@ async function decreaseUBT (uid,point,ubtType)
       "point": point,
       "seq": Math.round(Math.random() * 1000000),
       "sourceType": 0,
-      "subUid": "",
       "tag": "string",
       "type": ubtType,
       "uid": uid
@@ -119,7 +118,8 @@ async function decreaseUBT (uid,point,ubtType)
 })
 }
 
-async function increaseUBT (uid,point,ubtType)
+
+async function increaseUBT (uid,ubtAddress,point,ubtType)
 {
   var domain = CONFIG.ubtDomain
   return new Promise((resolve, reject) => {
@@ -127,7 +127,6 @@ async function increaseUBT (uid,point,ubtType)
     url: 'http://' + domain +'/ubt/point/increase', //增加积分；
     data: {
       "extra": {},
-      "name": "Tom",
       "note": "this is a note",
       "orderNo": "string",
       "orderType": 0,
@@ -135,8 +134,8 @@ async function increaseUBT (uid,point,ubtType)
       "point": point,
       "seq": Math.round(Math.random() * 1000000),
       "sourceType": 0,
-      "subUid": "",
       "tag": "string",
+      "name" : ubtAddress,
       "type": ubtType,
       "uid": uid
     },
@@ -155,6 +154,51 @@ async function increaseUBT (uid,point,ubtType)
 
       if(res.data.status == 0){
         console. info('Successfully increase Point ' + point + 'for user ' + uid + ' ubtType ' + ubtType);
+        resolve(res.data)
+    }
+    else
+    {
+      reject(new Error(res));
+    }
+    }
+  })
+})
+}
+
+async function createAccount (uid,point,ubtType)
+{
+  var domain = CONFIG.ubtDomain
+  return new Promise((resolve, reject) => {
+  wx.request({
+    url: 'http://' + domain +'/ubt/point/create', //创建帐号；
+    data: {
+      "extra": {},
+      "note": "this is a note",
+      "orderNo": "string",
+      "orderType": 0,
+      "payType": 0,
+      "point": point,
+      "seq": Math.round(Math.random() * 1000000),
+      "sourceType": 0,
+      "tag": "string",
+      "type": ubtType,
+      "uid": uid,
+    },
+    method: "POST",
+    header: {
+        "Content-Type": "application/json" 
+    },
+    complete: function( res ) {
+        if( res == null || res.data == null) {
+          console.error('网络请求失败')
+          reject(new Error('网络请求失败'))
+        }
+
+    },
+    success: function(res) {
+
+      if(res.data.status == 0){
+        console. info('Successfully Create Account for user: ' + uid + ', ubtType: ' + ubtType);
         resolve(res.data)
     }
     else

@@ -73,6 +73,7 @@ async function login(page){
         if (res.code == 10000) {
           // 去注册
           //_this.register(page)
+
           return;
         }
         if (res.code != 0) {
@@ -84,9 +85,11 @@ async function login(page){
           })
           return;
         }
-        UBT.checkAndCreateUser(res.data.uid); 
-        wx.setStorageSync('token', res.data.token)
-        wx.setStorageSync('uid', res.data.uid)
+        var ret = UBT.checkAndCreateUser(res.data.uid); 
+        console.info(ret);
+        wx.setStorageSync('token', ret.data.token)
+        wx.setStorageSync('uid', ret.data.uid)
+
         if ( page ) {
           page.onShow()
         }

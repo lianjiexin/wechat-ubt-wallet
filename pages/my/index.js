@@ -109,7 +109,8 @@ Page({
   getUserAmount: function () {
   var that = this;
   var uid = wx.getStorageSync('uid');
-  console.info ('retreiving data for UID: ' + uid);
+  
+  console.info ('retrieving data for UID: ' + uid );
 
   UBT.retrieveUBT(uid,'score').then(function (res){
     that.setData({
@@ -118,10 +119,11 @@ Page({
       score: res.data.point.toFixed(2)
     });
   })
-  UBT.retrieveUBT(uid,'growth').then(function (res){
+  UBT.retrieveUBT(uid,'ubt').then(function (res){
     that.setData({
-      growth: res.data.point.toFixed(2)
+      growth: res.data.point.toFixed(2),
     });
+    wx.setStorageSync('ubtAddress',res.data.name);
   })
 
   },
