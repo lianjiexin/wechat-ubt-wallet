@@ -83,7 +83,16 @@ Page({
       wx.showModal({
         title: '成功',
         content: '恭喜您，成功兑换'+ res.growth +'UBT',
-        showCancel: false
+        showCancel: false,
+        success(res) {
+          if (res.confirm) {
+            wx.switchTab({
+              url: "/pages/my/index"
+            })
+          } else {
+            wx.navigateBack()
+          }
+        }
       })
       return
     } else {
