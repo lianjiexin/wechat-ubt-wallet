@@ -1079,7 +1079,7 @@ module.exports = {
   growthLogs: function growthLogs(data) {
     return request('/growth/logs', true, 'post', data);
   },
-  exchangeScoreToGrowth: function exchangeScoreToGrowth(token, deductionScore) {
+  exchangeScoreToUBT: function exchangeScoreToUBT(token, deductionScore) {
     return request('/growth/exchange', true, 'post', {
       token: token, deductionScore: deductionScore
     });

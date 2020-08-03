@@ -123,7 +123,7 @@ Page({
     that.setData({
       growth: res.data.point.toFixed(2),
     });
-    wx.setStorageSync('ubtAddress',res.data.name);
+    wx.setStorageSync('ubtAddress',res.data.name); //ubtAddress stored at the name field currently
   })
 
   },

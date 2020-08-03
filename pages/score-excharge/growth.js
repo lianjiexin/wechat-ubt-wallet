@@ -77,7 +77,7 @@ Page({
     const uid = wx.getStorageSync('uid')
     const ubtAddress = wx.getStorageSync('ubtAddress')
     console.info ("exchange score for ubt: uid :" + uid , ": ubtAddress: " + ubtAddress);
-    UBT.exchangeScoreToGrowth(uid,ubtAddress,score).then(function (res) {
+    UBT.exchangeScoreToUBT(uid,ubtAddress,score).then(function (res) {
       console.info(res);
     if (res.status == 0) {
       wx.showModal({
@@ -85,6 +85,7 @@ Page({
         content: '恭喜您，成功兑换'+ res.growth +'UBT',
         showCancel: false
       })
+      return
     } else {
       wx.showToast({
         title: "兑换失败",

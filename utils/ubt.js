@@ -22,7 +22,7 @@ async function checkAndCreateUser(uid)
   })
    
 }
-async function exchangeScoreToGrowth(uid,ubtAddress, score)
+async function exchangeScoreToUBT(uid,ubtAddress, score)
 {
   var ubt = 2 * score; // Assuming the exchange ratio is growth/score = 2
   return new Promise((resolve, reject) => {
@@ -42,14 +42,14 @@ async function exchangeScoreToGrowth(uid,ubtAddress, score)
   
 }
 
-async function retrieveUBT (uid,ubtType)
+async function retrieveUBT (uid,pointType)
 {
   var domain = CONFIG.ubtDomain
   return new Promise((resolve, reject) => {
   wx.request({
     url: 'http://' + domain +'/ubt/point/getPoint', //检查该用户的UBT；
     data: {
-        "type": ubtType,
+        "type": pointType,
         "uid": uid
     },
     method: "GET",
@@ -64,7 +64,7 @@ async function retrieveUBT (uid,ubtType)
 
     },
     success: function(res) {
-        console.info ("Successfully Retrieve UBT for User: " + uid +', ubtType:' + ubtType);
+        console.info ("Successfully Retrieve UBT for User: " + uid +', pointType:' + pointType);
         console.info(res);
         resolve(res.data);
     }
@@ -72,7 +72,7 @@ async function retrieveUBT (uid,ubtType)
 })
 }
 
-async function decreaseUBT (uid,point,ubtType)
+async function decreaseUBT (uid,point,pointType)
 {
   var that = this;
   var domain = CONFIG.ubtDomain
@@ -80,16 +80,9 @@ async function decreaseUBT (uid,point,ubtType)
   wx.request({
     url: 'http://' + domain +'/ubt/point/decrease', //减少积分；
     data: {
-      "extra": {},
-      "note": "this is a note",
-      "orderNo": "string",
-      "orderType": 0,
-      "payType": 0,
       "point": point,
       "seq": Math.round(Math.random() * 1000000),
-      "sourceType": 0,
-      "tag": "string",
-      "type": ubtType,
+      "type": pointType,
       "uid": uid
     },
     method: "POST",
@@ -106,7 +99,7 @@ async function decreaseUBT (uid,point,ubtType)
     },
     success: function(res) {
       if(res.data.status == 0){
-        console. info('Successfully decrease Point ' + point + 'for user ' + uid + ' ubtType: ' + ubtType);
+        console. info('Successfully decrease Point ' + point + 'for user ' + uid + ' pointType: ' + pointType);
         resolve(res.data)
     }
     else
@@ -119,24 +112,17 @@ async function decreaseUBT (uid,point,ubtType)
 }
 
 
-async function increaseUBT (uid,ubtAddress,point,ubtType)
+async function increaseUBT (uid,ubtAddress,point,pointType)
 {
   var domain = CONFIG.ubtDomain
   return new Promise((resolve, reject) => {
   wx.request({
     url: 'http://' + domain +'/ubt/point/increase', //增加积分；
     data: {
-      "extra": {},
-      "note": "this is a note",
-      "orderNo": "string",
-      "orderType": 0,
-      "payType": 0,
       "point": point,
       "seq": Math.round(Math.random() * 1000000),
-      "sourceType": 0,
-      "tag": "string",
       "name" : ubtAddress,
-      "type": ubtType,
+      "type": pointType,
       "uid": uid
     },
     method: "POST",
@@ -153,7 +139,7 @@ async function increaseUBT (uid,ubtAddress,point,ubtType)
     success: function(res) {
 
       if(res.data.status == 0){
-        console. info('Successfully increase Point ' + point + 'for user ' + uid + ' ubtType ' + ubtType);
+        console. info('Successfully increase Point ' + point + 'for user ' + uid + ' pointType ' + pointType);
         resolve(res.data)
     }
     else
@@ -165,24 +151,17 @@ async function increaseUBT (uid,ubtAddress,point,ubtType)
 })
 }
 
-async function createAccount (uid,point,ubtType)
+async function createAccount (uid,point,pointType)
 {
   var domain = CONFIG.ubtDomain
   return new Promise((resolve, reject) => {
   wx.request({
     url: 'http://' + domain +'/ubt/point/create', //创建帐号；
     data: {
-      "extra": {},
-      "note": "this is a note",
-      "orderNo": "string",
-      "orderType": 0,
-      "payType": 0,
       "point": point,
       "seq": Math.round(Math.random() * 1000000),
-      "sourceType": 0,
-      "tag": "string",
-      "type": ubtType,
-      "uid": uid,
+      "type": pointType,
+      "uid": uid
     },
     method: "POST",
     header: {
@@ -198,7 +177,7 @@ async function createAccount (uid,point,ubtType)
     success: function(res) {
 
       if(res.data.status == 0){
-        console. info('Successfully Create Account for user: ' + uid + ', ubtType: ' + ubtType);
+        console. info('Successfully Create Account for user: ' + uid + ', pointType: ' + pointType);
         resolve(res.data)
     }
     else
@@ -216,5 +195,5 @@ module.exports = {
   checkAndCreateUser: checkAndCreateUser,
   increaseUBT: increaseUBT,
   decreaseUBT: decreaseUBT,
-  exchangeScoreToGrowth: exchangeScoreToGrowth
+  exchangeScoreToUBT: exchangeScoreToUBT
 }
