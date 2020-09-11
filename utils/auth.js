@@ -87,8 +87,8 @@ async function login(page){
         }
         var ret = UBT.checkAndCreateUser(res.data.uid); 
         console.info(ret);
-        wx.setStorageSync('token', ret.data.token)
-        wx.setStorageSync('uid', ret.data.uid)
+        wx.setStorageSync('token', res.data.token)
+        wx.setStorageSync('uid', res.data.uid)
 
         if ( page ) {
           page.onShow()

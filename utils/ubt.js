@@ -16,7 +16,9 @@ async function checkAndCreateUser(uid)
   else{
 
         console.info("response not null, the user" + uid + "should have been created");
-        reject ( new Error(res));
+        //reject ( new Error(res));
+        console.info(res);
+        resolve(res); 
     }
    })
   })
