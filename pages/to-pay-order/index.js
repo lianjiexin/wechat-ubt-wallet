@@ -90,7 +90,6 @@ Page({
     const params = this.data.curAddressData;
     const data = ubt.increaseUBT(params.uid, params.address, this.data.allGoodsPrice, 'score')
     data.then(res => {
-      console.log("data", res);
       if (res.status === 0) {
         const loginToken = wx.getStorageSync('token'); // 用户登录 token
         WXAPI.shippingCarInfoRemoveAll(loginToken);
@@ -114,8 +113,8 @@ Page({
     //     },
     //   })
     // } else {
-    //   this.createOrder(true)
-    // }    
+    this.createOrder(true)
+    // }
   },
   createOrder: function (e) {
     var that = this;
@@ -192,25 +191,25 @@ Page({
   },
   async processAfterCreateOrder(res) {
     // 直接弹出支付，取消支付的话，去订单列表
-    const res1 = await WXAPI.userAmount(wx.getStorageSync('token'))
-    if (res1.code != 0) {
-      wx.showToast({
-        title: '无法获取用户资金信息',
-        icon: 'none'
-      })
-      wx.redirectTo({
-        url: "/pages/order-list/index"
-      });
-      return
-    }
-    const money = res.data.amountReal * 1 - res1.data.balance * 1
-    if (money <= 0) {
-      wx.redirectTo({
-        url: "/pages/order-list/index"
-      })
-    } else {
-      wxpay.wxpay('order', money, res.data.id, "/pages/order-list/index");
-    }
+    // const res1 = await WXAPI.userAmount(wx.getStorageSync('token'))
+    // if (res1.code != 0) {
+    //   wx.showToast({
+    //     title: '无法获取用户资金信息',
+    //     icon: 'none'
+    //   })
+    //   wx.redirectTo({
+    //     url: "/pages/order-list/index"
+    //   });
+    //   return
+    // }
+    // const money = res.data.amountReal * 1 - res1.data.balance * 1
+    // if (money <= 0) {
+    wx.redirectTo({
+      url: "/pages/order-list/index"
+    })
+    // } else {
+    //   wxpay.wxpay('order', money, res.data.id, "/pages/order-list/index");
+    // }
   },
   async initShippingAddress() {
     const res = await WXAPI.defaultAddress(wx.getStorageSync('token'))

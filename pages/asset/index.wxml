@@ -79,4 +79,4 @@
 </view>
 
 <template is="apifmLogin" data="{{wxlogin: wxlogin}}" />
-<float-menu /> 
+<!-- <float-menu />  -->

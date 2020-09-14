@@ -21,7 +21,6 @@ Page({
     try {
       var res = wx.getSystemInfoSync().windowWidth
       var scale = (750 / 2) / (w / 2)
-      // console.log(scale);
       real = Math.floor(res / scale);
       return real;
     } catch (e) {
@@ -56,7 +55,6 @@ Page({
     }
     const res = await WXAPI.shippingCarInfo(token)
     
-    console.log(res.data)
     if (res.code == 0) {
       this.setData({
         shippingCarInfo: res.data
