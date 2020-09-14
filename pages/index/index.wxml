@@ -11,16 +11,16 @@
   </view>
 </navigator> -->
 <!-- <view class="swiper-container"> -->
-  <!-- <swiper class="swiper1" indicator-dots="true" indicator-active-color="#fff" autoplay circular>
+<!-- <swiper class="swiper1" indicator-dots="true" indicator-active-color="#fff" autoplay circular>
     <swiper-item wx:for="{{banners}}" wx:key="id">
       <image  mode="aspectFill" bindtap="tapBanner" data-url="{{item.linkUrl}}" src="{{item.picUrl}}" />
     </swiper-item>
   </swiper> -->
-  <!-- <view class="search">
+<!-- <view class="search">
     <input type="text" placeholder="输入搜索关键词" value="{{name}}" bindinput="bindinput" bindconfirm="bindconfirm"></input>
     <image src="/images/icon/search.svg" bindtap="goSearch"></image>
   </view> -->
-  <!-- <view wx:if="{{goodsDynamic}}" class="goodsDynamic">
+<!-- <view wx:if="{{goodsDynamic}}" class="goodsDynamic">
     <swiper class="swiper2" autoplay circular vertical>
       <navigator wx:for="{{goodsDynamic}}" wx:key="index" url="/pages/goods-details/index?id={{item.goodsId}}">
         <swiper-item>
@@ -33,7 +33,7 @@
     </swiper>
   </view> -->
 <!-- </view> -->
- <!--<view class="notice-box" wx:if="{{noticeList}}">
+<!-- <view class="notice-box" wx:if="{{noticeList}}">
   <view class="notice">
     <image class="notice_icon" src="/images/notice.png"></image>
     <swiper class="notice_swiper" vertical autoplay circular>
@@ -46,20 +46,22 @@
   </view>
   <view class="more"><navigator url="/pages/notice/index">更多 ></navigator></view>
 </view> -->
-<view style="text-content">优贝医疗区块链权证分发统计系统</view>
+<view class="box-title">优贝医疗区块链权证分发统计系统</view>
 <view class="category-box">
   <view class="category-list" wx:for="{{categories}}" wx:key="id">
     <view class="category-column {{activeCategoryId == item.id ? 'type-item-on' : ''}}" bindtap="tabClick" id="{{item.id}}">
       <image mode="aspectFill" class="category-imgbox" src="{{item.icon}}"></image>
       <view class="category-title">{{item.name}}</view>
-    </view>          
+    </view>
   </view>
 </view>
 <view class="container">
   <block wx:for="{{categories}}" wx:key="id" wx:if="{{item.goods}}">
     <view class="category-goods-title">
       <view class="weui-panel__hd">{{item.name}}</view>
-      <view class="more"><navigator url="/pages/goods/list?categoryId={{item.id}}">更多 ></navigator></view>
+      <view class="more">
+        <navigator url="/pages/goods/list?categoryId={{item.id}}">更多 ></navigator>
+      </view>
     </view>
     <view class="goods-container">
       <view class="goods-box" wx:for="{{item.goods}}" wx:key="id" bindtap="toDetailsTap" data-id="{{item.id}}">
@@ -69,7 +71,9 @@
         <view class="goods-title">{{item.name}}</view>
         <view style='display:flex;'>
           <view class="goods-price">¥ {{item.minPrice}}</view>
-          <view wx:if="{{item.originalPrice && item.originalPrice > 0}}" class="goods-price" style='color:#aaa;text-decoration:line-through'>¥ {{item.originalPrice}}</view>
+          <view wx:if="{{item.originalPrice && item.originalPrice > 0}}" class="goods-price" style='color:#aaa;text-decoration:line-through'>
+            ¥ {{item.originalPrice}}
+          </view>
         </view>
       </view>
     </view>
@@ -187,9 +191,9 @@
   </view>
   <view hidden="{{loadingMoreHidden ? true : false}}" class="weui-loadmore weui-loadmore_line" style='margin-top:60rpx;margin-bottom:30rpx;'>
     <view class="weui-loadmore__tips weui-loadmore__tips_in-line">没有更多啦</view>
-  </view>-->
- </view> 
-<!--<view class='coupons-float' bindtap="goCoupons">
+  </view> -->
+</view>
+<!-- <view class='coupons-float' bindtap="goCoupons">
   <image src="/images/gift.png"></image>
 </view>
 
@@ -198,11 +202,10 @@
     <image src="/images/live.png"></image>
   </view>
 </navigator> -->
-
 <view class="swiper-container">
   <swiper class="swiper1" indicator-dots="true" indicator-active-color="#fff" autoplay circular>
     <swiper-item wx:for="{{banners}}" wx:key="id">
-      <image  mode="aspectFill" bindtap="tapBanner" data-url="{{item.linkUrl}}" src="{{item.picUrl}}" />
+      <image mode="aspectFill" bindtap="tapBanner" data-url="{{item.linkUrl}}" src="{{item.picUrl}}" />
     </swiper-item>
   </swiper>
   <!-- <view class="search">

@@ -78,9 +78,9 @@ Page({
         wx.setStorageSync('referrer', scene.substring(11))
       }
     }
-    wx.setNavigationBarTitle({
-      title: wx.getStorageSync('mallName')
-    })
+    // wx.setNavigationBarTitle({
+    //   title: wx.getStorageSync('mallName')
+    // })
     this.initBanners()
     this.categories()
     // WXAPI.goods({

@@ -20,7 +20,7 @@
     <!-- <view class='item' bindtap='goScore'> -->
     <view class='item'>
       <view>{{score}}</view>
-      <view>积分</view>
+      <view>M</view>
     </view>
     <!-- <navigator url="/pages/score/growth"> -->
     <view class='item right'>
@@ -32,7 +32,7 @@
   <view class="space"></view>
   <navigator url="/pages/order-list/index">
     <view class="menu-item">
-      <view class="l">我的订单</view>
+      <view class="l">我的结算单</view>
       <image class="next" src="/images/icon/next.png"></image>
     </view>
   </navigator>
