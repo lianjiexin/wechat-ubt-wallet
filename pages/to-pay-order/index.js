@@ -2,6 +2,7 @@ const app = getApp()
 const WXAPI = require('apifm-wxapi')
 const AUTH = require('../../utils/auth')
 const wxpay = require('../../utils/pay.js')
+const ubt = require('../../utils/ubt')
 
 Page({
   data: {
@@ -25,7 +26,7 @@ Page({
     peisongType: 'kd', // 配送方式 kd,zq 分别表示快递/到店自取
     remark: ''
   },
-  onShow(){
+  onShow() {
     AUTH.checkHasLogined().then(isLogined => {
       this.setData({
         wxlogin: isLogined
@@ -81,27 +82,40 @@ Page({
     }
     return aaa;
   },
-  remarkChange(e){
+  remarkChange(e) {
     this.data.remark = e.detail.value
   },
-  goCreateOrder(){
-    const subscribe_ids = wx.getStorageSync('subscribe_ids')
-    if (subscribe_ids) {
-      wx.requestSubscribeMessage({
-        tmplIds: subscribe_ids.split(','),
-        success(res) {
-          
-        },
-        fail(e) {
-          console.error(e)
-        },
-        complete: (e) => {
-          this.createOrder(true)
-        },
-      })
-    } else {
-      this.createOrder(true)
-    }    
+  // 发放积分
+  goCreateOrder() {
+    const params = this.data.curAddressData;
+    const data = ubt.increaseUBT(params.uid, params.address, this.data.allGoodsPrice, 'score')
+    data.then(res => {
+      console.log("data", res);
+      if (res.status === 0) {
+        const loginToken = wx.getStorageSync('token'); // 用户登录 token
+        WXAPI.shippingCarInfoRemoveAll(loginToken);
+        wx.redirectTo({
+          url: "/pages/order-list/index"
+        })
+      }
+    })
+    // const subscribe_ids = wx.getStorageSync('subscribe_ids')
+    // if (subscribe_ids) {
+    //   wx.requestSubscribeMessage({
+    //     tmplIds: subscribe_ids.split(','),
+    //     success(res) {
+
+    //     },
+    //     fail(e) {
+    //       console.error(e)
+    //     },
+    //     complete: (e) => {
+    //       this.createOrder(true)
+    //     },
+    //   })
+    // } else {
+    //   this.createOrder(true)
+    // }    
   },
   createOrder: function (e) {
     var that = this;
@@ -139,7 +153,7 @@ Page({
         postData.linkMan = that.data.curAddressData.linkMan;
         postData.mobile = that.data.curAddressData.mobile;
         postData.code = that.data.curAddressData.code;
-      }      
+      }
     }
     if (that.data.curCoupon) {
       postData.couponId = that.data.curCoupon.id;
@@ -189,7 +203,7 @@ Page({
       });
       return
     }
-    const money = res.data.amountReal * 1 - res1.data.balance*1
+    const money = res.data.amountReal * 1 - res1.data.balance * 1
     if (money <= 0) {
       wx.redirectTo({
         url: "/pages/order-list/index"
@@ -211,7 +225,7 @@ Page({
     }
     this.processYunfei();
   },
-  processYunfei() {    
+  processYunfei() {
     var goodsList = this.data.goodsList
     if (goodsList.length == 0) {
       return
@@ -294,7 +308,7 @@ Page({
       curCouponShowText: this.data.coupons[selIndex].nameExt
     });
   },
-  radioChange (e) {
+  radioChange(e) {
     this.setData({
       peisongType: e.detail.value
     })

@@ -10,7 +10,7 @@
     </view>
   </view>
 </navigator>
-<view class="swiper-container">
+<!--<view class="swiper-container">
   <swiper class="swiper1" indicator-dots="true" indicator-active-color="#fff" autoplay circular>
     <swiper-item wx:for="{{banners}}" wx:key="id">
       <image  mode="aspectFill" bindtap="tapBanner" data-url="{{item.linkUrl}}" src="{{item.picUrl}}" />
@@ -32,8 +32,8 @@
       </navigator>
     </swiper>
   </view>
-</view>
-<view class="notice-box" wx:if="{{noticeList}}">
+</view> -->
+ <!--<view class="notice-box" wx:if="{{noticeList}}">
   <view class="notice">
     <image class="notice_icon" src="/images/notice.png"></image>
     <swiper class="notice_swiper" vertical autoplay circular>
@@ -45,7 +45,7 @@
     </swiper>
   </view>
   <view class="more"><navigator url="/pages/notice/index">更多 ></navigator></view>
-</view>
+</view> -->
 <view class="category-box">
   <view class="category-list" wx:for="{{categories}}" wx:key="id">
     <view class="category-column {{activeCategoryId == item.id ? 'type-item-on' : ''}}" bindtap="tabClick" id="{{item.id}}">
@@ -74,14 +74,13 @@
     </view>
   </block>
   <!-- 秒杀开始 -->
-  <block wx:if="{{miaoshaGoods && miaoshaGoods.length > 0}}">
+  <!-- <block wx:if="{{miaoshaGoods && miaoshaGoods.length > 0}}">
     <van-divider contentPosition="center">限时秒杀</van-divider>
     <view class="miaosha-container">
       <view class="miaosha-goods-list" wx:for="{{miaoshaGoods}}" wx:key="id" bindtap="toDetailsTap" data-id="{{item.id}}">
         <image src="{{item.pic}}" class="image" mode="aspectFill" lazy-load="true" />
         <view class="r">
           <view class="goods-title">{{item.name}}</view>
-          <!-- <view class="label"><van-icon size="30rpx" name="underway" /><text>限时秒杀</text></view> -->
           <view class="count-down">
             <van-count-down
               wx:if="{{item.dateStartInt > 0}}"
@@ -104,9 +103,9 @@
         </view>
       </view>
     </view>
-  </block>
+  </block> -->
   <!-- 秒杀结束 -->
-  <van-divider wx:if="{{goodsRecommend.length > 0 && activeCategoryId == 0}}" contentPosition="center">爆品推荐</van-divider> 
+  <!-- <van-divider wx:if="{{goodsRecommend.length > 0 && activeCategoryId == 0}}" contentPosition="center">爆品推荐</van-divider> 
   <view class="goods-container" wx:if="{{goodsRecommend.length > 0 && activeCategoryId == 0}}">
     <view class="goods-box" wx:for="{{goodsRecommend}}" wx:key="id" bindtap="toDetailsTap" data-id="{{item.id}}">
       <view class="img-box">
@@ -187,9 +186,9 @@
   </view>
   <view hidden="{{loadingMoreHidden ? true : false}}" class="weui-loadmore weui-loadmore_line" style='margin-top:60rpx;margin-bottom:30rpx;'>
     <view class="weui-loadmore__tips weui-loadmore__tips_in-line">没有更多啦</view>
-  </view>
-</view>
-<view class='coupons-float' bindtap="goCoupons">
+  </view>-->
+ </view> 
+<!--<view class='coupons-float' bindtap="goCoupons">
   <image src="/images/gift.png"></image>
 </view>
 
@@ -197,4 +196,4 @@
   <view style="bottom:200rpx;" class='coupons-float'>
     <image src="/images/live.png"></image>
   </view>
-</navigator>
+</navigator> -->

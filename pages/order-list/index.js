@@ -5,48 +5,48 @@ const AUTH = require('../../utils/auth')
 
 Page({
   data: {
-    statusType: [
-      {
-        status: 9999,
-        label: '全部'
-      },
-      {
-        status: 0,
-        label: '待付款'
-      },
-      {
-        status: 1,
-        label: '待发货'
-      },
-      {
-        status: 2,
-        label: '待收货'
-      },
-      {
-        status: 3,
-        label: '待评价'
-      },
-    ],
+    // statusType: [
+    // {
+    //   status: 9999,
+    //   label: '全部'
+    // },
+    // {
+    //   status: 0,
+    //   label: '待付款'
+    // },
+    // {
+    //   status: 1,
+    //   label: '待发货'
+    // },
+    // {
+    //   status: 2,
+    //   label: '待收货'
+    // },
+    // {
+    //   status: 3,
+    //   label: '待评价'
+    // },
+    // ],
     status: 9999,
     hasRefund: false,
     badges: [0, 0, 0, 0, 0]
   },
-  statusTap: function(e) {
+  statusTap: function (e) {
     const status = e.currentTarget.dataset.status;
     this.setData({
       status
     });
     this.onShow();
   },
-  cancelOrderTap: function(e) {
+  cancelOrderTap: function (e) {
     const that = this;
     const orderId = e.currentTarget.dataset.id;
     wx.showModal({
       title: '确定要取消该订单吗？',
       content: '',
-      success: function(res) {
+      success: function (res) {
         if (res.confirm) {
-          WXAPI.orderClose(wx.getStorageSync('token'), orderId).then(function(res) {
+          WXAPI.orderClose(wx.getStorageSync('token'), orderId).then(function (res) {
             if (res.code == 0) {
               that.onShow();
             }
@@ -55,7 +55,7 @@ Page({
       }
     })
   },
-  refundApply (e) {
+  refundApply(e) {
     // 申请售后
     const orderId = e.currentTarget.dataset.id;
     const amount = e.currentTarget.dataset.amount;
@@ -63,7 +63,7 @@ Page({
       url: "/pages/order/refundApply?id=" + orderId + "&amount=" + amount
     })
   },
-  toPayTap: function(e) {
+  toPayTap: function (e) {
     // 防止连续点击--开始
     if (this.data.payButtonClicked) {
       wx.showToast({
@@ -81,7 +81,7 @@ Page({
     const orderId = e.currentTarget.dataset.id;
     let money = e.currentTarget.dataset.money;
     const needScore = e.currentTarget.dataset.score;
-    WXAPI.userAmount(wx.getStorageSync('token')).then(function(res) {
+    WXAPI.userAmount(wx.getStorageSync('token')).then(function (res) {
       if (res.code == 0) {
         // 增加提示框
         if (res.data.score < needScore) {
@@ -91,12 +91,12 @@ Page({
           })
           return;
         }
-        let _msg = '订单金额: ' + money +' 元'
+        let _msg = '订单金额: ' + money + ' 元'
         if (res.data.balance > 0) {
-          _msg += ',可用余额为 ' + res.data.balance +' 元'
+          _msg += ',可用余额为 ' + res.data.balance + ' 元'
           if (money - res.data.balance > 0) {
             _msg += ',仍需微信支付 ' + (money - res.data.balance) + ' 元'
-          }          
+          }
         }
         if (needScore > 0) {
           _msg += ',并扣除 ' + needScore + ' 积分'
@@ -125,7 +125,7 @@ Page({
       }
     })
   },
-  _toPayTap: function (orderId, money){
+  _toPayTap: function (orderId, money) {
     const _this = this
     if (money <= 0) {
       // 直接使用余额支付
@@ -136,7 +136,7 @@ Page({
       wxpay.wxpay('order', money, orderId, "/pages/order-list/index");
     }
   },
-  onLoad: function(options) {
+  onLoad: function (options) {
     if (options && options.type) {
       if (options.type == 99) {
         this.setData({
@@ -146,10 +146,10 @@ Page({
         this.setData({
           status: options.type
         });
-      }      
+      }
     }
   },
-  onReady: function() {
+  onReady: function () {
     // 生命周期函数--监听页面初次渲染完成
 
   },
@@ -167,7 +167,7 @@ Page({
       }
     })
   },
-  onShow: function() {
+  onShow: function () {
     AUTH.checkHasLogined().then(isLogined => {
       if (isLogined) {
         this.doneShow();
@@ -206,7 +206,8 @@ Page({
       postData.status = ''
     }
     this.getOrderStatistics();
-    WXAPI.orderList(postData).then(function(res) {
+    WXAPI.orderList(postData).then(function (res) {
+      console.log("data", res.data)
       if (res.code == 0) {
         that.setData({
           orderList: res.data.orderList,
@@ -222,19 +223,19 @@ Page({
       }
     })
   },
-  onHide: function() {
+  onHide: function () {
     // 生命周期函数--监听页面隐藏
 
   },
-  onUnload: function() {
+  onUnload: function () {
     // 生命周期函数--监听页面卸载
 
   },
-  onPullDownRefresh: function() {
+  onPullDownRefresh: function () {
     // 页面相关事件处理函数--监听用户下拉动作
 
   },
-  onReachBottom: function() {
+  onReachBottom: function () {
     // 页面上拉触底事件的处理函数
 
   }
