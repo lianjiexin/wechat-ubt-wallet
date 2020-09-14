@@ -75,5 +75,5 @@
       </view>
     </view>
   </view>
-  <view class="sku-btn" bindtap="addCarSku">加入购物车</view>
+  <view class="sku-btn" bindtap="addCarSku">加入结算车</view>
 </block>
