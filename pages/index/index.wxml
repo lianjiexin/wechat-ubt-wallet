@@ -1,4 +1,4 @@
-<navigator url="/pages/shop/select">
+<!-- <navigator url="/pages/shop/select">
   <view wx:if="{{shopInfo}}" class="shops-container">
     <view class="l">
       <image src="/images/order-details/icon-address.png"></image>
@@ -9,18 +9,18 @@
       <image src="/images/icon/next.png"></image>
     </view>
   </view>
-</navigator>
-<!--<view class="swiper-container">
-  <swiper class="swiper1" indicator-dots="true" indicator-active-color="#fff" autoplay circular>
+</navigator> -->
+<!-- <view class="swiper-container"> -->
+  <!-- <swiper class="swiper1" indicator-dots="true" indicator-active-color="#fff" autoplay circular>
     <swiper-item wx:for="{{banners}}" wx:key="id">
       <image  mode="aspectFill" bindtap="tapBanner" data-url="{{item.linkUrl}}" src="{{item.picUrl}}" />
     </swiper-item>
-  </swiper>
-  <view class="search">
+  </swiper> -->
+  <!-- <view class="search">
     <input type="text" placeholder="输入搜索关键词" value="{{name}}" bindinput="bindinput" bindconfirm="bindconfirm"></input>
     <image src="/images/icon/search.svg" bindtap="goSearch"></image>
-  </view>
-  <view wx:if="{{goodsDynamic}}" class="goodsDynamic">
+  </view> -->
+  <!-- <view wx:if="{{goodsDynamic}}" class="goodsDynamic">
     <swiper class="swiper2" autoplay circular vertical>
       <navigator wx:for="{{goodsDynamic}}" wx:key="index" url="/pages/goods-details/index?id={{item.goodsId}}">
         <swiper-item>
@@ -31,8 +31,8 @@
         </swiper-item>
       </navigator>
     </swiper>
-  </view>
-</view> -->
+  </view> -->
+<!-- </view> -->
  <!--<view class="notice-box" wx:if="{{noticeList}}">
   <view class="notice">
     <image class="notice_icon" src="/images/notice.png"></image>
@@ -46,6 +46,7 @@
   </view>
   <view class="more"><navigator url="/pages/notice/index">更多 ></navigator></view>
 </view> -->
+<view style="text-content">优贝医疗区块链权证分发统计系统</view>
 <view class="category-box">
   <view class="category-list" wx:for="{{categories}}" wx:key="id">
     <view class="category-column {{activeCategoryId == item.id ? 'type-item-on' : ''}}" bindtap="tabClick" id="{{item.id}}">
@@ -197,3 +198,27 @@
     <image src="/images/live.png"></image>
   </view>
 </navigator> -->
+
+<view class="swiper-container">
+  <swiper class="swiper1" indicator-dots="true" indicator-active-color="#fff" autoplay circular>
+    <swiper-item wx:for="{{banners}}" wx:key="id">
+      <image  mode="aspectFill" bindtap="tapBanner" data-url="{{item.linkUrl}}" src="{{item.picUrl}}" />
+    </swiper-item>
+  </swiper>
+  <!-- <view class="search">
+    <input type="text" placeholder="输入搜索关键词" value="{{name}}" bindinput="bindinput" bindconfirm="bindconfirm"></input>
+    <image src="/images/icon/search.svg" bindtap="goSearch"></image>
+  </view> -->
+  <!-- <view wx:if="{{goodsDynamic}}" class="goodsDynamic">
+    <swiper class="swiper2" autoplay circular vertical>
+      <navigator wx:for="{{goodsDynamic}}" wx:key="index" url="/pages/goods-details/index?id={{item.goodsId}}">
+        <swiper-item>
+          <view class="goodsDynamic-item">
+            <image mode="aspectFill" src="{{item.avatarUrl}}"></image>
+            <text>{{item.nick}} 购买了 {{item.goodsName}}</text>
+          </view>
+        </swiper-item>
+      </navigator>
+    </swiper>
+  </view> -->
+</view>

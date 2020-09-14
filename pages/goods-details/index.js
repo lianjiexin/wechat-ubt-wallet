@@ -375,7 +375,6 @@ Page({
   buyNow: function(e) {
     let that = this
     let shoptype = e.currentTarget.dataset.shoptype
-    console.log(shoptype)
     if (this.data.goodsDetail.properties && !this.data.canSubmit) {
       if (!this.data.canSubmit) {
         wx.showModal({
@@ -744,7 +743,6 @@ Page({
     });
   },
   onPosterSuccess(e) {
-    console.log('success:', e)
     this.setData({
       posterImg: e.detail,
       showposterImg: true

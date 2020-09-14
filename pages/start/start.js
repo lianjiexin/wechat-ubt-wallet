@@ -62,7 +62,6 @@ Page({
     
   },
   swiperchange: function (e) {
-    //console.log(e.detail.current)
     this.setData({
       swiperCurrent: e.detail.current
     })
