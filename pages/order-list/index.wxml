@@ -26,8 +26,8 @@
         <!-- 共 {{item.goodsNumber}} 件商品 合计： -->
         合计：
         <!-- <text class="p" wx:if="{{item.score <= 0}}">¥ {{item.amountReal}}</text> -->
-        <!-- <text class="p" wx:if="{{item.score > 0}}">¥ {{item.amountReal}} + {{item.score}} 积分</text> -->
-        <text class="p">{{item.amountReal}} 积分</text>
+        <!-- <text class="p" wx:if="{{item.score > 0}}">¥ {{item.amountReal}} + {{item.score}} MUBT</text> -->
+        <text class="p">{{item.amountReal}} MUBT</text>
       </view>
       <view class="goods-info">
         <view class="goods-des">

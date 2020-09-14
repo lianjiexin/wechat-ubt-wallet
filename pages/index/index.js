@@ -20,8 +20,8 @@ Page({
     selectCurrent: 0,
     categories: [],
     activeCategoryId: 0,
-    // goods: [],
-    
+    goods: [],
+
     scrollTop: 0,
     loadingMoreHidden: true,
 
@@ -32,7 +32,7 @@ Page({
     cateScrollTop: 0
   },
 
-  tabClick: function(e) {
+  tabClick: function (e) {
     wx.setStorageSync("_categoryId", e.currentTarget.id)
     wx.switchTab({
       url: '/pages/category/category',
@@ -41,12 +41,12 @@ Page({
     //   url: '/pages/goods/list?categoryId=' + e.currentTarget.id,
     // })
   },
-  toDetailsTap: function(e) {
+  toDetailsTap: function (e) {
     wx.navigateTo({
       url: "/pages/goods-details/index?id=" + e.currentTarget.dataset.id
     })
   },
-  tapBanner: function(e) {
+  tapBanner: function (e) {
     const url = e.currentTarget.dataset.url
     if (url) {
       wx.navigateTo({
@@ -54,7 +54,7 @@ Page({
       })
     }
   },
-  adClick: function(e) {
+  adClick: function (e) {
     const url = e.currentTarget.dataset.url
     if (url) {
       wx.navigateTo({
@@ -62,19 +62,19 @@ Page({
       })
     }
   },
-  bindTypeTap: function(e) {
+  bindTypeTap: function (e) {
     this.setData({
       selectCurrent: e.index
     })
   },
-  onLoad: function(e) {
+  onLoad: function (e) {
     wx.showShareMenu({
       withShareTicket: true
-    })    
+    })
     const that = this
     if (e && e.scene) {
       const scene = decodeURIComponent(e.scene)
-      if (scene) {        
+      if (scene) {
         wx.setStorageSync('referrer', scene.substring(11))
       }
     }
@@ -125,7 +125,7 @@ Page({
   //     })
   //   }
   // },
-  async initBanners(){
+  async initBanners() {
     const _data = {}
     // 读取头部轮播图
     const res1 = await WXAPI.banners({
@@ -142,7 +142,7 @@ Page({
     }
     this.setData(_data)
   },
-  onShow: function(e){
+  onShow: function (e) {
     this.setData({
       shopInfo: wx.getStorageSync('shopInfo')
     })
@@ -159,7 +159,7 @@ Page({
   //     })
   //   }
   // },
-  async categories(){
+  async categories() {
     const res = await WXAPI.goodsCategory()
     let categories = [];
     if (res.code == 0) {
@@ -173,7 +173,7 @@ Page({
       activeCategoryId: 0,
       curPage: 1
     });
-    // this.getGoodsList(0);
+    this.getGoodsList(0);
   },
   onPageScroll(e) {
     let scrollTop = this.data.scrollTop
@@ -181,41 +181,41 @@ Page({
       scrollTop: e.scrollTop
     })
   },
-  // async getGoodsList(categoryId, append) {
-  //   if (categoryId == 0) {
-  //     categoryId = "";
-  //   }
-  //   wx.showLoading({
-  //     "mask": true
-  //   })
-  //   const res = await WXAPI.goods({
-  //     categoryId: categoryId,
-  //     page: this.data.curPage,
-  //     pageSize: this.data.pageSize
-  //   })
-  //   wx.hideLoading()
-  //   if (res.code == 404 || res.code == 700) {
-  //     let newData = {
-  //       loadingMoreHidden: false
-  //     }
-  //     if (!append) {
-  //       newData.goods = []
-  //     }
-  //     this.setData(newData);
-  //     return
-  //   }
-  //   let goods = [];
-  //   if (append) {
-  //     goods = this.data.goods
-  //   }
-  //   for (var i = 0; i < res.data.length; i++) {
-  //     goods.push(res.data[i]);
-  //   }
-  //   this.setData({
-  //     loadingMoreHidden: true,
-  //     goods: goods,
-  //   });
-  // },
+  async getGoodsList(categoryId, append) {
+    if (categoryId == 0) {
+      categoryId = "";
+    }
+    wx.showLoading({
+      "mask": true
+    })
+    const res = await WXAPI.goods({
+      categoryId: categoryId,
+      page: this.data.curPage,
+      pageSize: this.data.pageSize
+    })
+    wx.hideLoading()
+    if (res.code == 404 || res.code == 700) {
+      let newData = {
+        loadingMoreHidden: false
+      }
+      if (!append) {
+        newData.goods = []
+      }
+      this.setData(newData);
+      return
+    }
+    let goods = [];
+    if (append) {
+      goods = this.data.goods
+    }
+    for (var i = 0; i < res.data.length; i++) {
+      goods.push(res.data[i]);
+    }
+    this.setData({
+      loadingMoreHidden: true,
+      goods: goods,
+    });
+  },
   // getCoupons: function() {
   //   var that = this;
   //   WXAPI.coupons().then(function (res) {
@@ -226,7 +226,7 @@ Page({
   //     }
   //   })
   // },
-  onShareAppMessage: function() {    
+  onShareAppMessage: function () {
     return {
       title: '"' + wx.getStorageSync('mallName') + '" ' + wx.getStorageSync('share_profile'),
       path: '/pages/index/index?inviter_id=' + wx.getStorageSync('uid')
@@ -242,17 +242,17 @@ Page({
   //     }
   //   })
   // },
-  onReachBottom: function() {
+  onReachBottom: function () {
     this.setData({
       curPage: this.data.curPage + 1
     });
-    // this.getGoodsList(this.data.activeCategoryId, true)
+    this.getGoodsList(this.data.activeCategoryId, true)
   },
-  onPullDownRefresh: function() {
+  onPullDownRefresh: function () {
     this.setData({
       curPage: 1
     });
-    // this.getGoodsList(this.data.activeCategoryId)
+    this.getGoodsList(this.data.activeCategoryId)
     wx.stopPullDownRefresh()
   },
   // 获取砍价商品

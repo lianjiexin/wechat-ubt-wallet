@@ -159,7 +159,7 @@ Page({
       if (res.code == 30001) {
         wx.showModal({
           title: '错误',
-          content: '您的积分不足',
+          content: '您的MUBT不足',
           showCancel: false
         })
         return;

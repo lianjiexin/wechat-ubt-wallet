@@ -150,7 +150,7 @@
     </view> -->
     <view class="row-box">
       <view class="row-label">合计：</view>
-      <view class="right-text">{{orderDetail.orderInfo.amountReal}} 积分</view>
+      <view class="right-text">{{orderDetail.orderInfo.amountReal}} MUBT</view>
     </view>
   </view>
 </view>

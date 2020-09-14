@@ -84,8 +84,8 @@
   </view>
   <view class="jiesuan-box">
     <view class="left-price">
-      <!-- <view class="total">合计：¥ {{(allGoodsAndYunPrice*100 - youhuijine*100)/100}} + {{totalScoreToPay}} 积分</view> -->
-      <view class="total">合计：{{(allGoodsAndYunPrice*100 - youhuijine*100)/100}} 积分</view>
+      <!-- <view class="total">合计：¥ {{(allGoodsAndYunPrice*100 - youhuijine*100)/100}} + {{totalScoreToPay}} MUBT</view> -->
+      <view class="total">合计：{{(allGoodsAndYunPrice*100 - youhuijine*100)/100}} MUBT</view>
     </view>
     <button class="to-pay-btn" bindtap="goCreateOrder">提交订单</button>
   </view>
