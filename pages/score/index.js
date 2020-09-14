@@ -59,8 +59,8 @@ Page({
   doneShow: function () {
     const _this = this
     const uid = wx.getStorageSync('uid')
-    UBT.retrieveUBT(uid,'score').then(function (res) {
- 
+    UBT.retrieveUBT(uid, 'score').then(function (res) {
+
       if (res.status == 0) {
         _this.setData({
           balance: 0,
@@ -76,21 +76,28 @@ Page({
       }
     })
     // 读取积分明细
-    
-    /* 积分明细暂时不显示
-    WXAPI.scoreLogs({
-      token: token,
-      page:1,
-      pageSize:50
-    }).then(res => {
-      if (res.code == 0) {
-        _this.setData({
-          cashlogs: res.data.result
-        })
-      }
-    })
-    */
+
+    //积分明细暂时不显示
+    // WXAPI.scoreLogs({
+    //   token: token,
+    //   page: 1,
+    //   pageSize: 50
+    // }).then(res => {
+    //   if (res.code == 0) {
+    //     _this.setData({
+    //       cashlogs: res.data.result
+    //     })
+    //   }
+    // })
   },
+
+  exchangeUBT() {
+    wx.navigateTo({
+      url: "/pages/score-excharge/index"
+    })
+  },
+
+
 
   recharge: function (e) {
     wx.navigateTo({

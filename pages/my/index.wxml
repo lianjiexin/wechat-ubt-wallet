@@ -18,12 +18,12 @@
       <view>冻结</view>
     </view> -->
     <!-- <view class='item' bindtap='goScore'> -->
-    <view class='item'>
+    <view class='item' bindtap='goScore'>
       <view>{{score}}</view>
-      <view>M</view>
+      <view>MUBT</view>
     </view>
     <!-- <navigator url="/pages/score/growth"> -->
-    <view class='item right'>
+    <view class='item right' bindtap='goUBT'>
       <view>{{growth}}</view>
       <view>UBT</view>
     </view>

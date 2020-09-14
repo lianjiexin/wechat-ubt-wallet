@@ -85,7 +85,7 @@ Page({
   remarkChange(e) {
     this.data.remark = e.detail.value
   },
-  // 发放积分
+  // 发放MUBT
   goCreateOrder() {
     const params = this.data.curAddressData;
     const data = ubt.increaseUBT(params.uid, params.address, this.data.allGoodsPrice, 'score')

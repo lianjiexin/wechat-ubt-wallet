@@ -83,6 +83,13 @@ Page({
     })
     */
   },
+
+  exchangeMUBT() {
+    wx.navigateTo({
+      url: "/pages/score-excharge/growth"
+    })
+  },
+
   recharge: function (e) {
     wx.navigateTo({
       url: "/pages/recharge/index"

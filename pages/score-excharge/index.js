@@ -73,7 +73,7 @@ Page({
       if (res.code == 0) {
         wx.showModal({
           title: '成功',
-          content: '恭喜您，成功兑换 ' + res.data.score + ' 积分',
+          content: '恭喜您，成功兑换 ' + res.data.score + ' MUBT',
           showCancel: false,
           success: function(res) {
             if (res.confirm) {
