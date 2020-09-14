@@ -35,7 +35,8 @@
         </label>
       </radio-group>
     </view> -->
-    <view class="address-box" wx:if="{{peisongType == 'kd' && isNeedLogistics > 0}}">
+    <!-- <view class="address-box" wx:if="{{peisongType == 'kd' && isNeedLogistics > 0}}"> -->
+    <view class="address-box">
       <view class="add-address" hidden="{{curAddressData}}" bindtap="addAddress">
         <image src="/images/add-addr.png"></image>
         <view>新增收货地址</view>
