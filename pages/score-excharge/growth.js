@@ -69,7 +69,7 @@ Page({
     const score = e.detail.value.score;
     if (!score) {
       wx.showToast({
-        title: '请输入积分数量',
+        title: '请输入MUBT数量',
         icon: 'none'
       })
       return

@@ -69,7 +69,6 @@ async function exchangeUBTtoScore(uid,ubtAddress, ubt)
   })
 
 }
-
 async function retrieveUBT (uid,pointType)
 {
   var domain = CONFIG.ubtDomain
@@ -99,28 +98,31 @@ async function retrieveUBT (uid,pointType)
   })
 })
 }
-
 function createScoreParam(uid,point,pointType)
 {
-  return   {
+  var ret =   {
     "point": point,
     "seq": Math.round(Math.random() * 1000000),
     "type": pointType,
     "uid": uid
   }
+  return ret
 }
-
 function createUBTParam(uid,ubtAddress,point)
 {
-  return   {
+  var ret =   {
     "point": point,
     "seq": Math.round(Math.random() * 1000000),
+    "name" :ubtAddress,
     "type": 'ubt',
     "uid": uid
   }
+  return ret;
 }
 async function decreaseUBT (requestParam)
 {
+  console.info ("DecreaseUBT");
+  console.info(requestParam);
   var that = this;
   var domain = CONFIG.ubtDomain
   return new Promise((resolve, reject) => {
@@ -157,6 +159,9 @@ async function decreaseUBT (requestParam)
 
 async function increaseUBT (requestParam)
 {
+  console.info ("IncreaseUBT");
+  console.info(requestParam);
+
   var domain = CONFIG.ubtDomain
   return new Promise((resolve, reject) => {
   wx.request({
