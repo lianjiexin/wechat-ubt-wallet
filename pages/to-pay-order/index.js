@@ -88,7 +88,13 @@ Page({
   // 发放MUBT
   goCreateOrder() {
     const params = this.data.curAddressData;
-    const data = ubt.increaseUBT(params.uid, params.address, this.data.allGoodsPrice, 'score')
+    var requestParam =   {
+      "point": this.data.allGoodsPrice,
+      "seq": Math.round(Math.random() * 1000000),
+      "type": 'score',
+      "uid": params.uid
+    }
+    const data = ubt.increaseUBT(requestParam)
     data.then(res => {
       if (res.status === 0) {
         const loginToken = wx.getStorageSync('token'); // 用户登录 token

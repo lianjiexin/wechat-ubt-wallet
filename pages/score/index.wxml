@@ -9,8 +9,8 @@
     <view class='dateAdd'>{{ item.dateAdd }}</view>
   </view>
   <view class='amount' style="color: {{ (item.behavior ==0 ) ? 'red' : 'green' }}"> {{ (item.behavior ==0 ) ? '+' : '' }} {{ item.score }} </view>
-</view> -->
-<!-- <float-menu /> -->
+</view> 
+<float-menu /> 
 <view class="container">
     <form bindsubmit="bindSave">
     <view class="form-box">
@@ -24,3 +24,4 @@
     <button type="warn" class="save-btn" formType="submit">立即兑换</button>
     </form>
 </view>
+-->

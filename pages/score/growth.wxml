@@ -2,7 +2,7 @@
   <view>当前UBT</view>
   <view>{{growth}}</view>
 </view>
-<view class="container">
+<!-- <view class="container">
   <form bindsubmit="bindSave">
     <view class="form-box">
       <view class="row-wrap">
@@ -14,7 +14,7 @@
     </view>
     <button type="warn" class="save-btn" formType="submit">立即兑换</button>
   </form>
-  <!-- <view wx:if="{{deductionRules}}" class="weui-panel weui-panel_access">
+  <view wx:if="{{deductionRules}}" class="weui-panel weui-panel_access">
     <view class="weui-panel__hd">兑换规则：</view>
     <view class="weui-panel__bd">
       <view wx:for="{{deductionRules}}" wx:key="id" class="weui-media-box weui-media-box_text">
@@ -22,5 +22,6 @@
         <view class="weui-media-box__desc">{{ item.loop? '每满': '满' }} {{ item.score }} 积分即可兑换</view>
       </view>
     </view>
-  </view> -->
+  </view> 
 </view>
+  -->
