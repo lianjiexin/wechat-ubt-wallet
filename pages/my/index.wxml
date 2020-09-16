@@ -171,21 +171,21 @@
       <image class="next" src="/images/icon/next.png"></image>
     </view>
   </navigator>
-  <view class="line"></view>
+  <view class="line"></view> -->
   <navigator url="/pages/score-excharge/index">
     <view class="menu-item">
-      <view class="l">积分卷兑换积分</view>
+      <view class="l">UBT兑换MUBT</view>
       <image class="next" src="/images/icon/next.png"></image>
     </view>
   </navigator>
   <view class="line"></view>
   <navigator url="/pages/score-excharge/growth">
     <view class="menu-item">
-      <view class="l">积分兑换UBT</view>
+      <view class="l">MUBT兑换UBT</view>
       <image class="next" src="/images/icon/next.png"></image>
     </view>
   </navigator>
-  <view class="line"></view> -->
+  <view class="line"></view> 
   <view class="space"></view>
   <view class="menu-item" bindtap="aboutUs">
     <view class="l">关于我们</view>

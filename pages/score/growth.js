@@ -137,9 +137,7 @@ Page({
       return
     }
     const uid = wx.getStorageSync('uid')
-    const ubtAddress = wx.getStorageSync('ubtAddress')
-    console.info("exchange score for ubt: uid :" + uid, ": ubtAddress: " + ubtAddress);
-    UBT.exchangeScoreToUBT(uid, ubtAddress, score).then(function (res) {
+    UBT.exchangeScoreToUBT(uid, score).then(function (res) {
       console.info(res);
       if (res.status == 0) {
         wx.showModal({

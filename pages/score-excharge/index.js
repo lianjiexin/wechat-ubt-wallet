@@ -1,6 +1,7 @@
 const app = getApp()
 const WXAPI = require('apifm-wxapi')
 const AUTH = require('../../utils/auth')
+const UBT = require('../../utils/ubt.js')
 
 Page({
 
@@ -51,43 +52,47 @@ Page({
   },
   bindSave: function(e) {
     var that = this;
-    var amount = e.detail.value.amount;
+    var ubt = e.detail.value.amount;
 
-    if (amount == "") {
+    if (ubt == "") {
       wx.showModal({
         title: '错误',
-        content: '请填写正确的券号',
+        content: '请输入UBT数量',
         showCancel: false
       })
       return
     }
-    WXAPI.scoreExchange(wx.getStorageSync('token'), amount).then(function(res) {
-      if (res.code == 700) {
-        wx.showModal({
-          title: '错误',
-          content: '券号不正确',
-          showCancel: false
-        })
-        return
-      }
-      if (res.code == 0) {
-        wx.showModal({
-          title: '成功',
-          content: '恭喜您，成功兑换 ' + res.data.score + ' MUBT',
-          showCancel: false,
-          success: function(res) {
-            if (res.confirm) {
-              that.bindCancel();
-            }
+    
+    const uid = wx.getStorageSync('uid')
+    console.info ("exchange ubt for score: uid :" + uid );
+    UBT.exchangeUBTtoScore(uid,ubt).then(function (res) {
+      console.info(res);
+    if (res.status == 0) {
+      wx.showModal({
+        title: '成功',
+        content: '恭喜您，成功兑换'+ res.score +'MUBT',
+        showCancel: false,
+        success(res) {
+          if (res.confirm) {
+            wx.switchTab({
+              url: "/pages/my/index"
+            })
+          } else {
+            wx.navigateBack()
           }
-        })
-      } else {
-        wx.showModal({
-          title: '错误',
-          content: res.data.msg,
-          showCancel: false
-        })
-      }
+        }
+      })
+      return
+    } else {
+      wx.showToast({
+        title: "兑换失败",
+        icon: 'none'
+      })
+    }})
+  },
+  cancelLogin() {
+    this.setData({
+      wxlogin: true
     })
   }
 })

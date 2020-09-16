@@ -24,13 +24,13 @@ async function checkAndCreateUser(uid)
   })
    
 }
-async function exchangeScoreToUBT(uid,ubtAddress, score)
+async function exchangeScoreToUBT(uid,score)
 {
   var ubt = 2 * score; // Assuming the exchange ratio is ubt/score = 2
   return new Promise((resolve, reject) => {
   
-    var decreaseParam = createScoreParam(uid,score,'score');
-    var increaseParam = createUBTParam(uid,ubtAddress,ubt);
+    var decreaseParam = createScoreParam(uid,score);
+    var increaseParam = createUBTParam(uid,ubt);
 
   decreaseUBT(decreaseParam).
   then(increaseUBT(increaseParam)).
@@ -47,13 +47,13 @@ async function exchangeScoreToUBT(uid,ubtAddress, score)
 
 }
 
-async function exchangeUBTtoScore(uid,ubtAddress, ubt)
+async function exchangeUBTtoScore(uid,ubt)
 {
   var score = ubt / 2; // Assuming the exchange ratio is score/ubt = 0.5
   return new Promise((resolve, reject) => {
 
-    var decreaseParam = createUBTParam(uid,ubtAddress,ubt);
-    var increaseParam = createScoreParam(uid,score,'score');
+    var decreaseParam = createUBTParam(uid,ubt);
+    var increaseParam = createScoreParam(uid,score);
     
   decreaseUBT(decreaseParam).
   then(increaseUBT(increaseParam)).
@@ -98,22 +98,21 @@ async function retrieveUBT (uid,pointType)
   })
 })
 }
-function createScoreParam(uid,point,pointType)
+function createScoreParam(uid,point)
 {
   var ret =   {
     "point": point,
     "seq": Math.round(Math.random() * 1000000),
-    "type": pointType,
+    "type": 'score',
     "uid": uid
   }
   return ret
 }
-function createUBTParam(uid,ubtAddress,point)
+function createUBTParam(uid,point)
 {
   var ret =   {
     "point": point,
     "seq": Math.round(Math.random() * 1000000),
-    "name" :ubtAddress,
     "type": 'ubt',
     "uid": uid
   }
@@ -238,6 +237,7 @@ module.exports = {
   increaseUBT: increaseUBT,
   decreaseUBT: decreaseUBT,
   exchangeScoreToUBT: exchangeScoreToUBT,
+  exchangeUBTtoScore: exchangeUBTtoScore,
   createScoreParam: createScoreParam,
   createUBTParam: createUBTParam
 }

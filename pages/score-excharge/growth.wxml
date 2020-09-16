@@ -6,9 +6,9 @@
   <form bindsubmit="bindSave">
     <view class="form-box">
       <view class="row-wrap">
-        <view class="label">兑换MUBT</view>
+        <view class="label">兑换UBT</view>
         <view class="label-right">
-          <input name="score" class="input" type="text" placeholder="你希望用多少UBT来兑换MUBT" />
+          <input name="score" class="input" type="text" placeholder="你希望用多少MUBT来兑换UBT" />
         </view>
       </view>
     </view>
