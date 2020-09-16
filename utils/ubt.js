@@ -3,15 +3,28 @@ Include all utility functions for UBT
 */
 const CONFIG = require('../config.js')
 
-async function checkAndCreateUser(uid)
+async function checkUser(uid)
 {
   return new Promise((resolve, reject) => {
   retrieveUBT(uid,'score').then(function (res){
   if(res.status == 0 && res.data == null){
     console.info('Create User for ' + uid );
-    var ret = createAccount(uid,10,'score');
- 
-    resolve(ret);     // to-be tested
+    //var ret = createAccount(uid,10,'score');
+    wx.showModal({
+      title: '帐号未开通',
+      content: '请联系管理员为您的微信ID   ' + uid + '   开通帐号',
+      showCancel: false,
+      success(res) {
+        if (res.confirm) {
+          wx.switchTab({
+            url: "/pages/my/index"
+          })
+        } else {
+          wx.navigateBack()
+        }
+      }
+    })
+
            }
   else{
 
@@ -192,6 +205,7 @@ async function increaseUBT (requestParam)
 })
 }
 
+/* this function isn't used now */
 async function createAccount (uid,point,pointType)
 {
   var domain = CONFIG.ubtDomain
@@ -233,7 +247,7 @@ async function createAccount (uid,point,pointType)
 
 module.exports = {
   retrieveUBT:retrieveUBT,
-  checkAndCreateUser: checkAndCreateUser,
+  checkUser: checkUser,
   increaseUBT: increaseUBT,
   decreaseUBT: decreaseUBT,
   exchangeScoreToUBT: exchangeScoreToUBT,

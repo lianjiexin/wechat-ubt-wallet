@@ -85,8 +85,7 @@ async function login(page){
           })
           return;
         }
-        var ret = UBT.checkAndCreateUser(res.data.uid); 
-        console.info(ret);
+        UBT.checkUser(res.data.uid); 
         wx.setStorageSync('token', res.data.token)
         wx.setStorageSync('uid', res.data.uid)
 
