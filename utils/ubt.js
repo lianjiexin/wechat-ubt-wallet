@@ -185,7 +185,7 @@ async function increaseUBT(requestParam) {
       success: function (res) {
 
         if (res.data.status == 0) {
-          console.info('Successfully increase Point ' + point + 'for user ' + uid + ' pointType ' + pointType);
+          console.info('Successfully increase Point ' + requestParam.point + 'for user ' + requestParam.uid + ' pointType ' + requestParam.pointType);
           resolve(res.data)
         }
         else {

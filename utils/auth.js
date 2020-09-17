@@ -88,7 +88,7 @@ async function login(page) {
         }
         wx.setStorageSync('token', res.data.token);
         wx.setStorageSync('uid', res.data.uid);
-        checkUbtAccount();
+        checkUbtAccount(page);
         /*
         if ( page ) {
           page.onShow()
@@ -99,10 +99,10 @@ async function login(page) {
   })
 }
 
-async function checkUbtAccount() {
+async function checkUbtAccount(page) {
   var uid = wx.getStorageSync('uid');
   UBT.checkUser(uid).then(function (res) {
-
+    console.info("Checking if the UBT account exist for user: " + uid);
     if (res == null) {
       wx.showModal({
         title: '帐号未开通',
