@@ -51,7 +51,7 @@ Page({
     }
     else {
       wx.showToast({
-        title: 'UBT',
+        title: 'MUBT',
         icon: 'none'
       })
     }
@@ -69,15 +69,14 @@ Page({
     const score = e.detail.value.score;
     if (!score) {
       wx.showToast({
-        title: '请输入积分数量',
+        title: '请输入MUBT数量',
         icon: 'none'
       })
       return
     }
     const uid = wx.getStorageSync('uid')
-    const ubtAddress = wx.getStorageSync('ubtAddress')
-    console.info ("exchange score for ubt: uid :" + uid , ": ubtAddress: " + ubtAddress);
-    UBT.exchangeScoreToUBT(uid,ubtAddress,score).then(function (res) {
+    console.info ("exchange score for ubt: uid :" + uid );
+    UBT.exchangeScoreToUBT(uid,score).then(function (res) {
       console.info(res);
     if (res.status == 0) {
       wx.showModal({

@@ -7,14 +7,14 @@ const TOOLS = require('../../utils/tools.js')
 const UBT = require('../../utils/ubt.js')
 
 Page({
-	data: {
+  data: {
     wxlogin: true,
 
-    balance:0.00,
-    freeze:0,
-    score:0,
-    growth:0,
-    score_sign_continuous:0,
+    balance: 0.00,
+    freeze: 0,
+    score: 0,
+    growth: 0,
+    score_sign_continuous: 0,
     rechargeOpen: false, // 是否开启充值[预存]功能
 
     // 用户订单统计数据
@@ -23,8 +23,8 @@ Page({
     count_id_no_reputation: 0,
     count_id_no_transfer: 0,
   },
-	onLoad() {
-	},
+  onLoad() {
+  },
   onShow() {
     const _this = this
     const order_hx_uids = wx.getStorageSync('order_hx_uids')
@@ -42,23 +42,23 @@ Page({
         _this.orderStatistics();
       }
     })
-    // 获取购物车数据，显示TabBarBadge
+    // 获取结算车数据，显示TabBarBadge
     TOOLS.showTabBarBadge();
   },
-  aboutUs : function () {
+  aboutUs: function () {
     wx.showModal({
       title: '关于我们',
-      content: '本系统基于开源小程序商城系统 https://github.com/EastWorld/wechat-app-mall 搭建，祝大家使用愉快！',
-      showCancel:false
+      content: '优贝，基于区块链智能合约的药品权证结算分发系统',
+      showCancel: false
     })
   },
-  loginOut(){
+  loginOut() {
     AUTH.loginOut()
     wx.reLaunch({
       url: '/pages/my/index'
     })
   },
-  getPhoneNumber: function(e) {
+  getPhoneNumber: function (e) {
     if (!e.detail.errMsg || e.detail.errMsg != "getPhoneNumber:ok") {
       wx.showModal({
         title: '提示',
@@ -107,24 +107,23 @@ Page({
     })
   },
   getUserAmount: function () {
-  var that = this;
-  var uid = wx.getStorageSync('uid');
-  
-  console.info ('retrieving data for UID: ' + uid );
+    var that = this;
+    var uid = wx.getStorageSync('uid');
 
-  UBT.retrieveUBT(uid,'score').then(function (res){
-    that.setData({
-      balance: 0, // no cash balance for now
-      freeze: res.data.frozen.toFixed(2),
-      score: res.data.point.toFixed(2)
-    });
-  })
-  UBT.retrieveUBT(uid,'ubt').then(function (res){
-    that.setData({
-      growth: res.data.point.toFixed(2),
-    });
-    wx.setStorageSync('ubtAddress',res.data.name); //ubtAddress stored at the name field currently
-  })
+    console.info('retrieving data for UID: ' + uid);
+
+    UBT.retrieveUBT(uid, 'score').then(function (res) {
+      that.setData({
+        balance: 0, // no cash balance for now
+        freeze: res.data.frozen.toFixed(2),
+        score: res.data.point.toFixed(2)
+      });
+    })
+    UBT.retrieveUBT(uid, 'ubt').then(function (res) {
+      that.setData({
+        growth: res.data.point.toFixed(2),
+      });
+    })
 
   },
   handleOrderCount: function (count) {
@@ -158,6 +157,11 @@ Page({
       url: "/pages/score/index"
     })
   },
+  goUBT() {
+    wx.navigateTo({
+      url: "/pages/score/growth"
+    })
+  },
   goOrder: function (e) {
     wx.navigateTo({
       url: "/pages/order-list/index?type=" + e.currentTarget.dataset.type
@@ -183,7 +187,7 @@ Page({
     }
     AUTH.register(this);
   },
-  scanOrderCode(){
+  scanOrderCode() {
     wx.scanCode({
       onlyFromCamera: true,
       success(res) {
@@ -200,7 +204,7 @@ Page({
       }
     })
   },
-  clearStorage(){
+  clearStorage() {
     wx.clearStorageSync()
     wx.showToast({
       title: '已清除',

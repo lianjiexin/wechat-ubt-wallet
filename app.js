@@ -73,12 +73,6 @@ App({
         wx.getShareInfo({
           shareTicket: e.shareTicket,
           success: res => {
-            console.log(res)
-            console.log({
-              referrer: e.query.inviter_id,
-              encryptedData: res.encryptedData,
-              iv: res.iv
-            })
             wx.login({
               success(loginRes) {
                 if (loginRes.code) {
@@ -88,7 +82,6 @@ App({
                     res.encryptedData,
                     res.iv
                   ).then(_res => {
-                    console.log(_res)
                   }).catch(err => {
                     console.error(err)
                   })

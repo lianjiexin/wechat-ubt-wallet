@@ -64,9 +64,6 @@ Page({
   afterTapDay(e) {
     // 不是今天，直接 return 
     const myDate = new Date();
-    // console.log('y:', myDate.getFullYear())
-    // console.log('m:', myDate.getMonth() + 1)
-    // console.log('d:', myDate.getDate())
     if (myDate.getFullYear() != e.detail.year ||
       (myDate.getMonth() + 1) != e.detail.month ||
       myDate.getDate() != e.detail.day) {

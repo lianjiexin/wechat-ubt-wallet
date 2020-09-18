@@ -59,8 +59,8 @@ Page({
   doneShow: function () {
     const _this = this
     const uid = wx.getStorageSync('uid')
-    UBT.retrieveUBT(uid,'score').then(function (res) {
- 
+    UBT.retrieveUBT(uid, 'score').then(function (res) {
+
       if (res.status == 0) {
         _this.setData({
           balance: 0,
@@ -76,30 +76,71 @@ Page({
       }
     })
     // 读取积分明细
-    
-    /* 积分明细暂时不显示
-    WXAPI.scoreLogs({
-      token: token,
-      page:1,
-      pageSize:50
-    }).then(res => {
+
+    //积分明细暂时不显示
+    // WXAPI.scoreLogs({
+    //   token: token,
+    //   page: 1,
+    //   pageSize: 50
+    // }).then(res => {
+    //   if (res.code == 0) {
+    //     _this.setData({
+    //       cashlogs: res.data.result
+    //     })
+    //   }
+    // })
+  },
+  // recharge: function (e) {
+  //   wx.navigateTo({
+  //     url: "/pages/recharge/index"
+  //   })
+  // },
+  // withdraw: function (e) {
+  //   wx.navigateTo({
+  //     url: "/pages/withdraw/index"
+  //   })
+  // },
+
+  bindSave: function(e) {
+    var that = this;
+    var amount = e.detail.value.amount;
+
+    if (amount == "") {
+      wx.showModal({
+        title: '错误',
+        content: '请填写正确的券号',
+        showCancel: false
+      })
+      return
+    }
+    WXAPI.scoreExchange(wx.getStorageSync('token'), amount).then(function(res) {
+      if (res.code == 700) {
+        wx.showModal({
+          title: '错误',
+          content: '券号不正确',
+          showCancel: false
+        })
+        return
+      }
       if (res.code == 0) {
-        _this.setData({
-          cashlogs: res.data.result
+        wx.showModal({
+          title: '成功',
+          content: '恭喜您，成功兑换 ' + res.data.score + ' MUBT',
+          showCancel: false,
+          success: function(res) {
+            if (res.confirm) {
+              that.bindCancel();
+            }
+          }
+        })
+      } else {
+        wx.showModal({
+          title: '错误',
+          content: res.data.msg,
+          showCancel: false
         })
       }
     })
-    */
-  },
-
-  recharge: function (e) {
-    wx.navigateTo({
-      url: "/pages/recharge/index"
-    })
-  },
-  withdraw: function (e) {
-    wx.navigateTo({
-      url: "/pages/withdraw/index"
-    })
   }
+
 })

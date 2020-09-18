@@ -16,12 +16,11 @@ Page({
   },
 
   //获取元素自适应后的实际宽度
-  getEleWidth: function(w) {
+  getEleWidth: function (w) {
     var real = 0;
     try {
       var res = wx.getSystemInfoSync().windowWidth
       var scale = (750 / 2) / (w / 2)
-      // console.log(scale);
       real = Math.floor(res / scale);
       return real;
     } catch (e) {
@@ -29,17 +28,17 @@ Page({
       // Do something when catch error
     }
   },
-  initEleWidth: function() {
+  initEleWidth: function () {
     var delBtnWidth = this.getEleWidth(this.data.delBtnWidth);
     this.setData({
       delBtnWidth: delBtnWidth
     });
   },
-  onLoad: function() {
+  onLoad: function () {
     this.initEleWidth();
     this.onShow();
   },
-  onShow: function() {
+  onShow: function () {
     AUTH.checkHasLogined().then(isLogined => {
       this.setData({
         wxlogin: isLogined
@@ -47,14 +46,15 @@ Page({
       if (isLogined) {
         this.shippingCarInfo()
       }
-    })    
+    })
   },
-  async shippingCarInfo(){
+  async shippingCarInfo() {
     const token = wx.getStorageSync('token')
     if (!token) {
       return
     }
     const res = await WXAPI.shippingCarInfo(token)
+    
     if (res.code == 0) {
       this.setData({
         shippingCarInfo: res.data
@@ -65,20 +65,20 @@ Page({
       })
     }
   },
-  toIndexPage: function() {
+  toIndexPage: function () {
     wx.switchTab({
       url: "/pages/index/index"
     });
   },
 
-  touchS: function(e) {
+  touchS: function (e) {
     if (e.touches.length == 1) {
       this.setData({
         startX: e.touches[0].clientX
       });
     }
   },
-  touchM: function(e) {
+  touchM: function (e) {
     const index = e.currentTarget.dataset.index;
     if (e.touches.length == 1) {
       var moveX = e.touches[0].clientX;
@@ -100,7 +100,7 @@ Page({
     }
   },
 
-  touchE: function(e) {
+  touchE: function (e) {
     var index = e.currentTarget.dataset.index;
     if (e.changedTouches.length == 1) {
       var endX = e.changedTouches[0].clientX;
@@ -118,13 +118,13 @@ Page({
     const key = e.currentTarget.dataset.key
     this.delItemDone(key)
   },
-  async delItemDone(key){
+  async delItemDone(key) {
     const token = wx.getStorageSync('token')
     const res = await WXAPI.shippingCarInfoRemoveItem(token, key)
     if (res.code != 0 && res.code != 700) {
       wx.showToast({
         title: res.msg,
-        icon:'none'
+        icon: 'none'
       })
     } else {
       this.shippingCarInfo()
@@ -142,7 +142,7 @@ Page({
   async jianBtnTap(e) {
     const index = e.currentTarget.dataset.index;
     const item = this.data.shippingCarInfo.items[index]
-    const number = item.number-1
+    const number = item.number - 1
     if (number <= 0) {
       // 弹出删除确认
       wx.showModal({
@@ -174,13 +174,13 @@ Page({
     }
     AUTH.register(this);
   },
-  changeCarNumber(e){
+  changeCarNumber(e) {
     const key = e.currentTarget.dataset.key
     const num = e.detail.value
     const token = wx.getStorageSync('token')
     WXAPI.shippingCarInfoModifyNumber(token, key, num).then(res => {
       this.shippingCarInfo()
-    })    
+    })
   },
 
 

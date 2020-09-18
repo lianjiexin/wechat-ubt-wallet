@@ -30,7 +30,9 @@ page,view,image,input {
 }
 
 .asset {
+  width: 100%;
   display: flex;
+  justify-content: center;
   border-top: 1px solid #eee;
   padding-top:20rpx;
   padding-bottom:20rpx;
@@ -38,7 +40,7 @@ page,view,image,input {
 .asset .item {
   display: flex;
   flex-direction: column;
-  width:187rpx;
+  width:50%;
   text-align: center;
   font-size: 13px;
   line-height: 20px;

@@ -125,6 +125,7 @@
 }
 
 .container {
+  margin: 10px 0;
   background-color: #fff;
   min-height: 100%;
   display: block;

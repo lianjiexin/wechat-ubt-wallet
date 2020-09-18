@@ -2,7 +2,7 @@ const WXAPI = require('apifm-wxapi')
 const UBT = require('ubt.js')
 
 
-async function checkSession(){
+async function checkSession() {
   return new Promise((resolve, reject) => {
     wx.checkSession({
       success() {
@@ -19,6 +19,7 @@ async function checkSession(){
 async function checkHasLogined() {
   const token = wx.getStorageSync('token')
   if (!token) {
+    console.info("token not found, user not logined yet");
     return false
   }
   const loggined = await checkSession()
@@ -34,7 +35,7 @@ async function checkHasLogined() {
   return true
 }
 
-async function wxaCode(){
+async function wxaCode() {
   return new Promise((resolve, reject) => {
     wx.login({
       success(res) {
@@ -65,11 +66,11 @@ async function getUserInfo() {
   })
 }
 
-async function login(page){
-  const _this = this
+async function login(page) {
+  const _this = this;
   wx.login({
     success: function (res) {
-      WXAPI.login_wx(res.code).then(function (res) {        
+      WXAPI.login_wx(res.code).then(function (res) {
         if (res.code == 10000) {
           // 去注册
           //_this.register(page)
@@ -85,16 +86,49 @@ async function login(page){
           })
           return;
         }
-        var ret = UBT.checkAndCreateUser(res.data.uid); 
-        console.info(ret);
-        wx.setStorageSync('token', res.data.token)
-        wx.setStorageSync('uid', res.data.uid)
-
+        wx.setStorageSync('token', res.data.token);
+        wx.setStorageSync('uid', res.data.uid);
+        checkUbtAccount(page);
+        /*
         if ( page ) {
           page.onShow()
         }
+        */
       })
     }
+  })
+}
+
+async function checkUbtAccount(page) {
+  var uid = wx.getStorageSync('uid');
+  UBT.checkUser(uid).then(function (res) {
+    console.info("Checking if the UBT account exist for user: " + uid);
+    if (res == null) {
+      wx.showModal({
+        title: '帐号未开通',
+        content: '请联系管理员为您的微信ID   ' + uid + '   开通帐号',
+        showCancel: false,
+        success(res) {
+          if (res.confirm) {
+            wx.switchTab({
+              url: "/pages/my/index"
+            })
+          } else {
+            wx.navigateBack()
+          }
+        }
+      })
+      console.info("Logging Out");
+      loginOut();
+    } else {
+      if (page) {
+        page.onShow()
+      }
+    }
+
+  }, function (fail) {
+    console.error(err)
+
   })
 }
 
@@ -128,12 +162,12 @@ async function register(page) {
   })
 }
 
-function loginOut(){
+function loginOut() {
   wx.removeStorageSync('token')
   wx.removeStorageSync('uid')
 }
 
-async function checkAndAuthorize (scope) {
+async function checkAndAuthorize(scope) {
   return new Promise((resolve, reject) => {
     wx.getSetting({
       success(res) {
@@ -143,7 +177,7 @@ async function checkAndAuthorize (scope) {
             success() {
               resolve() // 无返回参数
             },
-            fail(e){
+            fail(e) {
               console.error(e)
               // if (e.errMsg.indexof('auth deny') != -1) {
               //   wx.showToast({
@@ -160,7 +194,7 @@ async function checkAndAuthorize (scope) {
                 success(res) {
                   wx.openSetting();
                 },
-                fail(e){
+                fail(e) {
                   console.error(e)
                   reject(e)
                 },
@@ -171,12 +205,12 @@ async function checkAndAuthorize (scope) {
           resolve() // 无返回参数
         }
       },
-      fail(e){
+      fail(e) {
         console.error(e)
         reject(e)
       }
     })
-  })  
+  })
 }
 
 

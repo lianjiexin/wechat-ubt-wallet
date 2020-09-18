@@ -1,4 +1,4 @@
-<navigator url="/pages/shop/select">
+<!-- <navigator url="/pages/shop/select">
   <view wx:if="{{shopInfo}}" class="shops-container">
     <view class="l">
       <image src="/images/order-details/icon-address.png"></image>
@@ -9,18 +9,18 @@
       <image src="/images/icon/next.png"></image>
     </view>
   </view>
-</navigator>
+</navigator> -->
 <view class="swiper-container">
   <swiper class="swiper1" indicator-dots="true" indicator-active-color="#fff" autoplay circular>
     <swiper-item wx:for="{{banners}}" wx:key="id">
-      <image  mode="aspectFill" bindtap="tapBanner" data-url="{{item.linkUrl}}" src="{{item.picUrl}}" />
+      <image mode="aspectFill" bindtap="tapBanner" data-url="{{item.linkUrl}}" src="{{item.picUrl}}" />
     </swiper-item>
   </swiper>
-  <view class="search">
+  <!-- <view class="search">
     <input type="text" placeholder="输入搜索关键词" value="{{name}}" bindinput="bindinput" bindconfirm="bindconfirm"></input>
     <image src="/images/icon/search.svg" bindtap="goSearch"></image>
-  </view>
-  <view wx:if="{{goodsDynamic}}" class="goodsDynamic">
+  </view> -->
+  <!-- <view wx:if="{{goodsDynamic}}" class="goodsDynamic">
     <swiper class="swiper2" autoplay circular vertical>
       <navigator wx:for="{{goodsDynamic}}" wx:key="index" url="/pages/goods-details/index?id={{item.goodsId}}">
         <swiper-item>
@@ -31,9 +31,9 @@
         </swiper-item>
       </navigator>
     </swiper>
-  </view>
+  </view> -->
 </view>
-<view class="notice-box" wx:if="{{noticeList}}">
+<!-- <view class="notice-box" wx:if="{{noticeList}}">
   <view class="notice">
     <image class="notice_icon" src="/images/notice.png"></image>
     <swiper class="notice_swiper" vertical autoplay circular>
@@ -45,20 +45,22 @@
     </swiper>
   </view>
   <view class="more"><navigator url="/pages/notice/index">更多 ></navigator></view>
-</view>
+</view> -->
 <view class="category-box">
   <view class="category-list" wx:for="{{categories}}" wx:key="id">
     <view class="category-column {{activeCategoryId == item.id ? 'type-item-on' : ''}}" bindtap="tabClick" id="{{item.id}}">
       <image mode="aspectFill" class="category-imgbox" src="{{item.icon}}"></image>
       <view class="category-title">{{item.name}}</view>
-    </view>          
+    </view>
   </view>
 </view>
 <view class="container">
   <block wx:for="{{categories}}" wx:key="id" wx:if="{{item.goods}}">
     <view class="category-goods-title">
       <view class="weui-panel__hd">{{item.name}}</view>
-      <view class="more"><navigator url="/pages/goods/list?categoryId={{item.id}}">更多 ></navigator></view>
+      <view class="more">
+        <navigator url="/pages/goods/list?categoryId={{item.id}}">更多 ></navigator>
+      </view>
     </view>
     <view class="goods-container">
       <view class="goods-box" wx:for="{{item.goods}}" wx:key="id" bindtap="toDetailsTap" data-id="{{item.id}}">
@@ -68,20 +70,21 @@
         <view class="goods-title">{{item.name}}</view>
         <view style='display:flex;'>
           <view class="goods-price">¥ {{item.minPrice}}</view>
-          <view wx:if="{{item.originalPrice && item.originalPrice > 0}}" class="goods-price" style='color:#aaa;text-decoration:line-through'>¥ {{item.originalPrice}}</view>
+          <view wx:if="{{item.originalPrice && item.originalPrice > 0}}" class="goods-price" style='color:#aaa;text-decoration:line-through'>
+            ¥ {{item.originalPrice}}
+          </view>
         </view>
       </view>
     </view>
   </block>
   <!-- 秒杀开始 -->
-  <block wx:if="{{miaoshaGoods && miaoshaGoods.length > 0}}">
+  <!-- <block wx:if="{{miaoshaGoods && miaoshaGoods.length > 0}}">
     <van-divider contentPosition="center">限时秒杀</van-divider>
     <view class="miaosha-container">
       <view class="miaosha-goods-list" wx:for="{{miaoshaGoods}}" wx:key="id" bindtap="toDetailsTap" data-id="{{item.id}}">
         <image src="{{item.pic}}" class="image" mode="aspectFill" lazy-load="true" />
         <view class="r">
           <view class="goods-title">{{item.name}}</view>
-          <!-- <view class="label"><van-icon size="30rpx" name="underway" /><text>限时秒杀</text></view> -->
           <view class="count-down">
             <van-count-down
               wx:if="{{item.dateStartInt > 0}}"
@@ -104,9 +107,9 @@
         </view>
       </view>
     </view>
-  </block>
+  </block> -->
   <!-- 秒杀结束 -->
-  <van-divider wx:if="{{goodsRecommend.length > 0 && activeCategoryId == 0}}" contentPosition="center">爆品推荐</van-divider> 
+  <!-- <van-divider wx:if="{{goodsRecommend.length > 0 && activeCategoryId == 0}}" contentPosition="center">爆品推荐</van-divider> 
   <view class="goods-container" wx:if="{{goodsRecommend.length > 0 && activeCategoryId == 0}}">
     <view class="goods-box" wx:for="{{goodsRecommend}}" wx:key="id" bindtap="toDetailsTap" data-id="{{item.id}}">
       <view class="img-box">
@@ -169,7 +172,7 @@
     </view>
   </block>
 
-  <view class='space'></view>
+  <view class='space'></view> -->
   <view class="weui-loadmore weui-loadmore_line">
     <view class="weui-loadmore__tips weui-loadmore__tips_in-line">商品列表</view>
   </view>
@@ -180,8 +183,8 @@
       </view>
       <view class="goods-title">{{item.name}}</view>
       <view style='display:flex;'>
-        <view class="goods-price">¥ {{item.minPrice}}</view>
-        <view wx:if="{{item.originalPrice && item.originalPrice > 0}}" class="goods-price" style='color:#aaa;text-decoration:line-through'>¥ {{item.originalPrice}}</view>
+        <view class="goods-price">{{item.minPrice}} MUBT</view>
+        <!-- <view wx:if="{{item.originalPrice && item.originalPrice > 0}}" class="goods-price" style='color:#aaa;text-decoration:line-through'>¥ {{item.originalPrice}}</view> -->
       </view>
     </view>
   </view>
@@ -189,7 +192,7 @@
     <view class="weui-loadmore__tips weui-loadmore__tips_in-line">没有更多啦</view>
   </view>
 </view>
-<view class='coupons-float' bindtap="goCoupons">
+<!-- <view class='coupons-float' bindtap="goCoupons">
   <image src="/images/gift.png"></image>
 </view>
 
@@ -197,4 +200,4 @@
   <view style="bottom:200rpx;" class='coupons-float'>
     <image src="/images/live.png"></image>
   </view>
-</navigator>
+</navigator> -->

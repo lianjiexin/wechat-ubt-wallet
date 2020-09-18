@@ -216,8 +216,6 @@ Page({
           WXAPI.deleteAddress(wx.getStorageSync('token'), id).then(function () {
             wx.navigateBack({})
           })
-        } else {
-          console.log('用户点击取消')
         }
       }
     })
@@ -226,7 +224,6 @@ Page({
     let that = this;
     wx.chooseAddress({
       success: function (res) {
-        console.log(res)
         const provinceName = res.provinceName;
         const cityName = res.cityName;
         const diatrictName = res.countyName;
