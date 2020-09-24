@@ -3,7 +3,6 @@ const CONFIG = require('../../config.js')
 const WXAPI = require('apifm-wxapi')
 const AUTH = require('../../utils/auth')
 const TOOLS = require('../../utils/tools.js')
-
 const UBT = require('../../utils/ubt.js')
 
 Page({
@@ -13,14 +12,13 @@ Page({
     freeze: 0,
     mubt: 0,
     ubt: 0,
-    score_sign_continuous: 0,
-    rechargeOpen: false, // 是否开启充值[预存]功能
-
+    // score_sign_continuous: 0,
+    // rechargeOpen: false, // 是否开启充值[预存]功能
     // 用户订单统计数据
-    count_id_no_confirm: 0,
-    count_id_no_pay: 0,
-    count_id_no_reputation: 0,
-    count_id_no_transfer: 0,
+    // count_id_no_confirm: 0,
+    // count_id_no_pay: 0,
+    // count_id_no_reputation: 0,
+    // count_id_no_transfer: 0,
   },
   onLoad() {
   },
@@ -38,7 +36,7 @@ Page({
       if (isLogined) {
         _this.getUserApiInfo();
         _this.getUserAmount();
-        _this.orderStatistics();
+        // _this.orderStatistics();
       }
     })
     // 获取结算车数据，显示TabBarBadge

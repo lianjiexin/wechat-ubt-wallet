@@ -64,7 +64,6 @@ Page({
 
     const uid = wx.getStorageSync('uid')
     UBT.exchangeUBTtoScore(uid, ubt).then(function (res) {
-      console.info("exchangeUBTtoScore", res);
       if (res.status == 0) {
         wx.showModal({
           title: '成功',
