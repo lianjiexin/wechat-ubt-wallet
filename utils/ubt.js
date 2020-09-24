@@ -7,7 +7,7 @@ async function checkUser(uid) {
   var domain = CONFIG.ubtDomain
   return new Promise((resolve, reject) => {
     wx.request({
-      url: 'http://' + domain + '/ubt/point/getUbtAccount', //检查该用户的UBT；
+      url: domain + '/ubt/point/getUbtAccount', //检查该用户的UBT；
       data: {
         "subUid": "",
         "uid": uid
@@ -86,7 +86,7 @@ async function retrieveUBT(uid, pointType) {
   var domain = CONFIG.ubtDomain
   return new Promise((resolve, reject) => {
     wx.request({
-      url: 'http://' + domain + '/ubt/point/getPoint', //检查该用户的UBT；
+      url: domain + '/ubt/point/getPoint', //检查该用户的UBT；
       data: {
         "type": pointType,
         "uid": uid
@@ -135,7 +135,7 @@ async function decreaseUBT(requestParam) {
   var domain = CONFIG.ubtDomain
   return new Promise((resolve, reject) => {
     wx.request({
-      url: 'http://' + domain + '/ubt/point/decrease', //减少积分；
+      url: domain + '/ubt/point/decrease', //减少积分；
       data: requestParam,
       method: "POST",
       header: {
@@ -169,7 +169,7 @@ async function increaseUBT(requestParam) {
   var domain = CONFIG.ubtDomain
   return new Promise((resolve, reject) => {
     wx.request({
-      url: 'http://' + domain + '/ubt/point/increase', //增加积分；
+      url: domain + '/ubt/point/increase', //增加积分；
       data: requestParam,
       method: "POST",
       header: {
@@ -201,7 +201,7 @@ async function createAccount(uid, point, pointType) {
   var domain = CONFIG.ubtDomain
   return new Promise((resolve, reject) => {
     wx.request({
-      url: 'http://' + domain + '/ubt/point/create', //创建帐号；
+      url: domain + '/ubt/point/create', //创建帐号；
       data: {
         "point": point,
         "seq": Math.round(Math.random() * 1000000),
