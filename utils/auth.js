@@ -19,7 +19,6 @@ async function checkSession() {
 async function checkHasLogined() {
   const token = wx.getStorageSync('token')
   if (!token) {
-    console.info("token not found, user not logined yet");
     return false
   }
   const loggined = await checkSession()
@@ -102,7 +101,6 @@ async function login(page) {
 async function checkUbtAccount(page) {
   var uid = wx.getStorageSync('uid');
   UBT.checkUser(uid).then(function (res) {
-    console.info("Checking if the UBT account exist for user: " + uid);
     if (res == null) {
       wx.showModal({
         title: '帐号未开通',
@@ -118,7 +116,6 @@ async function checkUbtAccount(page) {
           }
         }
       })
-      console.info("Logging Out");
       loginOut();
     } else {
       if (page) {
