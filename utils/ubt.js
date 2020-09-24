@@ -24,11 +24,8 @@ async function checkUser(uid) {
       },
       success: function (res) {
         if (res.data.data == null) {
-          console.info('Account ' + uid + ' not found');
           resolve(res.data.data);
         } else {
-          console.info("Successfully found User: " + uid);
-          console.info(res.data.data);
           resolve(res.data.data);
         }
       }
@@ -37,21 +34,20 @@ async function checkUser(uid) {
 
 }
 
-async function exchangeScoreToUBT(uid, score) {
-  var ubt = 2 * score; // Assuming the exchange ratio is ubt/score = 2
+async function exchangeScoreToUBT(uid, mubt) {
+  var ubt = 2 * mubt; // Assuming the exchange ratio is ubt/score = 2
   return new Promise((resolve, reject) => {
 
-    var decreaseParam = createScoreParam(uid, score);
+    var decreaseParam = createScoreParam(uid, mubt);
     var increaseParam = createUBTParam(uid, ubt);
 
     decreaseUBT(decreaseParam).
       then(increaseUBT(increaseParam)).
       then(function (res) {
-        console.info('User ' + uid + ' : exchange score ' + score + ' for ubt: ' + ubt);
         var ret = {
           'uid': uid,
-          'score': score,
-          'growth': ubt,
+          'mubt': mubt,
+          'ubt': ubt,
           'status': 0
         }
         resolve(ret);
@@ -61,20 +57,19 @@ async function exchangeScoreToUBT(uid, score) {
 }
 
 async function exchangeUBTtoScore(uid, ubt) {
-  var score = ubt / 2; // Assuming the exchange ratio is score/ubt = 0.5
+  var mubt = ubt / 2; // Assuming the exchange ratio is score/ubt = 0.5
   return new Promise((resolve, reject) => {
 
     var decreaseParam = createUBTParam(uid, ubt);
-    var increaseParam = createScoreParam(uid, score);
+    var increaseParam = createScoreParam(uid, mubt);
 
     decreaseUBT(decreaseParam).
       then(increaseUBT(increaseParam)).
       then(function (res) {
-        console.info('User ' + uid + ' : exchange UBT ' + ubt + ' for score: ' + score)
         var ret = {
           'uid': uid,
-          'score': score,
-          'growth': ubt,
+          'mubt': mubt,
+          'ubt': ubt,
           'status': 0
         }
         resolve(ret);
@@ -103,8 +98,6 @@ async function retrieveUBT(uid, pointType) {
 
       },
       success: function (res) {
-        console.info("Successfully Retrieve UBT for User: " + uid + ', pointType:' + pointType);
-        console.info(res);
         resolve(res.data);
       }
     })
@@ -129,8 +122,6 @@ function createUBTParam(uid, point) {
   return ret;
 }
 async function decreaseUBT(requestParam) {
-  console.info("DecreaseUBT");
-  console.info(requestParam);
   var that = this;
   var domain = CONFIG.ubtDomain
   return new Promise((resolve, reject) => {
@@ -149,8 +140,6 @@ async function decreaseUBT(requestParam) {
       },
       success: function (res) {
         if (res.data.status == 0) {
-          console.info('Successfully decrease Point ');
-          console.info(requestParam);
           resolve(res.data)
         }
         else {
@@ -163,8 +152,6 @@ async function decreaseUBT(requestParam) {
 
 
 async function increaseUBT(requestParam) {
-  console.info("IncreaseUBT");
-  console.info(requestParam);
 
   var domain = CONFIG.ubtDomain
   return new Promise((resolve, reject) => {
@@ -185,7 +172,6 @@ async function increaseUBT(requestParam) {
       success: function (res) {
 
         if (res.data.status == 0) {
-          console.info('Successfully increase Point ' + requestParam.point + 'for user ' + requestParam.uid + ' pointType ' + requestParam.pointType);
           resolve(res.data)
         }
         else {
@@ -217,12 +203,9 @@ async function createAccount(uid, point, pointType) {
           console.error('网络请求失败')
           reject(new Error('网络请求失败'))
         }
-
       },
       success: function (res) {
-
         if (res.data.status == 0) {
-          console.info('Successfully Create Account for user: ' + uid + ', pointType: ' + pointType);
           resolve(res.data)
         }
         else {
