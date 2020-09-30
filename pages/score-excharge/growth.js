@@ -1,6 +1,8 @@
 const app = getApp()
 const WXAPI = require('apifm-wxapi')
+const { isNumber } = require('../../miniprogram_npm/@vant/weapp/common/utils')
 const AUTH = require('../../utils/auth')
+const UBT = require('../../utils/ubt.js')
 
 Page({
 
@@ -40,43 +42,67 @@ Page({
       }
     })
   },
-  async initData(){
-    const token = wx.getStorageSync('token')
-    const res1 = await WXAPI.userAmount(token)
-    if (res1.code == 0) {
-      this.data.score = res1.data.score
-    }
+  async initData() {
+    const uid = wx.getStorageSync('uid')
+    var _this = this;
+    UBT.retrieveUBT(uid, 'score').then(function (res) {
+      if (res.status == 0) {
+        _this.data.score = res.data.point;
+
+      }
+      else {
+        wx.showToast({
+          title: 'MUBT',
+          icon: 'none'
+        })
+      }
+    })
     const res2 = await WXAPI.scoreDeductionRules(1);
     if (res2.code == 0) {
       this.data.deductionRules = res2.data
     }
     this.setData({
-      score: this.data.score,
+      mubt: this.data.mubt,
       deductionRules: this.data.deductionRules,
     })
   },
   async bindSave(e) {
-    const score = e.detail.value.score;
-    if (!score) {
+    // 获取输入框兑换MUBT数量
+    const mubt = e.detail.value.score,
+      isNumber = /^(0|[1-9][0-9]*)$/;
+    mubt.replace(/\s+/g, "");
+    if (!mubt || !isNumber.test(mubt)) {
       wx.showToast({
-        title: '请输入积分数量',
+        title: !mubt ? '请输入MUBT数量' : '请输入正确数量',
         icon: 'none'
       })
       return
     }
-    const res = await WXAPI.exchangeScoreToGrowth(wx.getStorageSync('token'), score)
-    if (res.code == 0) {
-      wx.showModal({
-        title: '成功',
-        content: '恭喜您，成功兑换'+ res.data +'成长值',
-        showCancel: false
-      })
-    } else {
-      wx.showToast({
-        title: res.msg,
-        icon: 'none'
-      })
-    }
+    const uid = wx.getStorageSync('uid')
+    UBT.exchangeScoreToUBT(uid, mubt).then(function (res) {
+      if (res.status == 0) {
+        wx.showModal({
+          title: '成功',
+          content: '恭喜您，成功兑换' + res.ubt + 'UBT',
+          showCancel: false,
+          success(res) {
+            if (res.confirm) {
+              wx.switchTab({
+                url: "/pages/my/index"
+              })
+            } else {
+              wx.navigateBack()
+            }
+          }
+        })
+        return
+      } else {
+        wx.showToast({
+          title: "兑换失败",
+          icon: 'none'
+        })
+      }
+    })
   },
   cancelLogin() {
     this.setData({

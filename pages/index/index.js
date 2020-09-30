@@ -11,17 +11,17 @@ APP.configLoadOK = () => {
 
 Page({
   data: {
-    inputVal: "", // 搜索框内容
-    goodsRecommend: [], // 推荐商品
-    kanjiaList: [], //砍价商品列表
-    pingtuanList: [], //拼团商品列表
+    // inputVal: "", // 搜索框内容
+    // goodsRecommend: [], // 推荐商品
+    // kanjiaList: [], //砍价商品列表
+    // pingtuanList: [], //拼团商品列表
 
     loadingHidden: false, // loading
     selectCurrent: 0,
     categories: [],
     activeCategoryId: 0,
     goods: [],
-    
+
     scrollTop: 0,
     loadingMoreHidden: true,
 
@@ -32,7 +32,7 @@ Page({
     cateScrollTop: 0
   },
 
-  tabClick: function(e) {
+  tabClick: function (e) {
     wx.setStorageSync("_categoryId", e.currentTarget.id)
     wx.switchTab({
       url: '/pages/category/category',
@@ -41,12 +41,12 @@ Page({
     //   url: '/pages/goods/list?categoryId=' + e.currentTarget.id,
     // })
   },
-  toDetailsTap: function(e) {
+  toDetailsTap: function (e) {
     wx.navigateTo({
       url: "/pages/goods-details/index?id=" + e.currentTarget.dataset.id
     })
   },
-  tapBanner: function(e) {
+  tapBanner: function (e) {
     const url = e.currentTarget.dataset.url
     if (url) {
       wx.navigateTo({
@@ -54,7 +54,7 @@ Page({
       })
     }
   },
-  adClick: function(e) {
+  adClick: function (e) {
     const url = e.currentTarget.dataset.url
     if (url) {
       wx.navigateTo({
@@ -62,70 +62,70 @@ Page({
       })
     }
   },
-  bindTypeTap: function(e) {
+  bindTypeTap: function (e) {
     this.setData({
       selectCurrent: e.index
     })
   },
-  onLoad: function(e) {
+  onLoad: function (e) {
     wx.showShareMenu({
       withShareTicket: true
-    })    
+    })
     const that = this
     if (e && e.scene) {
       const scene = decodeURIComponent(e.scene)
-      if (scene) {        
+      if (scene) {
         wx.setStorageSync('referrer', scene.substring(11))
       }
     }
-    wx.setNavigationBarTitle({
-      title: wx.getStorageSync('mallName')
-    })
+    // wx.setNavigationBarTitle({
+    //   title: wx.getStorageSync('mallName')
+    // })
     this.initBanners()
     this.categories()
-    WXAPI.goods({
-      recommendStatus: 1
-    }).then(res => {
-      if (res.code === 0){
-        that.setData({
-          goodsRecommend: res.data
-        })
-      }      
-    })
-    that.getCoupons()
-    that.getNotice()
-    that.kanjiaGoods()
-    that.pingtuanGoods()
-    this.wxaMpLiveRooms()    
+    // WXAPI.goods({
+    //   recommendStatus: 1
+    // }).then(res => {
+    //   if (res.code === 0){
+    //     that.setData({
+    //       goodsRecommend: res.data
+    //     })
+    //   }      
+    // })
+    // that.getCoupons()
+    // that.getNotice()
+    // that.kanjiaGoods()
+    // that.pingtuanGoods()
+    // this.wxaMpLiveRooms()    
   },
-  async miaoshaGoods(){
-    const res = await WXAPI.goods({
-      miaosha: true
-    })
-    if (res.code == 0) {
-      res.data.forEach(ele => {
-        const _now = new Date().getTime()
-        if (ele.dateStart) {
-          ele.dateStartInt = new Date(ele.dateStart.replace(/-/g, '/')).getTime() - _now
-        }
-        if (ele.dateEnd) {
-          ele.dateEndInt = new Date(ele.dateEnd.replace(/-/g, '/')).getTime() -_now
-        }
-      })
-      this.setData({
-        miaoshaGoods: res.data
-      })
-    }
-  },
-  async wxaMpLiveRooms(){
-    const res = await WXAPI.wxaMpLiveRooms()
-    if (res.code == 0 && res.data.length > 0) {
-      this.setData({
-        aliveRooms: res.data
-      })
-    }
-  },
-  async initBanners(){
+  // async miaoshaGoods(){
+  //   const res = await WXAPI.goods({
+  //     miaosha: true
+  //   })
+  //   if (res.code == 0) {
+  //     res.data.forEach(ele => {
+  //       const _now = new Date().getTime()
+  //       if (ele.dateStart) {
+  //         ele.dateStartInt = new Date(ele.dateStart.replace(/-/g, '/')).getTime() - _now
+  //       }
+  //       if (ele.dateEnd) {
+  //         ele.dateEndInt = new Date(ele.dateEnd.replace(/-/g, '/')).getTime() -_now
+  //       }
+  //     })
+  //     this.setData({
+  //       miaoshaGoods: res.data
+  //     })
+  //   }
+  // },
+  // async wxaMpLiveRooms(){
+  //   const res = await WXAPI.wxaMpLiveRooms()
+  //   if (res.code == 0 && res.data.length > 0) {
+  //     this.setData({
+  //       aliveRooms: res.data
+  //     })
+  //   }
+  // },
+  async initBanners() {
     const _data = {}
     // 读取头部轮播图
     const res1 = await WXAPI.banners({
@@ -142,24 +142,24 @@ Page({
     }
     this.setData(_data)
   },
-  onShow: function(e){
+  onShow: function (e) {
     this.setData({
       shopInfo: wx.getStorageSync('shopInfo')
     })
     // 获取购物车数据，显示TabBarBadge
     TOOLS.showTabBarBadge()
-    this.goodsDynamic()
-    this.miaoshaGoods()
+    // this.goodsDynamic()
+    // this.miaoshaGoods()
   },
-  async goodsDynamic(){
-    const res = await WXAPI.goodsDynamic(0)
-    if (res.code == 0) {
-      this.setData({
-        goodsDynamic: res.data
-      })
-    }
-  },
-  async categories(){
+  // async goodsDynamic(){
+  //   const res = await WXAPI.goodsDynamic(0)
+  //   if (res.code == 0) {
+  //     this.setData({
+  //       goodsDynamic: res.data
+  //     })
+  //   }
+  // },
+  async categories() {
     const res = await WXAPI.goodsCategory()
     let categories = [];
     if (res.code == 0) {
@@ -216,39 +216,39 @@ Page({
       goods: goods,
     });
   },
-  getCoupons: function() {
-    var that = this;
-    WXAPI.coupons().then(function (res) {
-      if (res.code == 0) {
-        that.setData({
-          coupons: res.data
-        });
-      }
-    })
-  },
-  onShareAppMessage: function() {    
+  // getCoupons: function() {
+  //   var that = this;
+  //   WXAPI.coupons().then(function (res) {
+  //     if (res.code == 0) {
+  //       that.setData({
+  //         coupons: res.data
+  //       });
+  //     }
+  //   })
+  // },
+  onShareAppMessage: function () {
     return {
       title: '"' + wx.getStorageSync('mallName') + '" ' + wx.getStorageSync('share_profile'),
       path: '/pages/index/index?inviter_id=' + wx.getStorageSync('uid')
     }
   },
-  getNotice: function() {
-    var that = this;
-    WXAPI.noticeList({pageSize: 5}).then(function (res) {
-      if (res.code == 0) {
-        that.setData({
-          noticeList: res.data
-        });
-      }
-    })
-  },
-  onReachBottom: function() {
+  // getNotice: function() {
+  //   var that = this;
+  //   WXAPI.noticeList({pageSize: 5}).then(function (res) {
+  //     if (res.code == 0) {
+  //       that.setData({
+  //         noticeList: res.data
+  //       });
+  //     }
+  //   })
+  // },
+  onReachBottom: function () {
     this.setData({
       curPage: this.data.curPage + 1
     });
     this.getGoodsList(this.data.activeCategoryId, true)
   },
-  onPullDownRefresh: function() {
+  onPullDownRefresh: function () {
     this.setData({
       curPage: 1
     });
@@ -256,67 +256,67 @@ Page({
     wx.stopPullDownRefresh()
   },
   // 获取砍价商品
-  async kanjiaGoods(){
-    const res = await WXAPI.goods({
-      kanjia: true
-    });
-    if (res.code == 0) {
-      const kanjiaGoodsIds = []
-      res.data.forEach(ele => {
-        kanjiaGoodsIds.push(ele.id)
-      })
-      const goodsKanjiaSetRes = await WXAPI.kanjiaSet(kanjiaGoodsIds.join())
-      if (goodsKanjiaSetRes.code == 0) {
-        res.data.forEach(ele => {
-          const _process = goodsKanjiaSetRes.data.find(_set => {
-            console.log(_set)
-            return _set.goodsId == ele.id
-          })
-          console.log(ele)
-          console.log(_process)
-          if (_process) {
-            ele.process = 100 * _process.numberBuy / _process.number
-          }
-        })
-        this.setData({
-          kanjiaList: res.data
-        })
-      }
-    }
-  },
+  // async kanjiaGoods(){
+  //   const res = await WXAPI.goods({
+  //     kanjia: true
+  //   });
+  //   if (res.code == 0) {
+  //     const kanjiaGoodsIds = []
+  //     res.data.forEach(ele => {
+  //       kanjiaGoodsIds.push(ele.id)
+  //     })
+  //     const goodsKanjiaSetRes = await WXAPI.kanjiaSet(kanjiaGoodsIds.join())
+  //     if (goodsKanjiaSetRes.code == 0) {
+  //       res.data.forEach(ele => {
+  //         const _process = goodsKanjiaSetRes.data.find(_set => {
+  //           console.log(_set)
+  //           return _set.goodsId == ele.id
+  //         })
+  //         console.log(ele)
+  //         console.log(_process)
+  //         if (_process) {
+  //           ele.process = 100 * _process.numberBuy / _process.number
+  //         }
+  //       })
+  //       this.setData({
+  //         kanjiaList: res.data
+  //       })
+  //     }
+  //   }
+  // },
   goCoupons: function (e) {
     wx.navigateTo({
       url: "/pages/coupons/index"
     })
   },
-  pingtuanGoods(){ // 获取团购商品列表
-    const _this = this
-    WXAPI.goods({
-      pingtuan: true
-    }).then(res => {
-      if (res.code === 0) {
-        _this.setData({
-          pingtuanList: res.data
-        })
-      }
-    })
-  },
-  bindinput(e) {
-    this.setData({
-      inputVal: e.detail.value
-    })
-  },
-  bindconfirm(e) {
-    this.setData({
-      inputVal: e.detail.value
-    })
-    wx.navigateTo({
-      url: '/pages/goods/list?name=' + this.data.inputVal,
-    })
-  },
-  goSearch(){
-    wx.navigateTo({
-      url: '/pages/goods/list?name=' + this.data.inputVal,
-    })
-  }
+  // pingtuanGoods(){ // 获取团购商品列表
+  //   const _this = this
+  //   WXAPI.goods({
+  //     pingtuan: true
+  //   }).then(res => {
+  //     if (res.code === 0) {
+  //       _this.setData({
+  //         pingtuanList: res.data
+  //       })
+  //     }
+  //   })
+  // },
+  // bindinput(e) {
+  //   this.setData({
+  //     inputVal: e.detail.value
+  //   })
+  // },
+  // bindconfirm(e) {
+  //   this.setData({
+  //     inputVal: e.detail.value
+  //   })
+  //   wx.navigateTo({
+  //     url: '/pages/goods/list?name=' + this.data.inputVal,
+  //   })
+  // },
+  // goSearch(){
+  //   wx.navigateTo({
+  //     url: '/pages/goods/list?name=' + this.data.inputVal,
+  //   })
+  // }
 })

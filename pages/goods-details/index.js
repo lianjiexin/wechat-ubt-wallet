@@ -23,8 +23,8 @@ Page({
 
     propertyChildIds: "",
     propertyChildNames: "",
-    canSubmit: false, //  选中规格尺寸时候是否允许加入购物车
-    shopType: "addShopCar", //购物类型，加入购物车或立即购买，默认为加入购物车
+    canSubmit: false, //  选中规格尺寸时候是否允许加入结算车
+    shopType: "addShopCar", //购物类型，加入结算车或立即购买，默认为加入结算车
   },
   async onLoad(e) {
     // e.id = 235853
@@ -315,7 +315,7 @@ Page({
     })
   },
   /**
-   * 加入购物车
+   * 加入结算车
    */
   async addShopCar() {
     if (this.data.goodsDetail.properties && !this.data.canSubmit) {
@@ -364,7 +364,7 @@ Page({
 
     this.closePopupTap();
     wx.showToast({
-      title: '加入购物车',
+      title: '加入结算车',
       icon: 'success'
     })
     this.shippingCartInfo()
@@ -375,7 +375,6 @@ Page({
   buyNow: function(e) {
     let that = this
     let shoptype = e.currentTarget.dataset.shoptype
-    console.log(shoptype)
     if (this.data.goodsDetail.properties && !this.data.canSubmit) {
       if (!this.data.canSubmit) {
         wx.showModal({
@@ -744,7 +743,6 @@ Page({
     });
   },
   onPosterSuccess(e) {
-    console.log('success:', e)
     this.setData({
       posterImg: e.detail,
       showposterImg: true

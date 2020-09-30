@@ -23,8 +23,6 @@
     "pages/score-excharge/index",
     "pages/score-excharge/growth",
     "pages/asset/index",
-    "pages/score/index",
-    "pages/score/growth",
     "pages/sign/index",
     "pages/maidan/index",
     "pages/fx/apply",
@@ -39,7 +37,7 @@
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "",
+    "navigationBarTitleText": "优贝医疗区块链",
     "navigationBarTextStyle": "black",
     "onReachBottomDistance": 50
   },
@@ -65,7 +63,7 @@
         "pagePath": "pages/shop-cart/index",
         "iconPath": "images/nav/cart-off.png",
         "selectedIconPath": "images/nav/cart-on.png",
-        "text": "购物车"
+        "text": "结算车"
       },
       {
         "pagePath": "pages/my/index",
