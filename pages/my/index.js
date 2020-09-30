@@ -115,10 +115,13 @@ Page({
     })
     UBT.retrieveUBT(uid, 'ubt').then(function (res) {
 
+      var ubt = res.data && res.data.point ? res.data.point.toFixed(2) : 0
       that.setData({
-        ubt: res.data && res.data.point ? res.data.point.toFixed(2) : 0
+        ubt: ubt,
+        rmb: ubt * 7
       });
     })
+    
 
   },
   handleOrderCount: function (count) {

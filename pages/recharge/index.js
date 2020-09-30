@@ -1,6 +1,11 @@
 const wxpay = require('../../utils/pay.js')
 const WXAPI = require('apifm-wxapi')
 const app = getApp()
+const AUTH = require('../../utils/auth')
+const TOOLS = require('../../utils/tools.js')
+const UBT = require('../../utils/ubt.js')
+const CONFIG = require('../../config.js')
+
 Page({
 
   /**
@@ -49,16 +54,58 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    const _this = this
-    WXAPI.rechargeSendRules().then(res => {
-      if (res.code === 0) {
-        _this.setData({
-          rechargeSendRules: res.data
+      const _this = this
+      const order_hx_uids = wx.getStorageSync('order_hx_uids')
+      this.setData({
+        version: CONFIG.version,
+        order_hx_uids
+      })
+      AUTH.checkHasLogined().then(isLogined => {
+        this.setData({
+          wxlogin: isLogined
+        })
+        if (isLogined) {
+          _this.getUserApiInfo();
+          _this.getUserAmount();
+          // _this.orderStatistics();
+        }
+      })
+    },
+    getUserApiInfo: function () {
+      var that = this;
+      WXAPI.userDetail(wx.getStorageSync('token')).then(function (res) {
+        if (res.code == 0) {
+          let _data = {}
+          _data.apiUserInfoMap = res.data
+          if (res.data.base.mobile) {
+            _data.userMobile = res.data.base.mobile
+          }
+          if (that.data.order_hx_uids && that.data.order_hx_uids.indexOf(res.data.base.id) != -1) {
+            _data.canHX = true // 具有扫码核销的权限
+          }
+          that.setData(_data);
+        }
+      })
+    },
+    getUserAmount: function () {
+      var that = this;
+      var uid = wx.getStorageSync('uid');
+      UBT.retrieveUBT(uid, 'score').then(function (res) {
+        that.setData({
+          balance: 0, // no cash balance for now
+          freeze: res.data.frozen.toFixed(2),
+          mubt: res.data && res.data.point ? res.data.point.toFixed(2) : 0
         });
-      }
-    })
-
-  },
+      })
+      UBT.retrieveUBT(uid, 'ubt').then(function (res) {
+  
+        var ubt = res.data && res.data.point ? res.data.point.toFixed(2) : 0
+        that.setData({
+          ubt: ubt,
+          rmb: ubt * 7
+        });
+      })
+    },
   bindSave: function (e) {
     const that = this;
     const amount = e.detail.value.amount;
