@@ -24,7 +24,6 @@
       <view>UBT</view>
     </view>
     </navigator>
-
     <!-- <view class='item right' bindtap='goUBT'> -->
     <view class='item right'>
       <view>当前等值于</view>
@@ -32,7 +31,7 @@
     </view>
   </view>
   <view class="space"></view>
-  <navigator url="/pages/order-list/index">
+  <!-- <navigator url="/pages/order-list/index">
     <view class="menu-item">
       <view class="l">恒瑞医药权证 400: 等额UBT 200</view>
       <image class="next" src="/images/icon/next.png"></image>
@@ -55,6 +54,12 @@
   <navigator url="/pages/score-excharge/growth">
     <view class="menu-item">
       <view class="l">鼎配权 300: 等额UBT 100 </view>
+      <image class="next" src="/images/icon/next.png"></image>
+    </view>
+  </navigator> -->
+  <navigator url="/pages/share-warrant/index">
+    <view class="menu-item">
+      <view class="l">权证列表</view>
       <image class="next" src="/images/icon/next.png"></image>
     </view>
   </navigator>

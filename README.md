@@ -1,3 +1,25 @@
+# 备注
+```bash
+// {
+//   "pagePath": "pages/index/index",
+//   "iconPath": "images/nav/home-off.png",
+//   "selectedIconPath": "images/nav/home-on.png",
+//   "text": "首页"
+// },
+// {
+//   "pagePath": "pages/category/category",
+//   "iconPath": "images/nav/ic_catefory_normal.png",
+//   "selectedIconPath": "images/nav/ic_catefory_pressed.png",
+//   "text": "分类"
+// },
+// {
+//   "pagePath": "pages/shop-cart/index",
+//   "iconPath": "images/nav/cart-off.png",
+//   "selectedIconPath": "images/nav/cart-on.png",
+//   "text": "结算车"
+// },
+```
+
 # 微信小程序商城
 
 微信小程序商城，微信小程序微店，长期维护版本，欢迎大家踊跃提交贡献代码；

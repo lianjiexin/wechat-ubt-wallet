@@ -71,9 +71,9 @@ async function login(page) {
     success: function (res) {
       WXAPI.login_wx(res.code).then(function (res) {
         // if (res.code == 10000) {
-          // 去注册
-          //_this.register(page)
-          // return;
+        // 去注册
+        //_this.register(page)
+        // return;
         // }
         // if (res.code != 0) {
         //   // 登录错误
@@ -86,12 +86,10 @@ async function login(page) {
         // }
         wx.setStorageSync('uid', res.data.uid);
         wx.setStorageSync('token', res.data.token);
-        checkUbtAccount(page);
-        /*
-        if ( page ) {
+        // checkUbtAccount(page);
+        if (page) {
           page.onShow()
         }
-        */
       })
     }
   })
@@ -103,7 +101,7 @@ async function checkUbtAccount(page) {
     if (res == null) {
       wx.showModal({
         title: '帐号未开通',
-        content: '请联系管理员为您的微信(ID:' + uid +')开通帐号',
+        content: '请联系管理员为您的微信(ID:' + uid + ')开通帐号',
         showCancel: false,
         success(res) {
           if (res.confirm) {
@@ -129,10 +127,12 @@ async function checkUbtAccount(page) {
 }
 
 async function register(page) {
+  console.log("page", page)
   let _this = this;
   wx.login({
     success: function (res) {
       let code = res.code; // 微信登录接口返回的 code 参数，下面注册接口需要用到
+      console.log("res", code)
       wx.getUserInfo({
         success: function (res) {
           let iv = res.iv;
@@ -149,13 +149,14 @@ async function register(page) {
             iv: iv,
             referrer: referrer
           }).then(function (res) {
+            console.log("res", res)
             _this.login(page);
-
           })
         }
       })
     }
   })
+
 }
 
 function loginOut() {

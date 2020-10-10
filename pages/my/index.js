@@ -2,7 +2,7 @@ const app = getApp()
 const CONFIG = require('../../config.js')
 const WXAPI = require('apifm-wxapi')
 const AUTH = require('../../utils/auth')
-const TOOLS = require('../../utils/tools.js')
+// const TOOLS = require('../../utils/tools.js')
 const UBT = require('../../utils/ubt.js')
 
 Page({
@@ -40,7 +40,7 @@ Page({
       }
     })
     // 获取结算车数据，显示TabBarBadge
-    TOOLS.showTabBarBadge();
+    // TOOLS.showTabBarBadge();
   },
   aboutUs: function () {
     wx.showModal({
@@ -121,7 +121,7 @@ Page({
         rmb: ubt * 7
       });
     })
-    
+
 
   },
   handleOrderCount: function (count) {
@@ -176,6 +176,7 @@ Page({
     })
   },
   processLogin(e) {
+    
     if (!e.detail.userInfo) {
       wx.showToast({
         title: '已取消',
@@ -183,6 +184,7 @@ Page({
       })
       return;
     }
+    console.log("e", e.detail.userInfo)
     AUTH.register(this);
   },
   scanOrderCode() {
