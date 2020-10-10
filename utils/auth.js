@@ -127,12 +127,10 @@ async function checkUbtAccount(page) {
 }
 
 async function register(page) {
-  console.log("page", page)
   let _this = this;
   wx.login({
     success: function (res) {
       let code = res.code; // 微信登录接口返回的 code 参数，下面注册接口需要用到
-      console.log("res", code)
       wx.getUserInfo({
         success: function (res) {
           let iv = res.iv;
@@ -149,7 +147,6 @@ async function register(page) {
             iv: iv,
             referrer: referrer
           }).then(function (res) {
-            console.log("res", res)
             _this.login(page);
           })
         }
