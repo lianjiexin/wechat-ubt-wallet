@@ -69,6 +69,12 @@
           "pathName": "pages/my/index",
           "query": "",
           "scene": null
+        },
+        {
+          "id": -1,
+          "name": "1111",
+          "pathName": "pages/binding/index",
+          "scene": null
         }
       ]
     }

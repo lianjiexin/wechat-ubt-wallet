@@ -8,6 +8,7 @@ const UBT = require('../../utils/ubt.js')
 Page({
   data: {
     wxlogin: true,
+    wxBindingState: true,
     balance: 0.00,
     freeze: 0,
     mubt: 0,
@@ -23,13 +24,31 @@ Page({
       order_hx_uids
     })
     AUTH.checkHasLogined().then(isLogined => {
-      this.setWxLoginState(isLogined)
+      this.setWxLoginState(isLogined);
       if (isLogined) {
+        _this.getIsRegistryCode();
         _this.getUserApiInfo();
         _this.getUserAmount();
       }
     })
   },
+
+  /* 查询用户注册码是否绑定 */
+  async getIsRegistryCode() {
+    const registerCode = wx.getStorageSync('uid'),
+      data = await UBT.getUidRegistryByUid(registerCode);
+    if (data == null) {
+      this.setData({
+        wxBindingState: false
+      })
+      wx.reLaunch({
+        url: '/pages/binding/index'
+      })
+    } else this.setData({
+      wxBindingState: true
+    })
+  },
+
   getUserApiInfo: function () {
     var that = this;
     WXAPI.userDetail(wx.getStorageSync('token')).then(function (res) {

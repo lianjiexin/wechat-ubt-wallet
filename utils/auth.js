@@ -216,5 +216,4 @@ module.exports = {
   register: register,
   loginOut: loginOut,
   checkAndAuthorize: checkAndAuthorize
-
 }

@@ -167,10 +167,8 @@ async function increaseUBT(requestParam) {
           console.error('网络请求失败')
           reject(new Error('网络请求失败'))
         }
-
       },
       success: function (res) {
-
         if (res.data.status == 0) {
           resolve(res.data)
         }
@@ -216,6 +214,136 @@ async function createAccount(uid, point, pointType) {
   })
 }
 
+/**
+ * 验证用户是否绑定注册码
+ * @param {Strng} registerCode 
+ */
+function getUidRegistryByUid(registerCode) {
+  return new Promise((resolve, reject) => {
+    wx.request({
+      url: `${CONFIG.ubtDomain}/ubt/point/getUidRegistryByUid`,
+      data: {
+        uid: registerCode
+      },
+      method: "GET",
+      header: {
+        "Content-Type": "application/json"
+      },
+      complete: function (res) {
+        if (res == null || res.data == null) {
+          console.error('网络请求失败')
+        }
+      },
+      success: function (res) {
+        resolve(res.data.data);
+      }
+    })
+  })
+}
+
+/**
+ * 绑定注册码
+ * @param {Object} params 
+ */
+function registerUid(params) {
+  return new Promise((resolve, reject) => {
+    wx.request({
+      url: `${CONFIG.ubtDomain}/ubt/point/registerUid`,
+      data: {
+        password: params.password,
+        registerCode: params.registerCode,
+        uid: params.uid
+      },
+      method: "GET",
+      header: {
+        "Content-Type": "application/json"
+      },
+      complete: function (res) {
+        if (res == null || res.data == null) {
+          console.error('网络请求失败')
+          reject(new Error('网络请求失败'))
+        }
+      },
+      success: function (res) {
+        switch (res.data.status) {
+          case 0:
+            wx.showToast({
+              title: '注册码绑定成功',
+              icon: 'none'
+            })
+            resolve(true)
+            break;
+          case -1210:
+            wx.showToast({
+              title: res.data.error,
+              icon: 'none'
+            })
+            resolve(true)
+            break;
+          default:
+            wx.showToast({
+              title: res.data.error,
+              icon: 'none'
+            })
+            resolve(false);
+        }
+      }
+    })
+  })
+}
+
+
+/**
+ * 解绑注册码
+ * @param {Object} params 
+ */
+function deregisterUid(params) {
+  return new Promise((resolve, reject) => {
+    wx.request({
+      url: `${CONFIG.ubtDomain}/ubt/point/deregisterUid`,
+      data: {
+        password: params.password,
+        registerCode: params.registerCode,
+        uid: params.uid
+      },
+      method: "GET",
+      header: {
+        "Content-Type": "application/json"
+      },
+      complete: function (res) {
+        if (res == null || res.data == null) {
+          console.error('网络请求失败')
+          reject(new Error('网络请求失败'))
+        }
+      },
+      success: function (res) {
+        switch (res.data.status) {
+          case 0:
+            wx.showToast({
+              title: '注册码解绑成功',
+              icon: 'none'
+            })
+            resolve(true)
+            break;
+          case -1210:
+            wx.showToast({
+              title: res.data.error,
+              icon: 'none'
+            })
+            resolve(true)
+            break;
+          default:
+            wx.showToast({
+              title: res.data.error,
+              icon: 'none'
+            })
+            resolve(false);
+        }
+      }
+    })
+  })
+}
+
 
 module.exports = {
   retrieveUBT: retrieveUBT,
@@ -225,5 +353,8 @@ module.exports = {
   exchangeScoreToUBT: exchangeScoreToUBT,
   exchangeUBTtoScore: exchangeUBTtoScore,
   createScoreParam: createScoreParam,
-  createUBTParam: createUBTParam
+  createUBTParam: createUBTParam,
+  getUidRegistryByUid: getUidRegistryByUid,
+  registerUid: registerUid,
+  deregisterUid: deregisterUid
 }
