@@ -8,7 +8,7 @@ const UBT = require('../../utils/ubt.js')
 Page({
   data: {
     wxlogin: true,
-    wxBindingState: true,
+    wxBindingState: false,
     balance: 0.00,
     freeze: 0,
     mubt: 0,
@@ -35,15 +35,16 @@ Page({
 
   /* 查询用户注册码是否绑定 */
   async getIsRegistryCode() {
+    console.log("getIsRegistryCode")
     const registerCode = wx.getStorageSync('uid'),
       data = await UBT.getUidRegistryByUid(registerCode);
     if (data == null) {
       this.setData({
         wxBindingState: false
       })
-      wx.reLaunch({
-        url: '/pages/binding/index'
-      })
+      // wx.reLaunch({
+      //   url: '/pages/binding/index?wxBindingState=' + false
+      // })
     } else this.setData({
       wxBindingState: true
     })

@@ -10,7 +10,7 @@
       立即登录
     </button>
   </view>
-  <view class="asset">
+  <view class="asset" wx:if="{{wxBindingState}}">
     <view class='item'>
       <view>{{ubt}}</view>
       <view>UBT</view>
@@ -20,6 +20,19 @@
       <view>{{rmb}} RMB</view>
     </view>
   </view>
+  <view class="space"></view>
+  <navigator wx:if="{{!wxBindingState}}" url="/pages/binding/index?wxBindingState=1">
+    <view class="menu-item">
+      <view class="l">绑定注册码</view>
+      <image class="next" src="/images/icon/next.png"></image>
+    </view>
+  </navigator>
+  <navigator wx:if="{{wxBindingState}}" url="/pages/binding/index?wxBindingState=0">
+    <view class="menu-item">
+      <view class="l">解绑注册码</view>
+      <image class="next" src="/images/icon/next.png"></image>
+    </view>
+  </navigator>
   <view class="space"></view>
   <!-- <navigator url="/pages/order-list/index">
     <view class="menu-item">
@@ -47,13 +60,12 @@
       <image class="next" src="/images/icon/next.png"></image>
     </view>
   </navigator> -->
-  <navigator url="/pages/share-warrant/index">
+  <navigator url="/pages/share-warrant/index" wx:if="{{wxBindingState}}">
     <view class="menu-item">
       <view class="l">权证列表</view>
       <image class="next" src="/images/icon/next.png"></image>
     </view>
   </navigator>
-  <view class="line"></view>
   <view class="space"></view>
   <view class="menu-item" bindtap="aboutUs">
     <view class="l">关于我们</view>
@@ -68,12 +80,7 @@
     <view class="l">授权登录</view>
     <image class="next" src="/images/icon/next.png"></image>
   </view>
-  <!-- <view class="line"></view>
-  <view class="menu-item">
-    <view class="l">绑定官网账号</view>
-    <image class="next" src="/images/icon/next.png"></image>
-  </view> -->
-  <view class="space"></view>
+  <view class="line"></view>
   <view class="version">UniversalBlockToken v {{version}}</view>
 </view>
 <template is="apifmLogin" data="{{wxlogin: wxlogin}}" />

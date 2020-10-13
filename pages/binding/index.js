@@ -3,26 +3,75 @@ const UBT = require('../../utils/ubt.js')
 
 Page({
   data: {
+    params: {
+      password: "",
+      registerCode: "",
+      uid: ""
+    },
+    wxBindingState: true
   },
-  onLoad() { },
-  onShow() { },
-  async registerUid() {
-    const uid = await wx.getStorageSync('uid');
-    const obj = {
-      password: "1234",
-      registerCode: "123456",
-      uid: uid.toString()
+  onLoad(options) {
+    // 0：已绑定 1：未绑定
+    if (options.wxBindingState == "0") {
+      this.setData({
+        wxBindingState: true
+      })
+      wx.setNavigationBarTitle({
+        title: "解绑注册码"
+      })
+    } else {
+      this.setData({
+        wxBindingState: false
+      })
+      wx.setNavigationBarTitle({
+        title: "绑定注册码"
+      })
     }
-    const code = await UBT.registerUid(obj);
+  },
+  onShow() {
+    // 获取uid
+    const uid = wx.getStorageSync('uid');
+    this.setParams("uid", uid);
   },
 
-  async deregisterUid() {
-    const uid = await wx.getStorageSync('uid');
-    const obj = {
-      password: "1234",
-      registerCode: "123456",
-      uid: uid.toString()
+  fromRegisterCode(e) {
+    this.setParams("registerCode", e.detail.value)
+  },
+
+  fromPassword(e) {
+    this.setParams("password", e.detail.value)
+  },
+
+  /**
+   * 修改params对象的属性值
+   * @param {String} key 
+   * @param {String} next 
+   */
+  setParams(key, next) {
+    let data = this.data.params;
+    data[key] = next;
+    this.setData({
+      params: data
+    })
+  },
+
+  /* 绑定 */
+  async registerUid() {
+    const code = await UBT.registerUid(this.data.params);
+    if (code) {
+      wx.reLaunch({
+        url: '/pages/my/index'
+      })
     }
-    const code = await UBT.deregisterUid(obj);
+  },
+
+  /* 解绑 */
+  async deregisterUid() {
+    const code = await UBT.deregisterUid(this.data.params);
+    if (code) {
+      wx.reLaunch({
+        url: '/pages/my/index'
+      })
+    }
   },
 })
