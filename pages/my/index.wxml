@@ -20,53 +20,41 @@
       <view>{{rmb}} RMB</view>
     </view>
   </view>
-  <view class="space"></view>
-  <navigator wx:if="{{!wxBindingState}}" url="/pages/binding/index?wxBindingState=1">
+  <view class="space" wx:if="{{wxloginState}}"></view>
+  <navigator wx:if="{{!wxBindingState && wxloginState}}" url="/pages/binding/index?wxBindingState=1">
     <view class="menu-item">
       <view class="l">绑定注册码</view>
       <image class="next" src="/images/icon/next.png"></image>
     </view>
   </navigator>
-  <navigator wx:if="{{wxBindingState}}" url="/pages/binding/index?wxBindingState=0">
+  <navigator wx:if="{{wxBindingState && wxloginState}}" url="/pages/binding/index?wxBindingState=0">
     <view class="menu-item">
       <view class="l">解绑注册码</view>
       <image class="next" src="/images/icon/next.png"></image>
     </view>
   </navigator>
   <view class="space"></view>
-  <!-- <navigator url="/pages/order-list/index">
-    <view class="menu-item">
-      <view class="l">恒瑞医药权证 400: 等额UBT 200</view>
-      <image class="next" src="/images/icon/next.png"></image>
-    </view>
-  </navigator>
-  <view class="line"></view>
-  <navigator url="/pages/score-excharge/index">
-    <view class="menu-item">
-      <view class="l">早讯矿业权证 200: 等额UBT 123</view>
-      <image class="next" src="/images/icon/next.png"></image>
-    </view>
-  </navigator>
-  <view class="line"></view>
-  <navigator url="/pages/score-excharge/growth">
-    <view class="menu-item">
-      <view class="l">新示酒店积分 300: 等额UBT 100 </view>
-      <image class="next" src="/images/icon/next.png"></image>
-    </view>
-  </navigator>
-  <navigator url="/pages/score-excharge/growth">
-    <view class="menu-item">
-      <view class="l">鼎配权 300: 等额UBT 100 </view>
-      <image class="next" src="/images/icon/next.png"></image>
-    </view>
-  </navigator> -->
   <navigator url="/pages/share-warrant/index" wx:if="{{wxBindingState}}">
     <view class="menu-item">
       <view class="l">权证列表</view>
       <image class="next" src="/images/icon/next.png"></image>
     </view>
   </navigator>
-  <view class="space"></view>
+  <view class="line" wx:if="{{wxBindingState}}"></view>
+  <navigator url="/pages/cash-out/index" wx:if="{{wxBindingState}}">
+    <view class="menu-item">
+      <view class="l">UBT提现</view>
+      <image class="next" src="/images/icon/next.png"></image>
+    </view>
+  </navigator>
+  <view class="line" wx:if="{{wxBindingState}}"></view>
+  <navigator url="/pages/ubt-list/index" wx:if="{{wxBindingState}}">
+    <view class="menu-item">
+      <view class="l">UBT交易记录</view>
+      <image class="next" src="/images/icon/next.png"></image>
+    </view>
+  </navigator>
+  <view class="space" wx:if="{{wxBindingState}}"></view>
   <view class="menu-item" bindtap="aboutUs">
     <view class="l">关于我们</view>
     <image class="next" src="/images/icon/next.png"></image>

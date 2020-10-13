@@ -1,0 +1,29 @@
+.box {
+  width: 100%;
+}
+
+.ubt {
+  width : 98%;
+  margin: auto;
+}
+
+.ubt-item-box {
+  width        : 100%;
+  margin       : 2px 0;
+  border-bottom: 1px solid#eee;
+}
+
+.ubt-item-box .ubt-item {
+  width : 95%;
+  margin: auto;
+}
+
+.ubt-item .ubt-number {
+  text-align: left;
+  font-size : 5vw;
+}
+
+.ubt-item .ubt-time {
+  text-align: right;
+  font-size : 4vw;
+}

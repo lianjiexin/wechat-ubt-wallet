@@ -1,0 +1,21 @@
+<view class="container">
+  <!-- <navigator wx:for="{{shareWarrantData}}" wx:for-index="index" wx:key="index" url="/pages/score-excharge/index?type={{item.type}}&name={{item.name}}">
+    <view class="menu-item" bindtap="shareWarrantClick" data-src="{{item.type}}">
+      <view class="l">{{item.name}} {{item.number}}: 等额UBT {{item.number*item.ratio || 0}}</view>
+      <image class="next" src="/images/icon/next.png"></image>
+    </view>
+  </navigator> -->
+  <view class="box">
+    <view class="ubt">
+      <view class="ubt-item-box" wx:for="{{ubtData}}" wx:for-index="index" wx:key="index">
+        <view class="ubt-item">
+          <view class="ubt-number">
+            交易数量：
+            <span>{{item.available}}</span>
+          </view>
+          <view class="ubt-time">{{item.updateTime}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

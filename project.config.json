@@ -74,6 +74,21 @@
           "id": -1,
           "name": "1111",
           "pathName": "pages/binding/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "pages/ubt-list/index",
+          "pathName": "pages/ubt-list/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "pages/share-warrant/index",
+          "pathName": "pages/share-warrant/index",
+          "query": "",
           "scene": null
         }
       ]

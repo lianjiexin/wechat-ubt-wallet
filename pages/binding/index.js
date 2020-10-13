@@ -4,6 +4,7 @@ const UBT = require('../../utils/ubt.js')
 Page({
   data: {
     params: {
+      wxlogin: true,
       password: "",
       registerCode: "",
       uid: ""

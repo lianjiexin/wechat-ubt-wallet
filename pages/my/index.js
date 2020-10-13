@@ -8,11 +8,13 @@ const UBT = require('../../utils/ubt.js')
 Page({
   data: {
     wxlogin: true,
+    wxloginState: false,
     wxBindingState: false,
     balance: 0.00,
     freeze: 0,
     mubt: 0,
     ubt: 0,
+    rmb: 0
   },
   onLoad() {
   },
@@ -26,6 +28,9 @@ Page({
     AUTH.checkHasLogined().then(isLogined => {
       this.setWxLoginState(isLogined);
       if (isLogined) {
+        this.setData({
+          wxloginState: isLogined
+        })
         _this.getIsRegistryCode();
         _this.getUserApiInfo();
         _this.getUserAmount();
@@ -35,18 +40,10 @@ Page({
 
   /* 查询用户注册码是否绑定 */
   async getIsRegistryCode() {
-    console.log("getIsRegistryCode")
     const registerCode = wx.getStorageSync('uid'),
       data = await UBT.getUidRegistryByUid(registerCode);
-    if (data == null) {
-      this.setData({
-        wxBindingState: false
-      })
-      // wx.reLaunch({
-      //   url: '/pages/binding/index?wxBindingState=' + false
-      // })
-    } else this.setData({
-      wxBindingState: true
+    this.setData({
+      wxBindingState: data == null ? false : true
     })
   },
 
@@ -67,15 +64,15 @@ Page({
     })
   },
   getUserAmount: function () {
-    var that = this;
-    var uid = wx.getStorageSync('uid');
-    UBT.retrieveUBT(uid, 'score').then(function (res) {
-      that.setData({
-        balance: 0, // no cash balance for now
-        freeze: res.data.frozen.toFixed(2),
-        mubt: res.data && res.data.point ? res.data.point.toFixed(2) : 0
-      });
-    })
+    const that = this,
+      uid = wx.getStorageSync('uid');
+    // UBT.retrieveUBT(uid, 'score').then(function (res) {
+    //   that.setData({
+    //     balance: 0, // no cash balance for now
+    //     freeze: res.data.frozen.toFixed(2),
+    //     mubt: res.data && res.data.point ? res.data.point.toFixed(2) : 0
+    //   });
+    // })
     UBT.retrieveUBT(uid, 'ubt').then(function (res) {
       var ubt = res.data && res.data.point ? res.data.point.toFixed(2) : 0
       that.setData({
@@ -89,8 +86,9 @@ Page({
    * @param {Boolean} state [true/false]
    */
   setWxLoginState(e) {
+    const state = e.currentTarget ? e.currentTarget.dataset.state : e
     this.setData({
-      wxlogin: e.currentTarget ? e.currentTarget.dataset.state : e
+      wxlogin: state,
     })
   },
   /**

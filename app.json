@@ -4,8 +4,9 @@
     "pages/my/index",
     "pages/binding/index",
     "pages/score-excharge/index",
-    "pages/score-excharge/growth",
-    "pages/share-warrant/index"
+    "pages/share-warrant/index",
+    "pages/cash-out/index",
+    "pages/ubt-list/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
