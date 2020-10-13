@@ -34,49 +34,6 @@ async function checkUser(uid) {
 
 }
 
-async function exchangeScoreToUBT(uid, mubt) {
-  var ubt = 2 * mubt; // Assuming the exchange ratio is ubt/score = 2
-  return new Promise((resolve, reject) => {
-
-    var decreaseParam = createScoreParam(uid, mubt);
-    var increaseParam = createUBTParam(uid, ubt);
-
-    decreaseUBT(decreaseParam).
-      then(increaseUBT(increaseParam)).
-      then(function (res) {
-        var ret = {
-          'uid': uid,
-          'mubt': mubt,
-          'ubt': ubt,
-          'status': 0
-        }
-        resolve(ret);
-      });
-  })
-
-}
-
-async function exchangeUBTtoScore(uid, ubt) {
-  var mubt = ubt / 2; // Assuming the exchange ratio is score/ubt = 0.5
-  return new Promise((resolve, reject) => {
-
-    var decreaseParam = createUBTParam(uid, ubt);
-    var increaseParam = createScoreParam(uid, mubt);
-
-    decreaseUBT(decreaseParam).
-      then(increaseUBT(increaseParam)).
-      then(function (res) {
-        var ret = {
-          'uid': uid,
-          'mubt': mubt,
-          'ubt': ubt,
-          'status': 0
-        }
-        resolve(ret);
-      });
-  })
-
-}
 async function retrieveUBT(uid, pointType) {
   var domain = CONFIG.ubtDomain
   return new Promise((resolve, reject) => {
@@ -103,31 +60,84 @@ async function retrieveUBT(uid, pointType) {
     })
   })
 }
-function createScoreParam(uid, point) {
-  var ret = {
+
+/**
+ * 其他权证兑换ubt，暂时没有rmb充值
+ * @param {String} uid 
+ * @param {Number} number 
+ * @param {String} type 
+ */
+function exchangeScoreToUBT(uid, number, type) {
+  const ubt = 2 * number;
+  return new Promise((resolve, reject) => {
+    const decreaseParam = createParams(uid, number, type),
+      increaseParam = createParams(uid, ubt, "ubt");
+    decreaseUBT(decreaseParam).
+      then(increaseUBT(increaseParam)).
+      then(function (res) {
+        var ret = {
+          'uid': uid,
+          'number': number,
+          'ubt': ubt,
+          'status': 0
+        }
+        resolve(ret);
+      });
+  })
+
+}
+
+/**
+ * ubt兑换其他权证或rmb
+ * @param {String} uid 
+ * @param {Number} ubt 
+ * @param {String} type 
+ */
+function exchangeUBTtoScore(uid, ubt, type) {
+  let number = type == "rmb" ? ubt * 7 : ubt / 2;
+  return new Promise((resolve, reject) => {
+    const decreaseParam = createParams(uid, ubt, "ubt"),
+      increaseParam = createParams(uid, number, type);
+    decreaseUBT(decreaseParam).
+      then(increaseUBT(increaseParam)).
+      then(function (res) {
+        const ret = {
+          'uid': uid,
+          'number': number,
+          'ubt': ubt,
+          'status': 0
+        }
+        resolve(ret);
+      });
+  })
+
+}
+
+/**
+ * 生成参数
+ * @param {String} uid 
+ * @param {Number} point 
+ * @param {String} type 
+ * @return {Object}
+ */
+function createParams(uid, point, type) {
+  return {
     "point": point,
     "seq": Math.round(Math.random() * 1000000),
-    "type": 'score',
+    "type": type,
     "uid": uid
   }
-  return ret
 }
-function createUBTParam(uid, point) {
-  var ret = {
-    "point": point,
-    "seq": Math.round(Math.random() * 1000000),
-    "type": 'ubt',
-    "uid": uid
-  }
-  return ret;
-}
-async function decreaseUBT(requestParam) {
-  var that = this;
-  var domain = CONFIG.ubtDomain
+
+/**
+ * 减少权证或ubt
+ * @param {Object} params 
+ */
+function decreaseUBT(params) {
   return new Promise((resolve, reject) => {
     wx.request({
-      url: domain + '/ubt/point/decrease', //减少积分；
-      data: requestParam,
+      url: `${CONFIG.ubtDomain}/ubt/point/decrease`,
+      data: params,
       method: "POST",
       header: {
         "Content-Type": "application/json"
@@ -150,14 +160,15 @@ async function decreaseUBT(requestParam) {
   })
 }
 
-
-async function increaseUBT(requestParam) {
-
-  var domain = CONFIG.ubtDomain
+/**
+ * 增加权证、ubt或rmb
+ * @param {Object} params 
+ */
+function increaseUBT(params) {
   return new Promise((resolve, reject) => {
     wx.request({
-      url: domain + '/ubt/point/increase', //增加积分；
-      data: requestParam,
+      url: `${CONFIG.ubtDomain}/ubt/point/increase`, //增加积分；
+      data: params,
       method: "POST",
       header: {
         "Content-Type": "application/json"
@@ -167,10 +178,8 @@ async function increaseUBT(requestParam) {
           console.error('网络请求失败')
           reject(new Error('网络请求失败'))
         }
-
       },
       success: function (res) {
-
         if (res.data.status == 0) {
           resolve(res.data)
         }
@@ -183,18 +192,104 @@ async function increaseUBT(requestParam) {
 }
 
 /* this function isn't used now */
-async function createAccount(uid, point, pointType) {
-  var domain = CONFIG.ubtDomain
+// async function createAccount(uid, point, pointType) {
+//   var domain = CONFIG.ubtDomain
+//   return new Promise((resolve, reject) => {
+//     wx.request({
+//       url: domain + '/ubt/point/create', //创建帐号；
+//       data: {
+//         "point": point,
+//         "seq": Math.round(Math.random() * 1000000),
+//         "type": pointType,
+//         "uid": uid
+//       },
+//       method: "POST",
+//       header: {
+//         "Content-Type": "application/json"
+//       },
+//       complete: function (res) {
+//         if (res == null || res.data == null) {
+//           console.error('网络请求失败')
+//           reject(new Error('网络请求失败'))
+//         }
+//       },
+//       success: function (res) {
+//         if (res.data.status == 0) {
+//           resolve(res.data)
+//         }
+//         else {
+//           reject(new Error(res));
+//         }
+//       }
+//     })
+//   })
+// }
+
+/**
+ * 验证用户是否绑定注册码
+ * @param {Strng} code 
+ */
+function getUidRegistryByUid(code) {
   return new Promise((resolve, reject) => {
     wx.request({
-      url: domain + '/ubt/point/create', //创建帐号；
+      url: `${CONFIG.ubtDomain}/ubt/point/getUidRegistryByUid`,
       data: {
-        "point": point,
-        "seq": Math.round(Math.random() * 1000000),
-        "type": pointType,
-        "uid": uid
+        uid: code
+      },
+      method: "GET",
+      header: {
+        "Content-Type": "application/json"
+      },
+      complete: function (res) {
+        if (res == null || res.data == null) {
+          console.error('网络请求失败')
+        }
+      },
+      success: function (res) {
+        resolve(res.data.data);
+      }
+    })
+  })
+}
+
+function getListPointRecord(uid) {
+  return new Promise((resolve, reject) => {
+    wx.request({
+      url: `${CONFIG.ubtDomain}/ubt/point/listPointRecord`,
+      data: {
+        type: "ubt",
+        uid: uid
       },
       method: "POST",
+      header: {
+        "Content-Type": "application/json"
+      },
+      complete: function (res) {
+        if (res == null || res.data == null) {
+          console.error('网络请求失败')
+        }
+      },
+      success: function (res) {
+        resolve(res.data.data);
+      }
+    })
+  })
+}
+
+/**
+ * 绑定注册码
+ * @param {Object} params 
+ */
+function registerUid(params) {
+  return new Promise((resolve, reject) => {
+    wx.request({
+      url: `${CONFIG.ubtDomain}/ubt/point/registerUid`,
+      data: {
+        password: params.password,
+        registerCode: params.registerCode,
+        uid: params.uid
+      },
+      method: "GET",
       header: {
         "Content-Type": "application/json"
       },
@@ -205,11 +300,79 @@ async function createAccount(uid, point, pointType) {
         }
       },
       success: function (res) {
-        if (res.data.status == 0) {
-          resolve(res.data)
+        switch (res.data.status) {
+          case 0:
+            wx.showToast({
+              title: '注册码绑定成功',
+              icon: 'none'
+            })
+            resolve(true)
+            break;
+          case -1210:
+            wx.showToast({
+              title: res.data.error,
+              icon: 'none'
+            })
+            resolve(true)
+            break;
+          default:
+            wx.showToast({
+              title: res.data.error,
+              icon: 'none'
+            })
+            resolve(false);
         }
-        else {
-          reject(new Error(res));
+      }
+    })
+  })
+}
+
+
+/**
+ * 解绑注册码
+ * @param {Object} params 
+ */
+function deregisterUid(params) {
+  return new Promise((resolve, reject) => {
+    wx.request({
+      url: `${CONFIG.ubtDomain}/ubt/point/deregisterUid`,
+      data: {
+        password: params.password,
+        registerCode: params.registerCode,
+        uid: params.uid
+      },
+      method: "GET",
+      header: {
+        "Content-Type": "application/json"
+      },
+      complete: function (res) {
+        if (res == null || res.data == null) {
+          console.error('网络请求失败')
+          reject(new Error('网络请求失败'))
+        }
+      },
+      success: function (res) {
+        switch (res.data.status) {
+          case 0:
+            wx.showToast({
+              title: '注册码解绑成功',
+              icon: 'none'
+            })
+            resolve(true)
+            break;
+          case -1210:
+            wx.showToast({
+              title: res.data.error,
+              icon: 'none'
+            })
+            resolve(true)
+            break;
+          default:
+            wx.showToast({
+              title: res.data.error,
+              icon: 'none'
+            })
+            resolve(false);
         }
       }
     })
@@ -224,6 +387,8 @@ module.exports = {
   decreaseUBT: decreaseUBT,
   exchangeScoreToUBT: exchangeScoreToUBT,
   exchangeUBTtoScore: exchangeUBTtoScore,
-  createScoreParam: createScoreParam,
-  createUBTParam: createUBTParam
+  getUidRegistryByUid: getUidRegistryByUid,
+  registerUid: registerUid,
+  deregisterUid: deregisterUid,
+  getListPointRecord: getListPointRecord
 }

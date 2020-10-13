@@ -71,9 +71,9 @@ async function login(page) {
     success: function (res) {
       WXAPI.login_wx(res.code).then(function (res) {
         // if (res.code == 10000) {
-          // 去注册
-          //_this.register(page)
-          // return;
+        // 去注册
+        //_this.register(page)
+        // return;
         // }
         // if (res.code != 0) {
         //   // 登录错误
@@ -86,12 +86,10 @@ async function login(page) {
         // }
         wx.setStorageSync('uid', res.data.uid);
         wx.setStorageSync('token', res.data.token);
-        checkUbtAccount(page);
-        /*
-        if ( page ) {
+        // checkUbtAccount(page);
+        if (page) {
           page.onShow()
         }
-        */
       })
     }
   })
@@ -103,7 +101,7 @@ async function checkUbtAccount(page) {
     if (res == null) {
       wx.showModal({
         title: '帐号未开通',
-        content: '请联系管理员为您的微信(ID:' + uid +')开通帐号',
+        content: '请联系管理员为您的微信(ID:' + uid + ')开通帐号',
         showCancel: false,
         success(res) {
           if (res.confirm) {
@@ -150,12 +148,12 @@ async function register(page) {
             referrer: referrer
           }).then(function (res) {
             _this.login(page);
-
           })
         }
       })
     }
   })
+
 }
 
 function loginOut() {
@@ -218,5 +216,4 @@ module.exports = {
   register: register,
   loginOut: loginOut,
   checkAndAuthorize: checkAndAuthorize
-
 }

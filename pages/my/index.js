@@ -2,91 +2,51 @@ const app = getApp()
 const CONFIG = require('../../config.js')
 const WXAPI = require('apifm-wxapi')
 const AUTH = require('../../utils/auth')
-const TOOLS = require('../../utils/tools.js')
+// const TOOLS = require('../../utils/tools.js')
 const UBT = require('../../utils/ubt.js')
 
 Page({
   data: {
     wxlogin: true,
+    wxloginState: false,
+    wxBindingState: false,
     balance: 0.00,
     freeze: 0,
     mubt: 0,
     ubt: 0,
-    // score_sign_continuous: 0,
-    // rechargeOpen: false, // 是否开启充值[预存]功能
-    // 用户订单统计数据
-    // count_id_no_confirm: 0,
-    // count_id_no_pay: 0,
-    // count_id_no_reputation: 0,
-    // count_id_no_transfer: 0,
+    rmb: 0
   },
   onLoad() {
   },
   onShow() {
-    const _this = this
-    const order_hx_uids = wx.getStorageSync('order_hx_uids')
+    const _this = this,
+      order_hx_uids = wx.getStorageSync('order_hx_uids');
     this.setData({
       version: CONFIG.version,
       order_hx_uids
     })
     AUTH.checkHasLogined().then(isLogined => {
-      this.setData({
-        wxlogin: isLogined
-      })
+      this.setWxLoginState(isLogined);
       if (isLogined) {
+        this.setData({
+          wxloginState: isLogined
+        })
+        _this.getIsRegistryCode();
         _this.getUserApiInfo();
         _this.getUserAmount();
-        // _this.orderStatistics();
-      }
-    })
-    // 获取结算车数据，显示TabBarBadge
-    TOOLS.showTabBarBadge();
-  },
-  aboutUs: function () {
-    wx.showModal({
-      title: '关于我们',
-      content: '优贝，基于区块链智能合约的药品权证结算分发系统',
-      showCancel: false
-    })
-  },
-  loginOut() {
-    AUTH.loginOut()
-    wx.reLaunch({
-      url: '/pages/my/index'
-    })
-  },
-  getPhoneNumber: function (e) {
-    if (!e.detail.errMsg || e.detail.errMsg != "getPhoneNumber:ok") {
-      wx.showModal({
-        title: '提示',
-        content: e.detail.errMsg,
-        showCancel: false
-      })
-      return;
-    }
-    WXAPI.bindMobileWxa(wx.getStorageSync('token'), e.detail.encryptedData, e.detail.iv).then(res => {
-      if (res.code === 10002) {
-        this.setData({
-          wxlogin: false
-        })
-        return
-      }
-      if (res.code == 0) {
-        wx.showToast({
-          title: '绑定成功',
-          icon: 'success',
-          duration: 2000
-        })
-        this.getUserApiInfo();
-      } else {
-        wx.showModal({
-          title: '提示',
-          content: res.msg,
-          showCancel: false
-        })
       }
     })
   },
+
+  /* 查询用户注册码是否绑定 */
+  async getIsRegistryCode() {
+    const registerCode = wx.getStorageSync('uid'),
+      data = await UBT.getUidRegistryByUid(registerCode);
+    this.setData({
+      wxBindingState: data == null ? false : true
+    })
+  },
+
   getUserApiInfo: function () {
     var that = this;
     WXAPI.userDetail(wx.getStorageSync('token')).then(function (res) {
@@ -104,77 +64,37 @@ Page({
     })
   },
   getUserAmount: function () {
-    var that = this;
-    var uid = wx.getStorageSync('uid');
-    UBT.retrieveUBT(uid, 'score').then(function (res) {
-      that.setData({
-        balance: 0, // no cash balance for now
-        freeze: res.data.frozen.toFixed(2),
-        mubt: res.data && res.data.point ? res.data.point.toFixed(2) : 0
-      });
-    })
+    const that = this,
+      uid = wx.getStorageSync('uid');
+    // UBT.retrieveUBT(uid, 'score').then(function (res) {
+    //   that.setData({
+    //     balance: 0, // no cash balance for now
+    //     freeze: res.data.frozen.toFixed(2),
+    //     mubt: res.data && res.data.point ? res.data.point.toFixed(2) : 0
+    //   });
+    // })
     UBT.retrieveUBT(uid, 'ubt').then(function (res) {
-
       var ubt = res.data && res.data.point ? res.data.point.toFixed(2) : 0
       that.setData({
         ubt: ubt,
         rmb: ubt * 7
       });
     })
-    
-
   },
-  handleOrderCount: function (count) {
-    return count > 99 ? '99+' : count;
-  },
-  orderStatistics: function () {
-    WXAPI.orderStatistics(wx.getStorageSync('token')).then((res) => {
-      if (res.code == 0) {
-        const {
-          count_id_no_confirm,
-          count_id_no_pay,
-          count_id_no_reputation,
-          count_id_no_transfer,
-        } = res.data || {}
-        this.setData({
-          count_id_no_confirm: this.handleOrderCount(count_id_no_confirm),
-          count_id_no_pay: this.handleOrderCount(count_id_no_pay),
-          count_id_no_reputation: this.handleOrderCount(count_id_no_reputation),
-          count_id_no_transfer: this.handleOrderCount(count_id_no_transfer),
-        })
-      }
-    })
-  },
-  goAsset: function () {
-    wx.navigateTo({
-      url: "/pages/asset/index"
-    })
-  },
-  goScore: function () {
-    wx.navigateTo({
-      url: "/pages/score/index"
-    })
-  },
-  goUBT() {
-    wx.navigateTo({
-      url: "/pages/score/growth"
-    })
-  },
-  goOrder: function (e) {
-    wx.navigateTo({
-      url: "/pages/order-list/index?type=" + e.currentTarget.dataset.type
-    })
-  },
-  cancelLogin() {
+  /**
+   * 修改登录状态
+   * @param {Boolean} state [true/false]
+   */
+  setWxLoginState(e) {
+    const state = e.currentTarget ? e.currentTarget.dataset.state : e
     this.setData({
-      wxlogin: true
+      wxlogin: state,
     })
   },
-  goLogin() {
-    this.setData({
-      wxlogin: false
-    })
-  },
+  /**
+   * 微信授权登录
+   * @param {*} e 
+   */
   processLogin(e) {
     if (!e.detail.userInfo) {
       wx.showToast({
@@ -185,28 +105,33 @@ Page({
     }
     AUTH.register(this);
   },
-  scanOrderCode() {
-    wx.scanCode({
-      onlyFromCamera: true,
-      success(res) {
-        wx.navigateTo({
-          url: '/pages/order-details/scan-result?hxNumber=' + res.result,
-        })
-      },
-      fail(err) {
-        console.error(err)
-        wx.showToast({
-          title: err.errMsg,
-          icon: 'none'
-        })
-      }
+  /**
+   * 登出
+   */
+  loginOut() {
+    AUTH.loginOut()
+    wx.reLaunch({
+      url: '/pages/my/index'
     })
   },
-  clearStorage() {
-    wx.clearStorageSync()
-    wx.showToast({
-      title: '已清除',
-      icon: 'success'
+  /**
+   * 清除缓存
+   */
+  // clearStorage() {
+  //   wx.clearStorageSync()
+  //   wx.showToast({
+  //     title: '已清除',
+  //     icon: 'success'
+  //   })
+  // },
+  /**
+   * 关于我们
+   */
+  aboutUs: function () {
+    wx.showModal({
+      title: '关于我们',
+      content: '优贝，基于区块链智能合约的药品权证结算分发系统',
+      showCancel: false
     })
   },
 })

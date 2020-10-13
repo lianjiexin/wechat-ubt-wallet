@@ -4,11 +4,11 @@ const CONFIG = require('../../config.js')
 var app = getApp();
 Page({
   data: {
-    banners:[],
+    banners: [],
     swiperMaxNumber: 0,
     swiperCurrent: 0
   },
-  onLoad:function(){
+  onLoad: function () {
     const _this = this
     wx.setNavigationBarTitle({
       title: wx.getStorageSync('mallName')
@@ -17,11 +17,14 @@ Page({
     if (app_show_pic_version && app_show_pic_version == CONFIG.version) {
       if (CONFIG.shopMod) {
         wx.redirectTo({
-          url: '/pages/shop/select',
+          // url: '/pages/shop/select',
+          url: '/pages/my/index',
         });
       } else {
-        wx.switchTab({
-          url: '/pages/index/index',
+        // wx.switchTab({
+        wx.redirectTo({
+          // url: '/pages/index/index',
+          url: '/pages/my/index',
         });
       }
     } else {
@@ -32,11 +35,14 @@ Page({
         if (res.code == 700) {
           if (CONFIG.shopMod) {
             wx.redirectTo({
-              url: '/pages/shop/select',
+              // url: '/pages/shop/select',
+              url: '/pages/my/index',
             });
           } else {
-            wx.switchTab({
-              url: '/pages/index/index',
+            // wx.switchTab({
+            wx.redirectTo({
+              // url: '/pages/index/index',
+              url: '/pages/my/index',
             });
           }
         } else {
@@ -48,18 +54,21 @@ Page({
       }).catch(function (e) {
         if (CONFIG.shopMod) {
           wx.redirectTo({
-            url: '/pages/shop/select',
+            // url: '/pages/shop/select',
+            url: '/pages/my/index',
           });
         } else {
-          wx.switchTab({
-            url: '/pages/index/index',
+          // wx.switchTab({
+          wx.redirectTo({
+            // url: '/pages/index/index',
+            url: '/pages/my/index',
           });
         }
       })
     }
   },
-  onShow:function(){
-    
+  onShow: function () {
+
   },
   swiperchange: function (e) {
     this.setData({
@@ -74,11 +83,14 @@ Page({
       })
       if (CONFIG.shopMod) {
         wx.redirectTo({
-          url: '/pages/shop/select',
+          // url: '/pages/shop/select',
+          url: '/pages/my/index',
         });
       } else {
-        wx.switchTab({
-          url: '/pages/index/index',
+        // wx.switchTab({
+        wx.redirectTo({
+          // url: '/pages/index/index',
+          url: '/pages/my/index',
         });
       }
     } else {
@@ -88,7 +100,7 @@ Page({
       })
     }
   },
-  imgClick(){
+  imgClick() {
     if (this.data.swiperCurrent + 1 != this.data.swiperMaxNumber) {
       wx.showToast({
         title: '左滑进入',

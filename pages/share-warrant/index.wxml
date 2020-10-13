@@ -1,0 +1,23 @@
+<view class="container">
+  <view class="asset">
+    <view class='item'>
+      <view>{{ubt}}</view>
+      <view>UBT</view>
+    </view>
+    <view class='item right'>
+      <view>当前等值于</view>
+      <view>{{rmb}} RMB</view>
+    </view>
+  </view>
+  <view class="space"></view>
+  <navigator wx:for="{{shareWarrantData}}" wx:for-index="index" wx:key="index" url="/pages/score-excharge/index?type={{item.type}}&name={{item.name}}">
+    <view class="menu-item" bindtap="shareWarrantClick" data-src="{{item.type}}">
+      <view class="l">
+        {{item.name}}
+        <span>(等值{{item.number*item.ratio || 0}}/UBT)</span>
+      </view>
+      <view class="r">{{item.number}}</view>
+      <image class="next" src="/images/icon/next.png"></image>
+    </view>
+  </navigator>
+</view>
