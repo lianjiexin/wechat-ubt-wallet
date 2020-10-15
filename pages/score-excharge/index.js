@@ -36,17 +36,17 @@ Page({
   // 初始化
   init() {
     const _self = this,
-      uid = wx.getStorageSync('uid');
+      registerCode = wx.getStorageSync('registerCode');
     this.setData({
       ubt: "",
       number: ""
     })
-    UBT.retrieveUBT(uid, 'ubt').then(function (res) {
+    UBT.retrieveUBT(registerCode, 'ubt').then(function (res) {
       _self.setData({
         maxUbt: res.data && res.data.point ? res.data.point : 0
       });
     })
-    UBT.retrieveUBT(uid, this.data.type).then(function (res) {
+    UBT.retrieveUBT(registerCode, this.data.type).then(function (res) {
       _self.setData({
         maxNumber: res.data && res.data.point ? res.data.point : 0
       });
@@ -56,7 +56,7 @@ Page({
   bindSave: function (e) {
     const _self = this,
       isNumber = /^(0|[1-9][0-9]*)$/,
-      uid = wx.getStorageSync('uid');
+      registerCode = wx.getStorageSync('registerCode');
     let ubt = e.detail.value.amount;
     ubt.replace(/\s+/g, "");
     if (!ubt || !isNumber.test(ubt)) {
@@ -66,7 +66,7 @@ Page({
       })
       return
     }
-    
+
     if (Number(ubt) > _self.data.maxUbt) {
       wx.showToast({
         title: '超出持有额',
@@ -75,11 +75,11 @@ Page({
       return
     }
 
-    UBT.exchangeUBTtoScore(uid, Number(ubt), _self.data.type).then(res => {
+    UBT.exchangeUBTtoScore(registerCode, Number(ubt), _self.data.type).then(res => {
       if (res.status == 0) {
         wx.showModal({
-          title: '成功',
-          content: '恭喜您，成功兑换' + res.number + 'MUBT',
+          // title: '成功',
+          content: `成功兑换 ${res.number} ${_self.data.name}`,
           showCancel: false,
           success(res) {
             if (res.confirm) _self.init();
@@ -98,7 +98,7 @@ Page({
   bindSave1(e) {
     const _self = this,
       isNumber = /^(0|[1-9][0-9]*)$/,
-      uid = wx.getStorageSync('uid');
+      registerCode = wx.getStorageSync('registerCode');
     let number = e.detail.value.score;
     number.replace(/\s+/g, "");
     if (!number || !isNumber.test(number)) {
@@ -115,11 +115,11 @@ Page({
       })
       return
     }
-    UBT.exchangeScoreToUBT(uid, Number(number), _self.data.type).then(res => {
+    UBT.exchangeScoreToUBT(registerCode, Number(number), _self.data.type).then(res => {
       if (res.status == 0) {
         wx.showModal({
-          title: '成功',
-          content: '恭喜您，成功兑换' + res.ubt + 'UBT',
+          // title: '成功',
+          content: '成功兑换 ' + res.ubt + ' UBT',
           showCancel: false,
           success(res) {
             if (res.confirm) _self.init();

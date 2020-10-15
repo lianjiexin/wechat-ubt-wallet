@@ -30,8 +30,8 @@ Page({
   // 初始化
   init() {
     const _self = this,
-      uid = wx.getStorageSync('uid');
-    UBT.retrieveUBT(uid, 'ubt').then(function (res) {
+      registerCode = wx.getStorageSync('registerCode');
+    UBT.retrieveUBT(registerCode, 'ubt').then(function (res) {
       const ubt = res.data && res.data.point ? res.data.point : 0
       _self.setData({
         maxUbt: ubt,
@@ -44,7 +44,7 @@ Page({
   bindSave: function (e) {
     const _self = this,
       isNumber = /^(0|[1-9][0-9]*)$/,
-      uid = wx.getStorageSync('uid');
+      registerCode = wx.getStorageSync('registerCode');
     let ubt = e.detail.value.amount;
     ubt.replace(/\s+/g, "");
     if (!ubt || !isNumber.test(ubt)) {
@@ -63,11 +63,10 @@ Page({
       return
     }
 
-    UBT.exchangeUBTtoScore(uid, Number(ubt), "rmb").then(res => {
+    UBT.exchangeUBTtoScore(registerCode, Number(ubt), "rmb").then(res => {
       if (res.status == 0) {
         wx.showModal({
-          title: '成功',
-          content: '恭喜您，成功兑换' + res.number + "/rmb",
+          content: '成功提现 ' + res.number + " RMB",
           showCancel: false,
           success(res) {
             if (res.confirm) _self.init();

@@ -31,8 +31,8 @@ Page({
   // 初始化but和rmb
   getUbt() {
     const _self = this,
-      uid = wx.getStorageSync('uid');
-    UBT.retrieveUBT(uid, 'ubt').then(function (res) {
+    registerCode = wx.getStorageSync('registerCode');
+    UBT.retrieveUBT(registerCode, 'ubt').then(function (res) {
       const ubt = res.data && res.data.point ? res.data.point : 0
       _self.setData({
         ubt: ubt,
@@ -47,9 +47,9 @@ Page({
    */
   setShareWarrantData(type) {
     const _self = this,
-      uid = wx.getStorageSync('uid');
+    registerCode = wx.getStorageSync('registerCode');
     let data = this.data.shareWarrantData;
-    UBT.retrieveUBT(uid, type).then(res => {
+    UBT.retrieveUBT(registerCode, type).then(res => {
       for (let i in data) {
         if (data[i].type === type) {
           data[i].number = res.data && res.data.point ? res.data.point : 0

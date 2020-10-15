@@ -34,14 +34,14 @@ async function checkUser(uid) {
 
 }
 
-async function retrieveUBT(uid, pointType) {
+async function retrieveUBT(registerCode, pointType) {
   var domain = CONFIG.ubtDomain
   return new Promise((resolve, reject) => {
     wx.request({
       url: domain + '/ubt/point/getPoint', //检查该用户的UBT；
       data: {
         "type": pointType,
-        "uid": uid
+        "uid": registerCode
       },
       method: "GET",
       header: {
@@ -63,20 +63,20 @@ async function retrieveUBT(uid, pointType) {
 
 /**
  * 其他权证兑换ubt，暂时没有rmb充值
- * @param {String} uid 
+ * @param {String} registerCode 
  * @param {Number} number 
  * @param {String} type 
  */
-function exchangeScoreToUBT(uid, number, type) {
+function exchangeScoreToUBT(registerCode, number, type) {
   const ubt = 2 * number;
   return new Promise((resolve, reject) => {
-    const decreaseParam = createParams(uid, number, type),
-      increaseParam = createParams(uid, ubt, "ubt");
+    const decreaseParam = createParams(registerCode, number, type),
+      increaseParam = createParams(registerCode, ubt, "ubt");
     decreaseUBT(decreaseParam).
       then(increaseUBT(increaseParam)).
       then(function (res) {
         var ret = {
-          'uid': uid,
+          'uid': registerCode,
           'number': number,
           'ubt': ubt,
           'status': 0
@@ -89,20 +89,20 @@ function exchangeScoreToUBT(uid, number, type) {
 
 /**
  * ubt兑换其他权证或rmb
- * @param {String} uid 
+ * @param {String} registerCode 
  * @param {Number} ubt 
  * @param {String} type 
  */
-function exchangeUBTtoScore(uid, ubt, type) {
+function exchangeUBTtoScore(registerCode, ubt, type) {
   let number = type == "rmb" ? ubt * 7 : ubt / 2;
   return new Promise((resolve, reject) => {
-    const decreaseParam = createParams(uid, ubt, "ubt"),
-      increaseParam = createParams(uid, number, type);
+    const decreaseParam = createParams(registerCode, ubt, "ubt"),
+      increaseParam = createParams(registerCode, number, type);
     decreaseUBT(decreaseParam).
       then(increaseUBT(increaseParam)).
       then(function (res) {
         const ret = {
-          'uid': uid,
+          'uid': registerCode,
           'number': number,
           'ubt': ubt,
           'status': 0
@@ -115,17 +115,17 @@ function exchangeUBTtoScore(uid, ubt, type) {
 
 /**
  * 生成参数
- * @param {String} uid 
+ * @param {String} registerCode 
  * @param {Number} point 
  * @param {String} type 
  * @return {Object}
  */
-function createParams(uid, point, type) {
+function createParams(registerCode, point, type) {
   return {
     "point": point,
     "seq": Math.round(Math.random() * 1000000),
     "type": type,
-    "uid": uid
+    "uid": registerCode
   }
 }
 
@@ -227,14 +227,14 @@ function increaseUBT(params) {
 
 /**
  * 验证用户是否绑定注册码
- * @param {Strng} code 
+ * @param {Strng} uid 
  */
-function getUidRegistryByUid(code) {
+function getUidRegistryByUid(uid) {
   return new Promise((resolve, reject) => {
     wx.request({
       url: `${CONFIG.ubtDomain}/ubt/point/getUidRegistryByUid`,
       data: {
-        uid: code
+        uid: uid
       },
       method: "GET",
       header: {
@@ -246,19 +246,23 @@ function getUidRegistryByUid(code) {
         }
       },
       success: function (res) {
-        resolve(res.data.data);
+        const data = res.data.data
+        if (data || data.registerCode) {
+          wx.setStorageSync('registerCode', data.registerCode);
+        }
+        resolve(data)
       }
     })
   })
 }
 
-function getListPointRecord(uid) {
+function getListPointRecord(registerCode) {
   return new Promise((resolve, reject) => {
     wx.request({
       url: `${CONFIG.ubtDomain}/ubt/point/listPointRecord`,
       data: {
         type: "ubt",
-        uid: uid
+        uid: registerCode
       },
       method: "POST",
       header: {
@@ -302,6 +306,10 @@ function registerUid(params) {
       success: function (res) {
         switch (res.data.status) {
           case 0:
+            const data = res.data.data
+            if (data || data.registerCode) {
+              wx.setStorageSync('registerCode', data.registerCode);
+            }
             wx.showToast({
               title: '注册码绑定成功',
               icon: 'none'
@@ -354,6 +362,7 @@ function deregisterUid(params) {
       success: function (res) {
         switch (res.data.status) {
           case 0:
+            wx.removeStorageSync("registerCode");
             wx.showToast({
               title: '注册码解绑成功',
               icon: 'none'

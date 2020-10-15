@@ -65,15 +65,8 @@ Page({
   },
   getUserAmount: function () {
     const that = this,
-      uid = wx.getStorageSync('uid');
-    // UBT.retrieveUBT(uid, 'score').then(function (res) {
-    //   that.setData({
-    //     balance: 0, // no cash balance for now
-    //     freeze: res.data.frozen.toFixed(2),
-    //     mubt: res.data && res.data.point ? res.data.point.toFixed(2) : 0
-    //   });
-    // })
-    UBT.retrieveUBT(uid, 'ubt').then(function (res) {
+      registerCode = wx.getStorageSync('registerCode');
+    UBT.retrieveUBT(registerCode, 'ubt').then(function (res) {
       var ubt = res.data && res.data.point ? res.data.point.toFixed(2) : 0
       that.setData({
         ubt: ubt,

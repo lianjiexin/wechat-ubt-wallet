@@ -14,7 +14,7 @@
     <view class="menu-item" bindtap="shareWarrantClick" data-src="{{item.type}}">
       <view class="l">
         {{item.name}}
-        <span>(等值{{item.number*item.ratio || 0}}/UBT)</span>
+        <span>(等值{{item.number*item.ratio || 0}} UBT)</span>
       </view>
       <view class="r">{{item.number}}</view>
       <image class="next" src="/images/icon/next.png"></image>
