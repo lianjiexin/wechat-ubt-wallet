@@ -110,7 +110,6 @@ function exchangeUBTtoScore(registerCode, ubt, type) {
         resolve(ret);
       });
   })
-
 }
 
 /**
@@ -247,7 +246,7 @@ function getUidRegistryByUid(uid) {
       },
       success: function (res) {
         const data = res.data.data
-        if (data || data.registerCode) {
+        if (data && data.registerCode) {
           wx.setStorageSync('registerCode', data.registerCode);
         }
         resolve(data)
