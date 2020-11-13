@@ -10,8 +10,13 @@
       <view class="ubt-item-box" wx:for="{{ubtData}}" wx:for-index="index" wx:key="index">
         <view class="ubt-item">
           <view class="ubt-number">
+<<<<<<< HEAD
             当前余额：
             <span>{{item.available}}</span>
+=======
+            交易数量：
+            <span>{{item.delta}}</span>
+>>>>>>> 6d819211dcdbc59d083d079c9abcf2f39f030917
           </view>
           <view class="ubt-time">{{item.createTime}}</view>
         </view>

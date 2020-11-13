@@ -82,7 +82,7 @@ Page({
           content: `成功兑换 ${res.number} ${_self.data.name}`,
           showCancel: false,
           success(res) {
-            if (res.confirm) _self.init();
+            // if (res.confirm) _self.init();
           }
         })
         return
@@ -93,6 +93,7 @@ Page({
         })
       }
     })
+    _self.init();
   },
 
   bindSave1(e) {
@@ -122,7 +123,7 @@ Page({
           content: '成功兑换 ' + res.ubt + ' UBT',
           showCancel: false,
           success(res) {
-            if (res.confirm) _self.init();
+            // if (res.confirm) _self.init();
           }
         })
         return
@@ -133,5 +134,6 @@ Page({
         })
       }
     })
+    _self.init();
   },
 })

@@ -37,6 +37,12 @@ Page({
       }
     })
   },
+  onShareAppMessage: function () {
+    return {
+      title: '"' + wx.getStorageSync('mallName') + '" ' + wx.getStorageSync('share_profile'),
+      path: '/pages/my/index'
+    }
+  },
 
   /* 查询用户注册码是否绑定 */
   async getIsRegistryCode() {

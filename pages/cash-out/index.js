@@ -69,7 +69,7 @@ Page({
           content: '成功提现 ' + res.number + " RMB",
           showCancel: false,
           success(res) {
-            if (res.confirm) _self.init();
+            // if (res.confirm) _self.init();
           }
         })
         return
@@ -80,5 +80,26 @@ Page({
         })
       }
     })
+    _self.init();
   },
+  // bindSave1(e) {
+  //   const _self = this,
+  //     isNumber = /^(0|[1-9][0-9]*)$/,
+  //     token = wx.getStorageSync('token');
+  //   let rmb = e.detail.value.rmb;
+  //   rmb.replace(/\s+/g, "");
+
+  //   if (!rmb || !isNumber.test(rmb)) {
+  //     wx.showToast({
+  //       title: !ubt ? '请输入提现金额' : '请输入正确金额',
+  //       icon: 'none'
+  //     })
+  //     return
+  //   }
+
+  //   WXAPI.withDrawApply(token, rmb).then(res => {
+  //     console.log("123", res);
+  //   })
+
+  // }
 })
