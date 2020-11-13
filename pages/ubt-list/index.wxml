@@ -11,7 +11,7 @@
         <view class="ubt-item">
           <view class="ubt-number">
             交易数量：
-            <span>{{item.available}}</span>
+            <span>{{item.delta}}</span>
           </view>
           <view class="ubt-time">{{item.updateTime}}</view>
         </view>

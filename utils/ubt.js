@@ -258,7 +258,7 @@ function getUidRegistryByUid(uid) {
 function getListPointRecord(registerCode) {
   return new Promise((resolve, reject) => {
     wx.request({
-      url: `${CONFIG.ubtDomain}/ubt/point/listPointRecord`,
+      url: `${CONFIG.ubtDomain}/ubt/point/listPointLog`,
       data: {
         type: "ubt",
         uid: registerCode
