@@ -50,7 +50,7 @@
   <view class="line" wx:if="{{wxBindingState}}"></view>
   <navigator url="/pages/ubt-list/index" wx:if="{{wxBindingState}}">
     <view class="menu-item">
-      <view class="l">UBT交易记录</view>
+      <view class="l">UBT余额变更记录</view>
       <image class="next" src="/images/icon/next.png"></image>
     </view>
   </navigator>

@@ -134,6 +134,9 @@ function createParams(registerCode, point, type) {
  * @param {Object} params 
  */
 function decreaseUBT(params) {
+  console.info("Decrease UBT");
+  console.info(params);
+  
   return new Promise((resolve, reject) => {
     wx.request({
       url: `${CONFIG.ubtDomain}/ubt/point/decrease`,
@@ -247,7 +250,8 @@ function getUidRegistryByUid(uid) {
       },
       success: function (res) {
         const data = res.data.data
-        if (data || data.registerCode) {
+        console.info(data);
+        if (data && data.enable) {
           wx.setStorageSync('registerCode', data.registerCode);
         }
         resolve(data)
@@ -256,10 +260,10 @@ function getUidRegistryByUid(uid) {
   })
 }
 
-function getListPointRecord(registerCode) {
+function getListPointLog(registerCode) {
   return new Promise((resolve, reject) => {
     wx.request({
-      url: `${CONFIG.ubtDomain}/ubt/point/listPointRecord`,
+      url: `${CONFIG.ubtDomain}/ubt/point/listPointLog`,
       data: {
         type: "ubt",
         uid: registerCode
@@ -399,5 +403,5 @@ module.exports = {
   getUidRegistryByUid: getUidRegistryByUid,
   registerUid: registerUid,
   deregisterUid: deregisterUid,
-  getListPointRecord: getListPointRecord
+  getListPointLog: getListPointLog
 }

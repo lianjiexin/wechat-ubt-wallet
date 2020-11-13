@@ -10,7 +10,7 @@ Page({
 
   async getData() {
     const registerCode = wx.getStorageSync('registerCode'),
-      data = await UBT.getListPointRecord(registerCode);
+      data = await UBT.getListPointLog(registerCode);
     this.setData({
       ubtData: data
     })
