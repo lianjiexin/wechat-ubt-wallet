@@ -69,9 +69,10 @@ async function retrieveUBT(registerCode, pointType) {
  */
 function exchangeScoreToUBT(registerCode, number, type) {
   const ubt = 2 * number;
+  const orderType_exchange = 2 ; // exchange
   return new Promise((resolve, reject) => {
-    const decreaseParam = createParams(registerCode, number, type),
-      increaseParam = createParams(registerCode, ubt, "ubt");
+    const decreaseParam = createParams(registerCode, number, type,orderType_exchange),
+      increaseParam = createParams(registerCode, ubt, "ubt",orderType_exchange);
     decreaseUBT(decreaseParam).
       then(increaseUBT(increaseParam)).
       then(function (res) {
@@ -95,9 +96,10 @@ function exchangeScoreToUBT(registerCode, number, type) {
  */
 function exchangeUBTtoScore(registerCode, ubt, type) {
   let number = type == "rmb" ? ubt * 7 : ubt / 2;
+  const orderType_exchange = 2 ; // exchange
   return new Promise((resolve, reject) => {
-    const decreaseParam = createParams(registerCode, ubt, "ubt"),
-      increaseParam = createParams(registerCode, number, type);
+    const decreaseParam = createParams(registerCode, ubt, "ubt",orderType_exchange),
+      increaseParam = createParams(registerCode, number, type,orderType_exchange);
     decreaseUBT(decreaseParam).
       then(increaseUBT(increaseParam)).
       then(function (res) {
@@ -119,11 +121,12 @@ function exchangeUBTtoScore(registerCode, ubt, type) {
  * @param {String} type 
  * @return {Object}
  */
-function createParams(registerCode, point, type) {
+function createParams(registerCode, point, type, orderType) {
   return {
     "point": point,
     "seq": Math.round(Math.random() * 1000000),
     "type": type,
+    "orderType": orderType,
     "uid": registerCode
   }
 }
@@ -234,7 +237,7 @@ function increaseUBT(params) {
 function getUidRegistryByUid(uid) {
   return new Promise((resolve, reject) => {
     wx.request({
-      url: `${CONFIG.ubtDomain}/ubt/point/getUidRegistryByUid`,
+      url: `${CONFIG.ubtDomain}/ubt/account/getUidRegistryByUid`,
       data: {
         uid: uid
       },
@@ -289,7 +292,7 @@ function getListPointLog(registerCode) {
 function registerUid(params) {
   return new Promise((resolve, reject) => {
     wx.request({
-      url: `${CONFIG.ubtDomain}/ubt/point/registerUid`,
+      url: `${CONFIG.ubtDomain}/ubt/account/registerUid`,
       data: {
         password: params.password,
         registerCode: params.registerCode,
@@ -345,7 +348,7 @@ function registerUid(params) {
 function deregisterUid(params) {
   return new Promise((resolve, reject) => {
     wx.request({
-      url: `${CONFIG.ubtDomain}/ubt/point/deregisterUid`,
+      url: `${CONFIG.ubtDomain}/ubt/account/deregisterUid`,
       data: {
         password: params.password,
         registerCode: params.registerCode,
