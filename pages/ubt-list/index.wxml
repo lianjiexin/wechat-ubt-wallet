@@ -7,13 +7,23 @@
   </navigator> -->
   <view class="box">
     <view class="ubt">
+    <!-- <view class="ubt-balance-box">
+      <view class="ubt-balance">
+        <view class="title">当前UBT余额</view>
+        <view class="ubt-number">{{ ubtBalance }}</view>
+        <view class="rmb-number">等额 <span>{{rmb}}</span> RMB</view>
+      </view>
+    </view>-->
       <view class="ubt-item-box" wx:for="{{ubtData}}" wx:for-index="index" wx:key="index">
         <view class="ubt-item">
           <view class="ubt-number">
-            当前余额：
-            <span>{{item.available}}</span>
+            <view class="left">{{ item.type === 1 ? '兑换': '提现' }}UBT</view>
+            <view class="right">{{ item.type === 2 ? '-': '' }}{{item.delta}}</view>
           </view>
-          <view class="ubt-time">{{item.createTime}}</view>
+          <view class="ubt-number">
+            <view class="ubt-time">{{item.createTime}}</view>
+            <view class="balance">{{item.available}}</view>
+          </view>
         </view>
       </view>
     </view>

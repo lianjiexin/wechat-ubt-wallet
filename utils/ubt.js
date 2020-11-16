@@ -3,36 +3,36 @@ Include all utility functions for UBT
 */
 const CONFIG = require('../config.js')
 
-async function checkUser(uid) {
-  var domain = CONFIG.ubtDomain
-  return new Promise((resolve, reject) => {
-    wx.request({
-      url: domain + '/ubt/point/getUbtAccount', //检查该用户的UBT；
-      data: {
-        "subUid": "",
-        "uid": uid
-      },
-      method: "GET",
-      header: {
-        "Content-Type": "application/json"
-      },
-      complete: function (res) {
-        if (res == null || res.data == null) {
-          console.error('网络请求失败')
-          reject(new Error('网络请求失败'))
-        }
-      },
-      success: function (res) {
-        if (res.data.data == null) {
-          resolve(res.data.data);
-        } else {
-          resolve(res.data.data);
-        }
-      }
-    })
-  })
+// async function checkUser(uid) {
+//   var domain = CONFIG.ubtDomain
+//   return new Promise((resolve, reject) => {
+//     wx.request({
+//       url: domain + '/ubt/account/getUbtAccount', //检查该用户的UBT；
+//       data: {
+//         "subUid": "",
+//         "uid": uid
+//       },
+//       method: "GET",
+//       header: {
+//         "Content-Type": "application/json"
+//       },
+//       complete: function (res) {
+//         if (res == null || res.data == null) {
+//           console.error('网络请求失败')
+//           reject(new Error('网络请求失败'))
+//         }
+//       },
+//       success: function (res) {
+//         if (res.data.data == null) {
+//           resolve(res.data.data);
+//         } else {
+//           resolve(res.data.data);
+//         }
+//       }
+//     })
+//   })
 
-}
+// }
 
 async function retrieveUBT(registerCode, pointType) {
   var domain = CONFIG.ubtDomain
@@ -234,7 +234,7 @@ function increaseUBT(params) {
 function getUidRegistryByUid(uid) {
   return new Promise((resolve, reject) => {
     wx.request({
-      url: `${CONFIG.ubtDomain}/ubt/point/getUidRegistryByUid`,
+      url: `${CONFIG.ubtDomain}/ubt/account/getUidRegistryByUid`,
       data: {
         uid: uid
       },
@@ -289,7 +289,7 @@ function getListPointLog(registerCode) {
 function registerUid(params) {
   return new Promise((resolve, reject) => {
     wx.request({
-      url: `${CONFIG.ubtDomain}/ubt/point/registerUid`,
+      url: `${CONFIG.ubtDomain}/ubt/account/registerUid`,
       data: {
         password: params.password,
         registerCode: params.registerCode,
@@ -345,7 +345,7 @@ function registerUid(params) {
 function deregisterUid(params) {
   return new Promise((resolve, reject) => {
     wx.request({
-      url: `${CONFIG.ubtDomain}/ubt/point/deregisterUid`,
+      url: `${CONFIG.ubtDomain}/ubt/account/deregisterUid`,
       data: {
         password: params.password,
         registerCode: params.registerCode,
@@ -393,7 +393,7 @@ function deregisterUid(params) {
 
 module.exports = {
   retrieveUBT: retrieveUBT,
-  checkUser: checkUser,
+  // checkUser: checkUser,
   increaseUBT: increaseUBT,
   decreaseUBT: decreaseUBT,
   exchangeScoreToUBT: exchangeScoreToUBT,
