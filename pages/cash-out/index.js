@@ -2,6 +2,7 @@ const app = getApp()
 const WXAPI = require('apifm-wxapi')
 const AUTH = require('../../utils/auth')
 const UBT = require('../../utils/ubt.js')
+const PAY = require('../../utils/pay.js')
 
 Page({
 
@@ -29,8 +30,9 @@ Page({
 
   // 初始化
   init() {
-    const _self = this,
+      const _self = this,
       registerCode = wx.getStorageSync('registerCode');
+     
     UBT.retrieveUBT(registerCode, 'ubt').then(function (res) {
       const ubt = res.data && res.data.point ? res.data.point : 0
       _self.setData({
@@ -44,7 +46,8 @@ Page({
   bindSave: function (e) {
     const _self = this,
       isNumber = /^(0|[1-9][0-9]*)$/,
-      registerCode = wx.getStorageSync('registerCode');
+      registerCode = wx.getStorageSync('registerCode'),
+      openId = wx.getStorageSync('openid');
     let ubt = e.detail.value.amount;
     ubt.replace(/\s+/g, "");
     if (!ubt || !isNumber.test(ubt)) {
@@ -63,20 +66,37 @@ Page({
       return
     }
 
-    UBT.exchangeUBTtoScore(registerCode, Number(ubt), "rmb").then(res => {
+    PAY.wxWithdrawRmb(registerCode, Number(ubt),openId).then(res => {
+      console.info(res);
       if (res.status == 0) {
+        if(res.data.result_code == 'SUCCESS') {
+          wx.showModal({
+            content: '成功提现 ' + Number(ubt) + " RMB",
+            showCancel: false,
+            success(res) {
+              // if (res.confirm) _self.init();
+            }
+          })
+          return
+        }else {// 错误
+          wx.showModal({
+            title: '提现失败',
+            content: res.data.return_msg,
+            showCancel: false,
+            success(res) {
+              // if (res.confirm) _self.init();
+            }
+          })
+          return
+        }
+      } else {
         wx.showModal({
-          content: '成功提现 ' + res.number + " RMB",
+          title: '提现失败.',
+          content:' 错误码：' + res.status + '.\r\n' + res.error,
           showCancel: false,
           success(res) {
             // if (res.confirm) _self.init();
           }
-        })
-        return
-      } else {
-        wx.showToast({
-          title: "兑换失败",
-          icon: 'none'
         })
       }
     })

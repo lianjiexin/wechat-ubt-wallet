@@ -1,29 +1,88 @@
+.container {
+  background-color: #eee;
+}
+
 .box {
   width: 100%;
 }
 
 .ubt {
-  width : 98%;
+  width : 97%;
   margin: auto;
 }
 
-.ubt-item-box {
-  width        : 100%;
-  margin       : 2px 0;
-  border-bottom: 1px solid#eee;
+/* .ubt-balance-box {
+  width           : 100%;
+  margin          : 4px 0 6px;
+  padding         : 5px 0;
+  background-color: #fff;
+  border-radius   : 6px;
 }
 
-.ubt-item-box .ubt-item {
+.ubt-balance {
   width : 95%;
   margin: auto;
 }
 
+.ubt-balance .title {
+  font-size: 4vw;
+}
+
+.ubt-balance .ubt-number {
+  margin   : 5px 0 0 5vw;
+  font-size: 20px;
+  color    : #000;
+}
+
+.ubt-balance .rmb-number {
+  font-size : 4vw;
+  text-align: right;
+  color     : #999;
+} */
+
+
+.ubt-item-box {
+  width           : 100%;
+  margin          : 4px 0 8px;
+  background-color: #fff;
+  border-radius   : 6px;
+}
+
+.ubt-item-box .ubt-item {
+  width  : 93%;
+  margin : auto;
+  padding: 4px 0;
+}
+
 .ubt-item .ubt-number {
-  text-align: left;
-  font-size : 5vw;
+  display        : flex;
+  justify-content: space-between;
+  align-items    : center;
+  font-size      : 3.9vw;
+  font-weight    : 400;
+  color          : #000;
+}
+
+
+.ubt-item .ubt-number .left {
+  font-size  : 4.5vw;
+  font-weight: 500;
+}
+
+.ubt-item .ubt-number .right {
+  font-size  : 5vw;
+  font-weight: 500;
+  color      : #F41313;
+}
+
+.balance {
+  text-align: right;
+  font-size : 4.3vw;
+  color     : #696969;
 }
 
 .ubt-item .ubt-time {
-  text-align: right;
-  font-size : 4vw;
+  text-align: left;
+  font-size : 3.9vw;
+  color     : #808080;
 }

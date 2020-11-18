@@ -20,6 +20,9 @@ Page({
       wx.setNavigationBarTitle({
         title: "解绑注册码"
       })
+      this.setData({
+       registerCode: wx.getStorageSync('registerCode')
+      })
     } else {
       this.setData({
         wxBindingState: false

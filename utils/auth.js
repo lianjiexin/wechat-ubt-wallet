@@ -84,6 +84,8 @@ async function login(page) {
         //   })
         //   // return;
         // }
+        console.info(res.data);
+        wx.setStorageSync('openid', res.data.openid);
         wx.setStorageSync('uid', res.data.uid);
         wx.setStorageSync('token', res.data.token);
         // checkUbtAccount(page);
@@ -95,36 +97,36 @@ async function login(page) {
   })
 }
 
-async function checkUbtAccount(page) {
-  var uid = wx.getStorageSync('uid');
-  UBT.checkUser(uid).then(function (res) {
-    if (res == null) {
-      wx.showModal({
-        title: '帐号未开通',
-        content: '请联系管理员为您的微信(ID:' + uid + ')开通帐号',
-        showCancel: false,
-        success(res) {
-          if (res.confirm) {
-            wx.switchTab({
-              url: "/pages/my/index"
-            })
-          } else {
-            wx.navigateBack()
-          }
-        }
-      })
-      loginOut();
-    } else {
-      if (page) {
-        page.onShow()
-      }
-    }
+// async function checkUbtAccount(page) {
+//   var uid = wx.getStorageSync('uid');
+//   UBT.checkUser(uid).then(function (res) {
+//     if (res == null) {
+//       wx.showModal({
+//         title: '帐号未开通',
+//         content: '请联系管理员为您的微信(ID:' + uid + ')开通帐号',
+//         showCancel: false,
+//         success(res) {
+//           if (res.confirm) {
+//             wx.switchTab({
+//               url: "/pages/my/index"
+//             })
+//           } else {
+//             wx.navigateBack()
+//           }
+//         }
+//       })
+//       loginOut();
+//     } else {
+//       if (page) {
+//         page.onShow()
+//       }
+//     }
 
-  }, function (fail) {
-    console.error(err)
+//   }, function (fail) {
+//     console.error(err)
 
-  })
-}
+//   })
+// }
 
 async function register(page) {
   let _this = this;

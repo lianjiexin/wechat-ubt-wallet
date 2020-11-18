@@ -1,4 +1,5 @@
 const WXAPI = require('apifm-wxapi')
+const CONFIG = require('../config.js')
 
 /**
  * type: order 支付订单 recharge 充值 paybill 优惠买单
@@ -63,7 +64,36 @@ function wxpay(type, money, orderId, redirectUrl, data) {
     }
   })
 }
-
+function wxWithdrawRmb(registerCode,amount,openId) {
+  //var openId = wx.getStorageSync('openid');
+  var registerCode = wx.getStorageSync('registerCode');
+  console.info('open Id: ' + openId + '\t registerCode:' + registerCode);
+  return new Promise((resolve, reject) => {
+    wx.request({
+      url: `${CONFIG.ubtDomain}/ubt/point/withDrawRmb`,
+      data: {
+        type: "ubt",
+        point: amount * 100, // point 最小单位为分
+        seq: Math.round(Math.random() * 1000000),
+        openId: openId,
+        uid: registerCode
+      },
+      method: "POST",
+      header: {
+        "Content-Type": "application/json"
+      },
+      complete: function (res) {
+        if (res == null || res.data == null) {
+          console.error('网络请求失败')
+        }
+      },
+      success: function (res) {
+        resolve(res.data);
+      }
+    })
+  })
+}
 module.exports = {
-  wxpay: wxpay
+  wxpay: wxpay,
+  wxWithdrawRmb: wxWithdrawRmb
 }

@@ -2,7 +2,7 @@
   <view class="el-from-input">
     <view class="el-label">注册码：</view>
     <view class="el-inout">
-      <input maxlength="10" placeholder="123456" value="{{params.registerCode}}" bindinput="fromRegisterCode" />
+      <input maxlength="10" placeholder="{{registerCode}}" value="{{params.registerCode}}" bindinput="fromRegisterCode" />
     </view>
   </view>
   <view class="el-from-input">
