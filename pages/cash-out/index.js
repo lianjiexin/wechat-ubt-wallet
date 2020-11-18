@@ -45,12 +45,12 @@ Page({
 
   bindSave: function (e) {
     const _self = this,
-      isNumber = /^(0|[1-9][0-9]*)$/,
+      isDouble = /^\d+(\.\d+)?$/,
       registerCode = wx.getStorageSync('registerCode'),
       openId = wx.getStorageSync('openid');
     let ubt = e.detail.value.amount;
     ubt.replace(/\s+/g, "");
-    if (!ubt || !isNumber.test(ubt)) {
+    if (!ubt || !isDouble.test(ubt)) {
       wx.showToast({
         title: !ubt ? '请输入ubt数量' : '请输入正确数量',
         icon: 'none'
