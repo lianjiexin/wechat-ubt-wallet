@@ -73,7 +73,7 @@ function wxWithdrawRmb(registerCode,amount,openId) {
       url: `${CONFIG.ubtDomain}/ubt/point/withDrawRmb`,
       data: {
         type: "ubt",
-        point: amount * 100, // point 最小单位为分
+        point: amount, // point 最小单位为分
         seq: Math.round(Math.random() * 1000000),
         openId: openId,
         uid: registerCode

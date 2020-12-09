@@ -71,7 +71,7 @@ Page({
       if (res.status == 0) {
         if(res.data.result_code == 'SUCCESS') {
           wx.showModal({
-            content: '成功提现 ' + Number(ubt) + " RMB",
+            content: '成功提现 ' + Number(ubt) + " UBT",
             showCancel: false,
             success(res) {
               // if (res.confirm) _self.init();
